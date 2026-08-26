@@ -1,0 +1,49 @@
+#usda 1.0
+(
+    defaultPrim = "RobotBaseCounterExtension"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "RobotBaseCounterExtension"
+{
+    def Material "GrayCountertop"
+    {
+        token outputs:surface.connect = </RobotBaseCounterExtension/GrayCountertop/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.38, 0.40, 0.42)
+            float inputs:metallic = 0
+            float inputs:roughness = 0.55
+            token outputs:surface
+        }
+    }
+
+    def Mesh "countertop"
+    {
+        uniform bool doubleSided = true
+        int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
+        int[] faceVertexIndices = [
+            4, 5, 6, 7,
+            0, 3, 2, 1,
+            0, 1, 5, 4,
+            1, 2, 6, 5,
+            2, 3, 7, 6,
+            3, 0, 4, 7
+        ]
+        point3f[] points = [
+            (-0.26, -0.25, -0.025),
+            ( 0.26, -0.25, -0.025),
+            ( 0.26,  0.25, -0.025),
+            (-0.26,  0.25, -0.025),
+            (-0.26, -0.25,  0.025),
+            ( 0.26, -0.25,  0.025),
+            ( 0.26,  0.25,  0.025),
+            (-0.26,  0.25,  0.025)
+        ]
+        rel material:binding = </RobotBaseCounterExtension/GrayCountertop>
+        uniform token subdivisionScheme = "none"
+    }
+}

@@ -1,0 +1,180 @@
+#usda 1.0
+(
+    customLayerData = {
+        string assetVersion = "faucet-detent-v16-spout-center-aligned-connector"
+        string loadModel = "Runtime asymmetric angle-resistance detent effort"
+        double sourceLeverYawDeg = -90
+        string visualSource = "Sink054.usd</root/Sink054_handle>"
+    }
+    defaultPrim = "FaucetValve"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "FaucetValve" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+)
+{
+    def Material "BrushedSteel"
+    {
+        token outputs:surface.connect = </FaucetValve/BrushedSteel/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.34, 0.37, 0.39)
+            float inputs:metallic = 0.82
+            float inputs:roughness = 0.24
+            token outputs:surface
+        }
+    }
+
+    def Material "GripDark"
+    {
+        token outputs:surface.connect = </FaucetValve/GripDark/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.075, 0.085, 0.09)
+            float inputs:metallic = 0.35
+            float inputs:roughness = 0.40
+            token outputs:surface
+        }
+    }
+
+    def Material "FlowBlue"
+    {
+        token outputs:surface.connect = </FaucetValve/FlowBlue/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.02, 0.24, 0.72)
+            float inputs:metallic = 0.05
+            float inputs:roughness = 0.30
+            token outputs:surface
+        }
+    }
+
+    def Xform "base" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.20
+
+        def Cylinder "ConnectorShaftVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.12779866876392887
+            rel material:binding = </FaucetValve/BrushedSteel>
+            double radius = 0.012
+            float3 xformOp:rotateXYZ = (0.349779065393, 0, -0.121499365973)
+            double3 xformOp:translate = (0.0101355, 0.063898, -0.00960991)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+        }
+
+        def Cylinder "ConnectorShaftCollider" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.12779866876392887
+            double radius = 0.012
+            token visibility = "invisible"
+            float3 xformOp:rotateXYZ = (0.349779065393, 0, -0.121499365973)
+            double3 xformOp:translate = (0.0101355, 0.063898, -0.00960991)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+        }
+    }
+
+    def Xform "lever" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.10
+        double3 xformOp:translate = (0.01, 0, -0.01)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Mesh "SourceLeverVisual" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsMeshCollisionAPI", "PhysicsRigidBodyAPI"]
+            prepend apiSchemas = ["MaterialBindingAPI"]
+            prepend references = @./Sink054.usd@</root/Sink054_handle>
+        )
+        {
+            rel material:binding = </FaucetValve/BrushedSteel>
+            float3 xformOp:rotateXYZ = (0, 0, -90)
+            uniform token[] xformOpOrder = ["xformOp:rotateXYZ"]
+
+            over "D6Joint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        def Cylinder "LeverSocketVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.018
+            rel material:binding = </FaucetValve/BrushedSteel>
+            double radius = 0.025
+        }
+
+        def Cylinder "LeverSocketCollider" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Y"
+            double height = 0.018
+            double radius = 0.025
+            token visibility = "invisible"
+        }
+
+        def Cylinder "LeverRodCollider" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.066
+            double radius = 0.0052
+            token visibility = "invisible"
+            float3 xformOp:rotateXYZ = (4.1, 0, 0)
+            double3 xformOp:translate = (-0.00009, -0.01165, 0.059)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ"]
+        }
+    }
+
+    def "joints"
+    {
+        def PhysicsFixedJoint "world_fixed"
+        {
+            rel physics:body1 = </FaucetValve/base>
+        }
+
+        def PhysicsRevoluteJoint "valve_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.55
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            uniform token physics:axis = "Y"
+            rel physics:body0 = </FaucetValve/base>
+            rel physics:body1 = </FaucetValve/lever>
+            point3f physics:localPos0 = (0.01, 0, -0.01)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0, 1, 0, 0)
+            quatf physics:localRot1 = (0, 1, 0, 0)
+            float physics:lowerLimit = 0
+            float physics:upperLimit = 110
+        }
+    }
+}

@@ -1,0 +1,17 @@
+"""Gear-meshing task manifest (safe to import before Isaac Sim starts)."""
+
+from coribench.task_api import TaskManifest
+
+
+MANIFEST = TaskManifest(
+    name="gear_mesh",
+    prompt=(
+        "Pick up the medium gear, place it on the center shaft so that it meshes "
+        "with both flanking gears, release it, and retract the gripper."
+    ),
+    runtime_class="coribench.tasks.gear_mesh.runtime:GearMeshTask",
+    dataset_subdir="gear_mesh",
+    scene_profile="gear_assembly_cell",
+    description="Force-sensitive gear alignment, meshing, release, and retraction.",
+    evaluation_max_steps=1500,
+)

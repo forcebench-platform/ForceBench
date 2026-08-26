@@ -1,0 +1,9 @@
+# Dependencies needed to run tests/ WITHOUT Isaac Sim (contract/unit tests
+# only -- the two skipped tests and everything under scripts/ still needs a
+# real Isaac Lab 2.3.2 / Isaac Sim 5.1 environment, see docs/PROJECT_GUIDE.md).
+pytest
+numpy
+h5py
+msgpack
+websockets
+opencv-python

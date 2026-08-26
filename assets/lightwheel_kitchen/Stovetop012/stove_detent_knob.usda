@@ -1,0 +1,145 @@
+#usda 1.0
+(
+    customLayerData = {
+        string assetVersion = "stove-detent-knob-v2-brushed-steel"
+        string visualFinish = "brushed stainless steel on charcoal glass"
+        string loadModel = "Runtime Gaussian-derivative detent effort"
+        string sourceGeometry = "Stovetop012_knob_center"
+    }
+    defaultPrim = "StoveKnob"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "StoveKnob" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+)
+{
+    def Material "KnobBrushedSteel"
+    {
+        token outputs:surface.connect = </StoveKnob/KnobBrushedSteel/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.48, 0.54, 0.62)
+            float inputs:metallic = 0.82
+            float inputs:roughness = 0.26
+            token outputs:surface
+        }
+    }
+
+    def Material "IndicatorWhite"
+    {
+        token outputs:surface.connect = </StoveKnob/IndicatorWhite/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.92, 0.95, 0.94)
+            color3f inputs:emissiveColor = (0.08, 0.09, 0.09)
+            float inputs:metallic = 0.05
+            float inputs:roughness = 0.34
+            token outputs:surface
+        }
+    }
+
+    def Xform "base" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.20
+
+        def Cylinder "MountCollarVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.004
+            rel material:binding = </StoveKnob/KnobBrushedSteel>
+            double radius = 0.023
+            double3 xformOp:translate = (0, 0, -0.010)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+
+    def Xform "knob" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.08
+
+        def Mesh "SourceVisual" (
+            prepend references = @./Stovetop012.usd@</root/Stovetop012_knob_center>
+        )
+        {
+            rel material:binding = </StoveKnob/KnobBrushedSteel>
+            bool physics:collisionEnabled = false
+            bool physics:rigidBodyEnabled = false
+            matrix4d xformOp:transform = ((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1))
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        def Cylinder "KnobCollider" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            # The rendered round body is about 38.93 mm wide and 20.72 mm
+            # tall.  Keep the collider just inside that surface so the
+            # 0.5 mm runtime contact offset aligns with the visible mesh,
+            # instead of creating an invisible rim above/outside it.
+            double height = 0.0192
+            double radius = 0.019
+            token visibility = "invisible"
+            double3 xformOp:translate = (0, 0, -0.006)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Cube "IndicatorVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </StoveKnob/IndicatorWhite>
+            double size = 1
+            float3 xformOp:scale = (0.0032, 0.010, 0.0020)
+            double3 xformOp:translate = (0, -0.0125, 0.0115)
+            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+        }
+    }
+
+    def "joints"
+    {
+        def PhysicsFixedJoint "world_fixed"
+        {
+            rel physics:body1 = </StoveKnob/base>
+        }
+
+        def PhysicsRevoluteJoint "stove_knob_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 0.35
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            uniform token physics:axis = "Z"
+            rel physics:body0 = </StoveKnob/base>
+            rel physics:body1 = </StoveKnob/knob>
+            point3f physics:localPos0 = (0, 0, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            float physics:lowerLimit = 0
+            float physics:upperLimit = 120
+        }
+    }
+}
