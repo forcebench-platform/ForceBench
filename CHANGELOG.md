@@ -44,7 +44,9 @@
 ### 数据与资产
 
 - [ ] 在 HuggingFace Datasets 上托管正式 episode 数据
-      （`scripts/download_datasets.py` **尚未实现**）
+      （目标仓库 `pkuhanxuan/ForceBench-datasets` **尚未建立**；
+      下载脚本 `scripts/download_datasets.py` 正在补充中，但在仓库建立并上传之前
+      仍然无法取到数据）
 - [ ] 实现 `scripts/download_assets.sh`，指向各厂商官方资产渠道
       （**尚未实现**）
 - [ ] 补齐 `peg_insert`（189/200）和 `gear_mesh`（62/200）的专家数据

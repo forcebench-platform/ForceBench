@@ -4,10 +4,16 @@
 
 ## 1. ⚠️ 数据当前还没有托管
 
-**本仓库不包含任何 episode 数据。** HuggingFace Datasets 托管是 v1.0 的计划项，
-**尚未搭建**；`scripts/download_datasets.py` **尚未实现**。
+**本仓库不包含任何 episode 数据**（这是仿真 benchmark 的惯例：代码仓库保持轻量，
+大数据放 HuggingFace）。
+
+**但 HuggingFace 上的数据集仓库目前还没有建起来**，因此下载这条路暂时走不通。
 
 现在想要数据只有一条路：按[复现指南](./reproduce.md)自己重新生成。
+
+> 下载脚本 `scripts/download_datasets.py` 正在补充中。即使脚本就位，在上述
+> HuggingFace 数据集仓库真正建立并上传之前，它也只能报告"仓库不存在"。
+> 托管本身是 v1.0 的待办项，见 [`CHANGELOG.md`](../CHANGELOG.md)。
 
 ## 2. 数据规模
 
