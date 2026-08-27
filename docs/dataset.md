@@ -27,8 +27,8 @@
 | `faucet_turn` | 200 | |
 | `radmanso_drawer_sort_table` | 200 | |
 | `nut_thread` | 200 | |
-| `peg_insert` | **189** | ⚠️ 不足 200，seed 覆盖不完整 |
-| `gear_mesh` | **62** | ⚠️ 远不足 200，样本量很小 |
+| `peg_insert` | 200 | 已补齐（2026-08-27 清点确认，44 GB） |
+| `gear_mesh` | ❌ **0** | ⚠️ 正式数据集已不在源机器上（2026-08-27 清点） |
 
 后两个任务的缺口原因未在提取材料中记录，各自的任务卡片
 （[`peg_insert`](./tasks/peg_insert.md)、[`gear_mesh`](./tasks/gear_mesh.md)）

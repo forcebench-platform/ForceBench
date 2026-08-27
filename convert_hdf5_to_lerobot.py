@@ -13,7 +13,7 @@ import cv2
 import h5py
 import numpy as np
 
-from forcebench.recording import validate_hdf5_episode
+from forcebench.recording import HDF5_SCHEMA_VERSIONS_ACCEPTED, validate_hdf5_episode
 from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
 
 
@@ -106,8 +106,12 @@ def main() -> None:
             raise ValueError(f"SHA-256 mismatch: {path}")
         validate_hdf5_episode(path)
         with h5py.File(path, "r") as handle:
-            if str(handle.attrs.get("schema_version", "")) != "forcebench_hdf5":
-                raise ValueError(f"unsupported non-canonical HDF5 schema: {path}")
+            schema = str(handle.attrs.get("schema_version", ""))
+            if schema not in HDF5_SCHEMA_VERSIONS_ACCEPTED:
+                raise ValueError(
+                    f"unsupported non-canonical HDF5 schema {schema!r}: {path}; "
+                    f"expected one of {HDF5_SCHEMA_VERSIONS_ACCEPTED}"
+                )
             metadata = json.loads(str(handle.attrs["metadata_json"]))
             if not bool(handle.attrs["success"]) or not bool(metadata.get("success")):
                 raise ValueError(f"snapshot contains a non-successful episode: {path}")

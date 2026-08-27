@@ -19,7 +19,15 @@ from .control import (
 )
 
 
+# Tag written into every new episode.
 HDF5_SCHEMA_VERSION = "forcebench_hdf5"
+# The project was called CoRiBench when the currently published expert data was
+# collected, so every existing .hdf5 on disk carries the old tag. Readers must
+# accept both; only writers use HDF5_SCHEMA_VERSION above. Do not "clean this
+# up" by dropping the legacy value — it would make the released converter
+# unable to read the released data.
+HDF5_SCHEMA_VERSION_LEGACY = "coribench_hdf5"
+HDF5_SCHEMA_VERSIONS_ACCEPTED = (HDF5_SCHEMA_VERSION, HDF5_SCHEMA_VERSION_LEGACY)
 MODEL_VECTOR_DIM = 7
 WRENCH_DIM = 6
 CANONICAL_WRENCH_PROFILE = {
@@ -574,9 +582,10 @@ def validate_hdf5_episode(path: str | Path) -> dict[str, Any]:
     path = Path(path)
     with h5py.File(path, "r") as handle:
         schema = str(handle.attrs.get("schema_version", ""))
-        if schema != HDF5_SCHEMA_VERSION:
+        if schema not in HDF5_SCHEMA_VERSIONS_ACCEPTED:
             raise ValueError(
-                f"unsupported HDF5 schema: {schema!r}; expected {HDF5_SCHEMA_VERSION!r}"
+                f"unsupported HDF5 schema: {schema!r}; "
+                f"expected one of {HDF5_SCHEMA_VERSIONS_ACCEPTED!r}"
             )
         frames = int(handle.attrs["num_frames"])
         metadata = json.loads(str(handle.attrs["metadata_json"]))

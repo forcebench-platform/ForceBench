@@ -91,8 +91,9 @@
 
 ### 专家数据不完整
 
-- `peg_insert`：**189 / 200**
-- `gear_mesh`：**62 / 200**
+- `peg_insert`：**200 / 200** —— 已补齐（2026-08-27 清点确认）
+- `gear_mesh`：**正式数据集已不存在** —— 源机器 `CoRiBench_data/datasets/` 下只有 7 个任务，`gear_mesh` 仅在 `CoRiBench_scratch/expert/gear_mesh` 残留 1 条调试 episode（145 MB）。
+  因此 **v0.1 的数据集只覆盖 7 个任务**，而代码/任务定义仍是 8 个。
 
 缺口原因未在提取材料中记录。详见各自的任务卡片
 （[`peg_insert`](./docs/tasks/peg_insert.md)、[`gear_mesh`](./docs/tasks/gear_mesh.md)）。

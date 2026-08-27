@@ -54,8 +54,8 @@ wrench 信号；`peg_insert` 的 `spec.py` 里甚至没有任何力或质量常�
 
 | 任务 | 中文名 | 实际变化的量 | 当前的力角色 | 专家数据 |
 |---|---|---|---|---|
-| [`peg_insert`](./docs/tasks/peg_insert.md) | 销轴插孔 | 目标孔平面位置 | **无** —— spec 中无任何力/质量常量 | **189** |
-| [`gear_mesh`](./docs/tasks/gear_mesh.md) | 齿轮啮合装配 | 底板位置、齿相位抖动 | 仅质量缩放用于接触真实感，**不参与判分** | **62** |
+| [`peg_insert`](./docs/tasks/peg_insert.md) | 销轴插孔 | 目标孔平面位置 | **无** —— spec 中无任何力/质量常量 | 200 |
+| [`gear_mesh`](./docs/tasks/gear_mesh.md) | 齿轮啮合装配 | 底板位置、齿相位抖动 | 仅质量缩放用于接触真实感，**不参与判分** | ❌ **无数据** |
 | [`nut_thread`](./docs/tasks/nut_thread.md) | 螺母拧入螺栓 | 螺栓平面位置 | **不参与判分** | 200 |
 
 ### 关于判分逻辑的常见误读

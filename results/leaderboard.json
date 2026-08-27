@@ -92,7 +92,7 @@
       "force_category": "contact_rich",
       "summary_zh": "抓取销轴并插入目标孔位，释放后退回。",
       "varies_zh": "接触密集，当前判分不读力",
-      "dataset_episodes": 189
+      "dataset_episodes": 200
     },
     {
       "id": "gear_mesh",
@@ -100,7 +100,7 @@
       "force_category": "contact_rich",
       "summary_zh": "抓取中间齿轮放上中心轴，与两侧齿轮啮合后释放退回。",
       "varies_zh": "接触密集，当前判分不读力",
-      "dataset_episodes": 62
+      "dataset_episodes": 0
     },
     {
       "id": "nut_thread",
