@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForceBench —— 力感知操作策略基准</title>
+<meta name="description" content="ForceBench：一个衡量 6 维力/力矩反馈是否真的能帮助 VLA 操作策略的仿真基准。v0.1 原型。">
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body data-page="home">
+<a class="skip-link" href="#main">跳到正文</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="./index.html">ForceBench <span class="ver">v0.1 原型</span></a>
+    <nav class="site-nav" aria-label="主导航">
+      <ul>
+        <li><a href="./index.html" data-nav="home">首页</a></li>
+        <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
+        <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
+        <li><a href="./about.html" data-nav="about">关于与引用</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="prototype-banner" role="note">
+  <div class="wrap">
+    <span class="tag">原型</span>
+    <p><b>ForceBench v0.1 是原型，不是完成品。</b>评测覆盖并不完整（「任务 × 模型」的组合里只有一部分跑过），
+    数字会随着评测补齐和链路修复而变动，任务的成功判定本身也还在调整。
+    <b>请不要引用本站的任何数字</b>，也不要据此比较模型优劣。</p>
+  </div>
+</div>
+
+<main id="main">
+  <div class="wrap">
+
+    <section class="hero">
+      <h1>力反馈到底有没有用？</h1>
+      <p class="question">ForceBench 想回答的问题是：6 维力/力矩感知究竟能不能提升 VLA 操作策略的表现，以及一个策略到底需要多少力信号。</p>
+      <p class="lede">ForceBench 是一个基于 Isaac Lab 的仿真基准。八个任务共用同一套机器人、控制器、观测和策略接口 ——
+      换策略，不换测试台。其中五个任务的关键在于：决定「怎样做才算对」的那个物体属性（重量、内部配重、机构阻力）
+      在视觉上根本看不出来，策略要么用力信号，要么只能靠猜。</p>
+      <div class="hero-actions">
+        <a class="btn" href="./leaderboard.html">查看 Leaderboard</a>
+        <a class="btn secondary" href="./tasks.html">八个任务</a>
+        <a class="btn secondary" href="https://github.com/pkuhanxuan/ForceBench">GitHub 仓库</a>
+      </div>
+    </section>
+
+    <div id="sample-slot"></div>
+
+    <h2>评测进度</h2>
+    <div id="home-coverage">
+      <p class="loading">正在读取 <code>results/leaderboard.json</code> ……</p>
+    </div>
+
+    <h2>当前能说什么、不能说什么</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3 style="margin-top:0">现在可以说的</h3>
+        <ul>
+          <li>八个任务的评测框架和数据格式已经跑通，结果以 <code>results/leaderboard.json</code> 的统一格式发布。</li>
+          <li>每个成功率都配有 Clopper-Pearson 95% 置信区间，而不是一个孤零零的百分数。</li>
+          <li>「没跑过」和「跑了但结果不可信」在数据和页面上都与「分数低」明确区分开。</li>
+          <li>逐任务做了 Fisher 精确检验，每个对比都带 p 值和多重比较校正后的显著性标记，
+          <b>而不是只并排放两个百分数</b>。见 <a href="./leaderboard.html">Leaderboard</a>。</li>
+          <li>逐任务看，接入力信号的模型与不接入力的基线<b>互有高低</b>：有的任务上更好，有的任务上更差。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">现在<b>不能</b>说的</h3>
+        <ul>
+          <li><b>不能说「力有帮助」，也不能说「力没用」。</b>差异的方向<b>随任务而变</b>，
+          而且做完多重比较校正后，能站得住的差异非常少。</li>
+          <li>不能用跨任务的平均成功率来概括 —— 任务之间差异太大，平均值会直接掩盖真实信号。
+          本站因此<b>不提供</b>平均分和总排名。</li>
+          <li>不能拿这里的数字做模型排名或论文对比 —— 仍有缺格，且 n = 100 时置信区间很宽。</li>
+        </ul>
+        <p class="small muted" style="margin-bottom:0">本站只做中立的数字呈现，解释权留给读者。</p>
+      </div>
+    </div>
+
+    <h2>力信号阶梯上的模型</h2>
+    <p class="muted">这些模型构成一个「力信号进入策略的程度」阶梯：从完全不接收力信号，
+    到把 6 维力/力矩直接拼进 state，再到架构级融合。<code>force_input</code> 是这个基准的核心自变量。
+    尚未评测的模型仍保留在名单和榜单中，以便让缺口保持可见。</p>
+    <div class="grid cols-3" id="home-models">
+      <p class="loading">正在读取模型列表 ……</p>
+    </div>
+
+    <h2>八个任务</h2>
+    <p class="muted">两类任务的性质不同，页面上始终分开标注，理由见<a href="./tasks.html">任务说明</a>。</p>
+    <div class="grid cols-3" id="home-tasks"></div>
+
+    <div class="note info" style="margin-top:32px">
+      <span class="note-title">与 ForceVLA 论文的关系</span>
+      <p>ForceBench 不是又一个力融合架构。ForceVLA（NeurIPS 2025）提出的是架构和一套真机数据；
+      ForceBench 提供的是做「方法无关」对比时需要的测试台：固定的仿真契约、一条从纯本体感受到架构级融合的力信号阶梯、
+      以及统一的评测协议。详见<a href="./about.html">关于与引用</a>。</p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <p><b>ForceBench</b> v0.1 原型 · 代码采用 MIT 许可</p>
+      <p>部分任务依赖第三方 3D 资产，整仓库在资产链路完全澄清前按<b>非商业研究用途</b>对待，详见仓库 <code>NOTICE.md</code>。</p>
+    </div>
+    <div>
+      <p><a href="https://github.com/pkuhanxuan/ForceBench">github.com/pkuhanxuan/ForceBench</a></p>
+      <p class="small">本站为纯静态页面，数据实时读取自仓库内的 <code>results/leaderboard.json</code>。</p>
+    </div>
+  </div>
+</footer>
+
+<script src="./assets/data.js"></script>
+<script src="./assets/render.js"></script>
+</body>
+</html>
