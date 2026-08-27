@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from coribench.tasks.peg_insert.spec import evaluate_release_stability_batch
+from forcebench.tasks.peg_insert.spec import evaluate_release_stability_batch
 
 
 def test_release_gate_accepts_stable_contact_seats_per_environment():

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from coribench.task_api import CameraProfile
+from forcebench.task_api import CameraProfile
 
 
 def test_default_main_camera_is_a_centered_workspace_overview():
@@ -23,7 +23,7 @@ def test_default_main_camera_is_a_centered_workspace_overview():
 
 
 def test_weight_sort_keeps_the_28cm_main_camera_push_in():
-    runtime_source = Path("coribench/tasks/weight_sort/runtime.py").read_text(
+    runtime_source = Path("forcebench/tasks/weight_sort/runtime.py").read_text(
         encoding="utf-8"
     )
     assert "camera_profile = CameraProfile(" in runtime_source
@@ -38,7 +38,7 @@ def test_peg_and_nut_use_the_tight_224px_main_camera_view():
     )
     for task_name in ("peg_insert", "nut_thread"):
         runtime_source = (
-            Path("coribench/tasks") / task_name / "runtime.py"
+            Path("forcebench/tasks") / task_name / "runtime.py"
         ).read_text(encoding="utf-8")
         assert "camera_profile = CameraProfile(" in runtime_source
         for camera_field in expected:

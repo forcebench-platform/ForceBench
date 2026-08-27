@@ -1,7 +1,7 @@
 import ast
 from pathlib import Path
 
-from coribench.registry import get_task_manifest, task_names
+from forcebench.registry import get_task_manifest, task_names
 
 
 def test_task_plugins_are_auto_discovered_without_simulator_imports():
@@ -71,33 +71,33 @@ def test_task_manifests_own_formal_evaluation_step_limits():
 
 def test_core_runtime_has_no_factory_or_peg_plugin_imports():
     root = Path(__file__).resolve().parents[1]
-    # scripts/collection/record_coribench.py (GELLO real-hardware teleop) is
+    # scripts/collection/record_forcebench.py (GELLO real-hardware teleop) is
     # out of scope for ForceBench (sim-only) and is not part of this
     # extraction; the factory/peg-import invariant is checked on the shared
     # sim runtime files only.
     core_files = [
-        root / "coribench" / "env.py",
-        root / "coribench" / "env_cfg.py",
+        root / "forcebench" / "env.py",
+        root / "forcebench" / "env_cfg.py",
     ]
     for path in core_files:
         source = path.read_text(encoding="utf-8")
         assert "isaaclab_tasks.direct.factory" not in source
-        assert "coribench.tasks.peg_insert" not in source
+        assert "forcebench.tasks.peg_insert" not in source
         assert "PEG_INSERT" not in source
 
 
 def test_core_runtime_invokes_the_public_control_step_hook():
     root = Path(__file__).resolve().parents[1]
-    source = (root / "coribench" / "env.py").read_text(encoding="utf-8")
+    source = (root / "forcebench" / "env.py").read_text(encoding="utf-8")
     assert "self.task.on_control_step(self)" in source
 
 
 def test_inference_loop_uses_only_the_policy_adapter_contract():
     root = Path(__file__).resolve().parents[1]
-    # Renamed from inference_coribench.py during the 2026-08-25 vectorized-eval
+    # Renamed from inference_forcebench.py during the 2026-08-25 vectorized-eval
     # migration; the old name is archived, not part of this extraction.
     source = (
-        root / "scripts" / "evaluation" / "inference_coribench_vectorized.py"
+        root / "scripts" / "evaluation" / "inference_forcebench_vectorized.py"
     ).read_text(encoding="utf-8")
     assert "load_policy_adapter" in source
     assert "PolicyObservation" in source
@@ -122,7 +122,7 @@ def test_first_party_launchers_only_reference_registered_arm_modes():
 
 def test_all_tasks_use_one_global_start_joint_position():
     root = Path(__file__).resolve().parents[1]
-    env_cfg_path = root / "coribench" / "env_cfg.py"
+    env_cfg_path = root / "forcebench" / "env_cfg.py"
     source = env_cfg_path.read_text(encoding="utf-8")
     tree = ast.parse(source)
     assignment = next(
@@ -142,7 +142,7 @@ def test_all_tasks_use_one_global_start_joint_position():
         2.4512002,
         0.7849010,
     )
-    for path in (root / "coribench").rglob("*.py"):
+    for path in (root / "forcebench").rglob("*.py"):
         task_source = path.read_text(encoding="utf-8")
         assert "STANDBY_JOINT_POSITIONS" not in task_source
         assert "standby_joint_positions" not in task_source

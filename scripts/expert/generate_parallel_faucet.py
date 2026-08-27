@@ -65,9 +65,9 @@ if args.env_spacing < 5.5:
 if args.max_refine_frames < 1 or args.hold_frames < 1:
     parser.error("frame counts must be positive")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = "faucet_turn"
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = "faucet_turn"
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -77,11 +77,11 @@ import torch
 import warp as wp
 from isaaclab.utils import math as math_utils
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.faucet_turn.spec import SPEC, spec_from_layout
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.faucet_turn.spec import SPEC, spec_from_layout
 
 
 def as_numpy(value) -> np.ndarray:
@@ -401,7 +401,7 @@ class ParallelFaucetExpert:
 
 
 task = load_task("faucet_turn", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 cfg.robot.actuators["arm_forearm"].effort_limit_sim = 30.0
@@ -417,7 +417,7 @@ configure_runtime(
     env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 0
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -465,7 +465,7 @@ try:
             failure = {"env_id": env_id, "seed": seed, "report": report}
             failed.append(failure)
             print(
-                "CORIBENCH_PARALLEL_FAUCET_FAILURE="
+                "FORCEBENCH_PARALLEL_FAUCET_FAILURE="
                 + json.dumps(failure, separators=(",", ":")),
                 flush=True,
             )
@@ -541,7 +541,7 @@ try:
             }
         )
     summary = {
-        "schema": "coribench_parallel_faucet_16env_v1",
+        "schema": "forcebench_parallel_faucet_16env_v1",
         "task": "faucet_turn",
         "seeds": SEEDS,
         "write_seeds": sorted(WRITE_SEEDS),
@@ -554,7 +554,7 @@ try:
         json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     print(
-        "CORIBENCH_PARALLEL_FAUCET=" + json.dumps(summary, separators=(",", ":")),
+        "FORCEBENCH_PARALLEL_FAUCET=" + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )
 finally:

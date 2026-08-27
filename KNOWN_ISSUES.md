@@ -12,8 +12,8 @@ absence and the two other doc corrections:
   `tests/test_expert_interface.py` still imported `CLONE_COUNT`. Fixed
   (renamed at the import site).
 - `tests/test_architecture.py` and `tests/test_expert_interface.py` both
-  hardcoded the old filename `scripts/evaluation/inference_coribench.py`,
-  renamed to `inference_coribench_vectorized.py` in an Aug 25 migration.
+  hardcoded the old filename `scripts/evaluation/inference_forcebench.py`,
+  renamed to `inference_forcebench_vectorized.py` in an Aug 25 migration.
   Fixed (both call sites updated).
 - `tests/test_architecture.py` asserted `peg_insert`'s and `nut_thread`'s
   `scene_profile` was still `"gear_assembly_cell"`; both moved to
@@ -30,7 +30,7 @@ absence and the two other doc corrections:
   original extraction — not named in the extraction brief, but required by
   the above test and by anyone converting collected episodes for training.
   Pulled from the source machine and added.
-- Two small ForceBench/CoRiBench-authored `.usda` text wrapper files
+- Two small ForceBench-authored `.usda` text wrapper files
   (`assets/lightwheel_kitchen/Sink054/faucet_detent_valve.usda`,
   `.../robot_base_counter_extension.usda`, plus
   `Stovetop012/stove_detent_knob.usda`) were excluded by the extraction's
@@ -54,14 +54,14 @@ absence and the two other doc corrections:
    suite with real assets present. Not a code bug.
 
 3. **`tests/test_scene_profiles.py`, both failures** — the live
-   `coribench/scene_profiles.py` registers more profiles than the test's
+   `forcebench/scene_profiles.py` registers more profiles than the test's
    hardcoded expected set, including `whiteboard_simple_room` (used by
    `wipe_board`, which is explicitly out of ForceBench's 8-task scope) and
    `precision_ash_veneer` / `parcel_sort_station_collection_20260823`. This
    raises a real scope question this extraction did not resolve: should
    `scene_profiles.py` itself be pruned to only the profiles the 8 in-scope
    tasks use, or is it meant to stay a superset shared with the rest of
-   CoRiBench? Pruning it and updating the test is mechanical once that
+   ForceBench? Pruning it and updating the test is mechanical once that
    decision is made; making the decision is not this extraction's call.
 
 4. **`tests/test_stove_turn_on.py::test_stove_layout_keeps_geometry_fixed_and_randomizes_only_the_load`**

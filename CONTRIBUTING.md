@@ -1,11 +1,11 @@
 # Contributing
 
-ForceBench follows CoRiBench's task-plugin contract (documented in
+ForceBench follows ForceBench's task-plugin contract (documented in
 `docs/PROJECT_GUIDE.md` section 8): a new task is a package under
-`coribench/tasks/<name>/` exporting one `TaskManifest`, with its own
+`forcebench/tasks/<name>/` exporting one `TaskManifest`, with its own
 `spec.py` (immutable geometry/randomization/success constants) and
 `runtime.py` (scene entities, reset, instruction, privileged observations,
-success). The task registry (`coribench/registry.py`) discovers it
+success). The task registry (`forcebench/registry.py`) discovers it
 automatically -- do not add task switches to the shared environment.
 
 Before opening a PR:

@@ -24,7 +24,7 @@ parser.add_argument(
     "--dataset_dir",
     type=Path,
     default=None,
-    help="write a validated CoRiBench HDF5 episode to this directory",
+    help="write a validated ForceBench HDF5 episode to this directory",
 )
 parser.add_argument(
     "--physics_rate_hz",
@@ -65,11 +65,11 @@ import warp as wp
 
 from isaaclab.utils import math as math_utils
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.faucet_turn.spec import SPEC, detent_resistance_nm, spec_from_layout
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.faucet_turn.spec import SPEC, detent_resistance_nm, spec_from_layout
 
 
 def rgb(image: torch.Tensor) -> np.ndarray:
@@ -80,12 +80,12 @@ def vector(value: torch.Tensor) -> np.ndarray:
     return value.detach().cpu().numpy().reshape(-1).astype(np.float32)
 
 
-def current_state(environment: CoRiBenchEnv) -> np.ndarray:
+def current_state(environment: ForceBenchEnv) -> np.ndarray:
     return vector(environment.policy_state[0])
 
 
 task = load_task("faucet_turn", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = args.seed
 cfg.scene_profile = task.manifest.scene_profile
 cfg.robot.actuators["arm_forearm"].effort_limit_sim = args.forearm_effort_limit
@@ -99,7 +99,7 @@ configure_runtime(
     solver_iterations=args.solver_position_iterations,
 )
 cfg.num_rerenders_on_reset = 0
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=224,
@@ -1192,14 +1192,14 @@ try:
     (args.output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
     )
-    print(f"CORIBENCH_FAUCET_PEAK_EXPERT_SUCCESS={int(success)}", flush=True)
-    print(f"CORIBENCH_FAUCET_PEAK_EXPERT_VIDEO={video_path.resolve()}", flush=True)
-    print("CORIBENCH_FAUCET_PEAK_EXPERT_SUMMARY=" + json.dumps(summary, separators=(",", ":")), flush=True)
+    print(f"FORCEBENCH_FAUCET_PEAK_EXPERT_SUCCESS={int(success)}", flush=True)
+    print(f"FORCEBENCH_FAUCET_PEAK_EXPERT_VIDEO={video_path.resolve()}", flush=True)
+    print("FORCEBENCH_FAUCET_PEAK_EXPERT_SUMMARY=" + json.dumps(summary, separators=(",", ":")), flush=True)
     if not success:
         raise RuntimeError("faucet post-peak expert trajectory did not satisfy all checks")
 except Exception as exc:
     print(
-        f"CORIBENCH_FAUCET_PEAK_EXPERT_ERROR={type(exc).__name__}:{exc}",
+        f"FORCEBENCH_FAUCET_PEAK_EXPERT_ERROR={type(exc).__name__}:{exc}",
         flush=True,
     )
     raise

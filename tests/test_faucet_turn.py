@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from coribench.registry import get_task_manifest, task_names
-from coribench.task_api import CameraProfile
-from coribench.tasks.faucet_turn.spec import (
+from forcebench.registry import get_task_manifest, task_names
+from forcebench.task_api import CameraProfile
+from forcebench.tasks.faucet_turn.spec import (
     SPEC,
     detent_effort_nm,
     detent_resistance_nm,
@@ -22,7 +22,7 @@ def test_faucet_task_is_discoverable_and_uses_the_default_main_camera():
     assert manifest.runtime_class.endswith(":FaucetTurnTask")
     runtime_source = (
         Path(__file__).resolve().parents[1]
-        / "coribench"
+        / "forcebench"
         / "tasks"
         / "faucet_turn"
         / "runtime.py"

@@ -29,9 +29,9 @@ if args.episodes < 1 or args.max_attempts_per_episode < 1 or args.start_seed < 0
 launcher = AppLauncher(args)
 simulation_app = launcher.app
 
-from coribench.privileged_expert_runner import collect_privileged_placements
-from coribench.privileged_placement import PrivilegedPlacementPlan
-from coribench.tasks.gear_mesh.spec import SPEC
+from forcebench.privileged_expert_runner import collect_privileged_placements
+from forcebench.privileged_placement import PrivilegedPlacementPlan
+from forcebench.tasks.gear_mesh.spec import SPEC
 
 
 def plan(env) -> PrivilegedPlacementPlan:

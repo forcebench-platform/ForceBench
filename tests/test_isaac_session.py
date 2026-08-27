@@ -1,6 +1,6 @@
 import pytest
 
-import coribench.isaac_session as isaac_session
+import forcebench.isaac_session as isaac_session
 
 
 @pytest.fixture(autouse=True)

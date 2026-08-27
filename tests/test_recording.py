@@ -4,13 +4,13 @@ import h5py
 import numpy as np
 import pytest
 
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
 
 
 def test_hdf5_records_both_holes_and_peg(tmp_path, monkeypatch):
-    monkeypatch.setenv("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-    monkeypatch.setenv("CORIBENCH_EXPERT_BACKEND", "scripted")
-    monkeypatch.setenv("CORIBENCH_TASK", "peg_insert")
+    monkeypatch.setenv("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+    monkeypatch.setenv("FORCEBENCH_EXPERT_BACKEND", "scripted")
+    monkeypatch.setenv("FORCEBENCH_TASK", "peg_insert")
     episode = EpisodeBuffer()
     for frame in range(2):
         episode.append(
@@ -53,7 +53,7 @@ def test_hdf5_records_both_holes_and_peg(tmp_path, monkeypatch):
     report = validate_hdf5_episode(path)
     assert report["success"]
     with h5py.File(path, "r") as handle:
-        assert handle.attrs["schema_version"] == "coribench_hdf5"
+        assert handle.attrs["schema_version"] == "forcebench_hdf5"
         assert handle["privileged/objects/pickup_hole/pose"].shape == (2, 7)
         assert handle["observations/images/main"].shape == (2, 10, 12, 3)
         assert handle["observations/images/wrist"].shape == (2, 8, 8, 3)

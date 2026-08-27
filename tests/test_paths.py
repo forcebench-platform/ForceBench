@@ -1,4 +1,4 @@
-from coribench.paths import ARCHIVE_ROOT, CODE_ROOT, DATA_ROOT, SCRATCH_ROOT
+from forcebench.paths import ARCHIVE_ROOT, CODE_ROOT, DATA_ROOT, SCRATCH_ROOT
 
 
 def test_formal_scratch_archive_and_code_roots_are_separate():

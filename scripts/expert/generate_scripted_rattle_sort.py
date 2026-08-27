@@ -11,7 +11,7 @@ from pathlib import Path
 
 from isaaclab.app import AppLauncher
 
-from coribench.isaac_session import shared_simulation_app
+from forcebench.isaac_session import shared_simulation_app
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -27,12 +27,12 @@ parser.add_argument("--wrist_image_size", type=int, default=224)
 parser.add_argument(
     "--lift_box_height_min_m",
     type=float,
-    default=float(os.environ.get("CORIBENCH_RATTLE_LIFT_BOX_MIN_M", "0.12")),
+    default=float(os.environ.get("FORCEBENCH_RATTLE_LIFT_BOX_MIN_M", "0.12")),
 )
 parser.add_argument(
     "--lift_box_height_max_m",
     type=float,
-    default=float(os.environ.get("CORIBENCH_RATTLE_LIFT_BOX_MAX_M", "0.18")),
+    default=float(os.environ.get("FORCEBENCH_RATTLE_LIFT_BOX_MAX_M", "0.18")),
 )
 AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
@@ -53,11 +53,11 @@ import torch
 from isaaclab.utils import math as math_utils
 from isaaclab.utils.math import compute_pose_error
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.rattle_sort.spec import SPEC
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.rattle_sort.spec import SPEC
 
 
 DOWN_RPY = np.asarray([math.pi, 0.0, 0.0], dtype=np.float32)
@@ -93,7 +93,7 @@ def rgb(value) -> np.ndarray:
     return value.detach().cpu().numpy()[..., :3].astype(np.uint8)
 
 
-def current_state(env: CoRiBenchEnv) -> np.ndarray:
+def current_state(env: ForceBenchEnv) -> np.ndarray:
     roll, pitch, yaw = math_utils.euler_xyz_from_quat(env.fingertip_midpoint_quat)
     return np.asarray(
         [
@@ -108,7 +108,7 @@ def current_state(env: CoRiBenchEnv) -> np.ndarray:
 
 
 class RattleSortExpert:
-    def __init__(self, env: CoRiBenchEnv, task, video_path: Path | None):
+    def __init__(self, env: ForceBenchEnv, task, video_path: Path | None):
         self.env = env
         self.task = task
         self.buffer = EpisodeBuffer()
@@ -267,7 +267,7 @@ class RattleSortExpert:
                 f"phase {phase} did not converge: position={position_error:.4f}, rotation={rotation_error:.4f}"
             )
         print(
-            f"CORIBENCH_RATTLE_SORT_PHASE={phase},frames={len(self.buffer) - start},"
+            f"FORCEBENCH_RATTLE_SORT_PHASE={phase},frames={len(self.buffer) - start},"
             f"position_error_m={position_error:.5f},rotation_error_rad={rotation_error:.5f}",
             flush=True,
         )
@@ -395,12 +395,12 @@ class RattleSortExpert:
 
 
 task = load_task("rattle_sort", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = args.seed
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(cfg, device=args.device, physics_rate_hz=120, solver_iterations=64)
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -490,9 +490,9 @@ try:
             json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
-    print("CORIBENCH_RATTLE_SORT_EXPERT=" + json.dumps(summary, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_RATTLE_SORT_EXPERT=" + json.dumps(summary, separators=(",", ":")), flush=True)
 except Exception as exc:
-    print(f"CORIBENCH_RATTLE_SORT_EXPERT_ERROR={type(exc).__name__}:{exc}", flush=True)
+    print(f"FORCEBENCH_RATTLE_SORT_EXPERT_ERROR={type(exc).__name__}:{exc}", flush=True)
     raise
 finally:
     if expert is not None:

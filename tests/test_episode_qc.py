@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from coribench.episode_qc import (
+from forcebench.episode_qc import (
     reference_change_fraction,
     weight_sort_visual_errors,
     weight_sort_visual_metrics,

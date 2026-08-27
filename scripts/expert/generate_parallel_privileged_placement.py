@@ -48,9 +48,9 @@ if not WRITE_SEEDS.issubset(SEEDS):
 if args.env_spacing < 5.5:
     parser.error("env spacing must be at least 5.5 m")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = args.task
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = args.task
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -59,10 +59,10 @@ import numpy as np
 import torch
 from isaaclab.utils import math as math_utils
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
 
 
 def as_numpy(value) -> np.ndarray:
@@ -628,7 +628,7 @@ class ParallelPlacementExpert:
         )
         yaw_error = np.abs(wrap_pi(self.desired_yaws - object_yaws))
         print(
-            "CORIBENCH_PARALLEL_GEAR_CENTER="
+            "FORCEBENCH_PARALLEL_GEAR_CENTER="
             + json.dumps(
                 {
                     "errors_m": [float(value) for value in center_error],
@@ -688,7 +688,7 @@ class ParallelPlacementExpert:
             if np.any(release_now):
                 tilt_deg = self.object_tilt_degrees()
                 print(
-                    "CORIBENCH_PARALLEL_GEAR_RELEASE_STATE="
+                    "FORCEBENCH_PARALLEL_GEAR_RELEASE_STATE="
                     + json.dumps(
                         [
                             {
@@ -896,7 +896,7 @@ def build_plan(env) -> tuple[BatchPlan, np.ndarray]:
         )
         return plan, yaws
 
-    from coribench.tasks.gear_mesh.spec import SPEC
+    from forcebench.tasks.gear_mesh.spec import SPEC
 
     speed = 0.09 if args.translation_speed_m_s is None else args.translation_speed_m_s
     plan = BatchPlan(
@@ -922,7 +922,7 @@ def build_plan(env) -> tuple[BatchPlan, np.ndarray]:
 
 
 task = load_task(args.task, ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -934,7 +934,7 @@ configure_runtime(
     env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -947,24 +947,24 @@ args.artifact_dir.mkdir(parents=True, exist_ok=True)
 args.output_dir.mkdir(parents=True, exist_ok=True)
 
 try:
-    print("CORIBENCH_PARALLEL_PHASE=set_episode_seeds", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=set_episode_seeds", flush=True)
     env.set_episode_seeds(SEEDS)
-    print("CORIBENCH_PARALLEL_PHASE=reset", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=reset", flush=True)
     env.reset(seed=SEEDS[0])
-    print("CORIBENCH_PARALLEL_PHASE=restore_arm", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=restore_arm", flush=True)
     env.restore_fixed_arm_pose(env.joint_pos[0, :7].clone())
-    print("CORIBENCH_PARALLEL_PHASE=reset_cameras", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=reset_cameras", flush=True)
     env.reset_cameras()
     env.sim.render()
     env.update_cameras()
-    print("CORIBENCH_PARALLEL_PHASE=build_plan", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=build_plan", flush=True)
     plan, desired_yaws = build_plan(env)
     env.start_wrench_capture()
     capture_active = True
     expert = ParallelPlacementExpert(env, task, plan, desired_yaws)
-    print("CORIBENCH_PARALLEL_PHASE=run_expert", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=run_expert", flush=True)
     results = expert.run()
-    print("CORIBENCH_PARALLEL_PHASE=serialize", flush=True)
+    print("FORCEBENCH_PARALLEL_PHASE=serialize", flush=True)
     high_rate_batch = env.stop_wrench_capture()
     capture_active = False
 
@@ -990,7 +990,7 @@ try:
             failure = {"env_id": env_id, "seed": seed, "report": report}
             failed.append(failure)
             print(
-                "CORIBENCH_PARALLEL_PLACEMENT_FAILURE="
+                "FORCEBENCH_PARALLEL_PLACEMENT_FAILURE="
                 + json.dumps(failure, separators=(",", ":")),
                 flush=True,
             )
@@ -1062,7 +1062,7 @@ try:
             }
         )
     summary = {
-        "schema": "coribench_parallel_privileged_placement_16env_v1",
+        "schema": "forcebench_parallel_privileged_placement_16env_v1",
         "task": args.task,
         "seeds": SEEDS,
         "write_seeds": sorted(WRITE_SEEDS),
@@ -1075,13 +1075,13 @@ try:
         json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
     print(
-        "CORIBENCH_PARALLEL_PRIVILEGED_PLACEMENT="
+        "FORCEBENCH_PARALLEL_PRIVILEGED_PLACEMENT="
         + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )
 except BaseException as error:
     print(
-        "CORIBENCH_PARALLEL_ABORT="
+        "FORCEBENCH_PARALLEL_ABORT="
         + json.dumps({"type": type(error).__name__, "message": str(error)}, separators=(",", ":")),
         flush=True,
     )

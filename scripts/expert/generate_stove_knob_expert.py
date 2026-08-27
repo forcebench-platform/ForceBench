@@ -12,7 +12,7 @@ from pathlib import Path
 
 from isaaclab.app import AppLauncher
 
-from coribench.isaac_session import shared_simulation_app
+from forcebench.isaac_session import shared_simulation_app
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -45,11 +45,11 @@ import warp as wp
 
 from isaaclab.utils import math as math_utils
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.stove_turn_on.spec import detent_effort_nm, spec_from_layout
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.stove_turn_on.spec import detent_effort_nm, spec_from_layout
 
 
 def rgb(image: torch.Tensor) -> np.ndarray:
@@ -60,12 +60,12 @@ def vector(value: torch.Tensor) -> np.ndarray:
     return value.detach().cpu().numpy().reshape(-1).astype(np.float32)
 
 
-def current_state(environment: CoRiBenchEnv) -> np.ndarray:
+def current_state(environment: ForceBenchEnv) -> np.ndarray:
     return vector(environment.policy_state[0])
 
 
 task = load_task("stove_turn_on", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = args.seed
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -75,7 +75,7 @@ configure_runtime(
     solver_iterations=args.solver_position_iterations,
 )
 cfg.num_rerenders_on_reset = 0
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=224,
@@ -828,17 +828,17 @@ try:
     (args.output_dir / "summary.json").write_text(
         json.dumps(summary, indent=2), encoding="utf-8"
     )
-    print(f"CORIBENCH_STOVE_EXPERT_SUCCESS={int(success)}", flush=True)
+    print(f"FORCEBENCH_STOVE_EXPERT_SUCCESS={int(success)}", flush=True)
     print(
-        f"CORIBENCH_STOVE_EXPERT_EPISODE={dataset_episode_path.resolve() if dataset_episode_path else ''}",
+        f"FORCEBENCH_STOVE_EXPERT_EPISODE={dataset_episode_path.resolve() if dataset_episode_path else ''}",
         flush=True,
     )
     print(
-        f"CORIBENCH_STOVE_EXPERT_VIDEO={video_path.resolve() if video_path else ''}",
+        f"FORCEBENCH_STOVE_EXPERT_VIDEO={video_path.resolve() if video_path else ''}",
         flush=True,
     )
     print(
-        "CORIBENCH_STOVE_EXPERT_SUMMARY="
+        "FORCEBENCH_STOVE_EXPERT_SUMMARY="
         + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )
@@ -846,7 +846,7 @@ try:
         raise RuntimeError("stove knob expert trajectory did not satisfy all checks")
 except Exception as exc:
     print(
-        f"CORIBENCH_STOVE_EXPERT_ERROR={type(exc).__name__}:{exc}",
+        f"FORCEBENCH_STOVE_EXPERT_ERROR={type(exc).__name__}:{exc}",
         flush=True,
     )
     raise

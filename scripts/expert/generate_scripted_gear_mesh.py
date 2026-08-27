@@ -10,7 +10,7 @@ from pathlib import Path
 
 from isaaclab.app import AppLauncher
 
-from coribench.isaac_session import shared_simulation_app
+from forcebench.isaac_session import shared_simulation_app
 
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -101,11 +101,11 @@ import torch
 from isaaclab.utils import math as math_utils
 from isaaclab.utils.math import compute_pose_error
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.gear_mesh.spec import SPEC
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.gear_mesh.spec import SPEC
 
 
 DOWN_ROLL = math.pi
@@ -156,7 +156,7 @@ def rgb(value) -> np.ndarray:
     return value.detach().cpu().numpy()[..., :3].astype(np.uint8)
 
 
-def current_state(env: CoRiBenchEnv) -> np.ndarray:
+def current_state(env: ForceBenchEnv) -> np.ndarray:
     roll, pitch, yaw = math_utils.euler_xyz_from_quat(env.fingertip_midpoint_quat)
     return np.asarray(
         [
@@ -175,7 +175,7 @@ def wrap_angle(value: float) -> float:
 
 
 class GearMeshExpert:
-    def __init__(self, env: CoRiBenchEnv, task, video_path: Path | None, variant: str):
+    def __init__(self, env: ForceBenchEnv, task, video_path: Path | None, variant: str):
         self.env = env
         self.task = task
         self.variant = variant
@@ -243,7 +243,7 @@ class GearMeshExpert:
                 dtype=np.float32,
             )
             print(
-                "CORIBENCH_GEAR_MESH_CONTACT_OFFSET="
+                "FORCEBENCH_GEAR_MESH_CONTACT_OFFSET="
                 + json.dumps(
                     {
                         "radius_m": self.collision_offset_radius_m,
@@ -433,7 +433,7 @@ class GearMeshExpert:
                 f"rotation={rotation_error:.4f}"
             )
         print(
-            f"CORIBENCH_GEAR_MESH_PHASE={phase},frames={len(self.buffer) - start},"
+            f"FORCEBENCH_GEAR_MESH_PHASE={phase},frames={len(self.buffer) - start},"
             f"position_error_m={position_error:.5f},rotation_error_rad={rotation_error:.5f}",
             flush=True,
         )
@@ -547,7 +547,7 @@ class GearMeshExpert:
             error = target[:2] - gear[:2]
             center_error = float(np.linalg.norm(error))
             print(
-                f"CORIBENCH_GEAR_MESH_CENTER_ITERATION={iteration},"
+                f"FORCEBENCH_GEAR_MESH_CENTER_ITERATION={iteration},"
                 f"gear_center_error_m={center_error:.6f},"
                 f"command_xy_m={command_xy.tolist()}",
                 flush=True,
@@ -595,7 +595,7 @@ class GearMeshExpert:
             center_error = float(np.linalg.norm(xy_error))
             yaw_error = wrap_angle(desired_gear_yaw - self._gear_yaw_rad())
             print(
-                f"CORIBENCH_GEAR_MESH_RECOVER_POSE_ITERATION={iteration},"
+                f"FORCEBENCH_GEAR_MESH_RECOVER_POSE_ITERATION={iteration},"
                 f"center_error_m={center_error:.6f},"
                 f"yaw_error_deg={math.degrees(yaw_error):.4f}",
                 flush=True,
@@ -652,7 +652,7 @@ class GearMeshExpert:
             center_error = float(np.linalg.norm(xy_error))
             height_error = float(gear[2] - target[2])
             print(
-                f"CORIBENCH_GEAR_MESH_SEAT_ITERATION={iteration},"
+                f"FORCEBENCH_GEAR_MESH_SEAT_ITERATION={iteration},"
                 f"gear_center_error_m={center_error:.6f},"
                 f"gear_height_error_m={height_error:.6f},"
                 f"command_z_m={command_z:.6f}",
@@ -906,7 +906,7 @@ class GearMeshExpert:
 
 
 task = load_task("gear_mesh", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = args.seed
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -916,7 +916,7 @@ configure_runtime(
     solver_iterations=args.solver_position_iterations,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -1007,11 +1007,11 @@ try:
             json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
     print(
-        "CORIBENCH_GEAR_MESH_EXPERT=" + json.dumps(summary, separators=(",", ":")),
+        "FORCEBENCH_GEAR_MESH_EXPERT=" + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )
 except Exception as exc:
-    print(f"CORIBENCH_GEAR_MESH_EXPERT_ERROR={type(exc).__name__}:{exc}", flush=True)
+    print(f"FORCEBENCH_GEAR_MESH_EXPERT_ERROR={type(exc).__name__}:{exc}", flush=True)
     raise
 finally:
     if expert is not None:

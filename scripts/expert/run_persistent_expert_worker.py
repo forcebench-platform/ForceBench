@@ -24,7 +24,7 @@ simulation_app = launcher.app
 
 import torch
 
-from coribench.isaac_session import (
+from forcebench.isaac_session import (
     PersistentWorkerRecycleRequired,
     clear_shared_simulation_app,
     close_shared_isaac_resources,
@@ -36,8 +36,8 @@ ALLOWED_GENERATORS = {
 }
 LONG_LIVED_ENV_GENERATORS: set[str] = set()
 EXPERT_SCRIPT_ROOT = Path(__file__).resolve().parent
-MAX_RSS_GROWTH_MB = float(os.environ.get("CORIBENCH_PERSISTENT_MAX_RSS_GROWTH_MB", "1024"))
-MAX_RSS_MB = float(os.environ.get("CORIBENCH_PERSISTENT_MAX_RSS_MB", "24576"))
+MAX_RSS_GROWTH_MB = float(os.environ.get("FORCEBENCH_PERSISTENT_MAX_RSS_GROWTH_MB", "1024"))
+MAX_RSS_MB = float(os.environ.get("FORCEBENCH_PERSISTENT_MAX_RSS_MB", "24576"))
 
 
 def prepare_episode_stage() -> None:
@@ -73,7 +73,7 @@ def load_jobs(path: Path) -> list[dict[str, object]]:
     if not path.is_absolute() or not path.is_file():
         raise FileNotFoundError(f"persistent-worker job file is missing: {path}")
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict) or payload.get("schema") != "coribench_persistent_expert_jobs_v1":
+    if not isinstance(payload, dict) or payload.get("schema") != "forcebench_persistent_expert_jobs_v1":
         raise ValueError("invalid persistent-worker job schema")
     jobs = payload.get("jobs")
     if not isinstance(jobs, list) or not jobs:
@@ -117,7 +117,7 @@ try:
         script = Path(job["script"])
         argv = list(job["argv"])
         print(
-            "CORIBENCH_PERSISTENT_EXPERT_EVENT="
+            "FORCEBENCH_PERSISTENT_EXPERT_EVENT="
             + json.dumps(
                 {"event": "episode_started", "index": index, "total": len(jobs), "seed": seed},
                 separators=(",", ":"),
@@ -132,7 +132,7 @@ try:
             if index == 1 or not reuse_environment:
                 prepare_episode_stage()
             sys.argv = [str(script), *argv]
-            runpy.run_path(str(script), run_name=f"__coribench_expert_seed_{seed}__")
+            runpy.run_path(str(script), run_name=f"__forcebench_expert_seed_{seed}__")
         except PersistentWorkerRecycleRequired as error:
             success = False
             detail = f"{type(error).__name__}:{error}"
@@ -168,7 +168,7 @@ try:
         }
         results.append(result)
         print(
-            "CORIBENCH_PERSISTENT_EXPERT_EVENT="
+            "FORCEBENCH_PERSISTENT_EXPERT_EVENT="
             + json.dumps({"event": "episode_finished", **result}, separators=(",", ":")),
             flush=True,
         )
@@ -189,7 +189,7 @@ try:
                 request_recycle = True
         if request_recycle:
             print(
-                "CORIBENCH_PERSISTENT_EXPERT_EVENT="
+                "FORCEBENCH_PERSISTENT_EXPERT_EVENT="
                 + json.dumps(
                     {
                         "event": "worker_recycle_requested",
@@ -206,7 +206,7 @@ try:
     # Isaac versions simulation_app.close() raises SystemExit, so code placed
     # after cleanup is not guaranteed to run.
     summary = {
-        "schema": "coribench_persistent_expert_worker_v1",
+        "schema": "forcebench_persistent_expert_worker_v1",
         "jobs": len(jobs),
         "successful_seeds": [item["seed"] for item in results if item["success"]],
         "failed_seeds": [item["seed"] for item in results if not item["success"]],
@@ -221,7 +221,7 @@ try:
         encoding="utf-8",
     )
     print(
-        "CORIBENCH_PERSISTENT_EXPERT_WORKER="
+        "FORCEBENCH_PERSISTENT_EXPERT_WORKER="
         + json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
         flush=True,
     )

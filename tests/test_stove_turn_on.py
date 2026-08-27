@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from coribench.registry import get_task_manifest, task_names
-from coribench.task_api import CameraProfile
-from coribench.tasks.stove_turn_on.spec import (
+from forcebench.registry import get_task_manifest, task_names
+from forcebench.task_api import CameraProfile
+from forcebench.tasks.stove_turn_on.spec import (
     SPEC,
     detent_effort_nm,
     detent_resistance_nm,
@@ -22,7 +22,7 @@ def test_stove_task_is_discoverable_and_uses_task_focused_camera():
     assert manifest.runtime_class.endswith(":StoveTurnOnTask")
     runtime_source = (
         Path(__file__).resolve().parents[1]
-        / "coribench"
+        / "forcebench"
         / "tasks"
         / "stove_turn_on"
         / "runtime.py"
@@ -41,7 +41,7 @@ def test_stove_knob_uses_high_friction_contact_without_min_clamping():
     assert SPEC.knob_friction_combine_mode == "max"
     runtime_source = (
         Path(__file__).resolve().parents[1]
-        / "coribench"
+        / "forcebench"
         / "tasks"
         / "stove_turn_on"
         / "runtime.py"

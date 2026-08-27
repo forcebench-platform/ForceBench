@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import argparse
 
-from coribench.registry import get_task_manifest
+from forcebench.registry import get_task_manifest
 
 
 parser = argparse.ArgumentParser(description=__doc__)

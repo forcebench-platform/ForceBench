@@ -46,9 +46,9 @@ if not WRITE_SEEDS.issubset(SEEDS):
 if args.env_spacing < 5.5:
     parser.error("env_spacing must be at least 5.5 m")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = args.task
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = args.task
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -59,16 +59,16 @@ import torch
 from isaaclab.utils import math as math_utils
 from isaaclab.utils.math import compute_pose_error
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.episode_qc import weight_sort_visual_errors, weight_sort_visual_metrics
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.episode_qc import weight_sort_visual_errors, weight_sort_visual_metrics
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
 
 if args.task == "weight_sort":
-    from coribench.tasks.weight_sort.spec import SPEC, evaluate_final_state
+    from forcebench.tasks.weight_sort.spec import SPEC, evaluate_final_state
 else:
-    from coribench.tasks.rattle_sort.spec import SPEC, evaluate_final_state
+    from forcebench.tasks.rattle_sort.spec import SPEC, evaluate_final_state
 
 
 NUM_ENVS = 32
@@ -116,7 +116,7 @@ def rgb_batch(value) -> np.ndarray:
     return as_numpy(value)[..., :3].astype(np.uint8)
 
 
-def make_mosaic(images: np.ndarray, phase: str, env: CoRiBenchEnv) -> np.ndarray:
+def make_mosaic(images: np.ndarray, phase: str, env: ForceBenchEnv) -> np.ndarray:
     size = int(args.video_tile_size)
     rows, columns = 4, 8
     canvas = np.zeros((rows * size, columns * size, 3), dtype=np.uint8)
@@ -157,12 +157,12 @@ def make_mosaic(images: np.ndarray, phase: str, env: CoRiBenchEnv) -> np.ndarray
     return canvas
 
 
-def write_overview(path: Path, env: CoRiBenchEnv, phase: str) -> None:
+def write_overview(path: Path, env: ForceBenchEnv, phase: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     cv2.imwrite(str(path), make_mosaic(rgb_batch(env.table_rgb), phase, env))
 
 
-def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
+def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
     main = rgb_batch(env.table_rgb)
     wrist = rgb_batch(env.wrist_rgb)
     reports: list[dict[str, object]] = []
@@ -230,7 +230,7 @@ def weight_container_extents() -> dict[str, list[float]]:
 
 
 class ParallelSortExpert:
-    def __init__(self, env: CoRiBenchEnv, video_path: Path):
+    def __init__(self, env: ForceBenchEnv, video_path: Path):
         self.env = env
         self.buffers = [EpisodeBuffer() for _ in range(NUM_ENVS)]
         self.zero_action = torch.zeros((NUM_ENVS, 7), dtype=torch.float32, device=env.device)
@@ -422,7 +422,7 @@ class ParallelSortExpert:
             ]
             raise RuntimeError(f"phase {phase} did not converge: {json.dumps(details)}")
         print(
-            "CORIBENCH_PARALLEL_SORT_PHASE="
+            "FORCEBENCH_PARALLEL_SORT_PHASE="
             + json.dumps(
                 {
                     "task": args.task,
@@ -692,7 +692,7 @@ class ParallelSortExpert:
 
 
 task = load_task(args.task, ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -704,7 +704,7 @@ configure_runtime(
     env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -750,7 +750,7 @@ try:
             failure = {"env_id": env_id, "seed": seed, "report": reports[env_id]}
             failed.append(failure)
             print(
-                "CORIBENCH_PARALLEL_SORT_FINAL_FAILURE="
+                "FORCEBENCH_PARALLEL_SORT_FINAL_FAILURE="
                 + json.dumps(failure, separators=(",", ":")),
                 flush=True,
             )
@@ -840,7 +840,7 @@ try:
         )
 
     summary = {
-        "schema": "coribench_parallel_sort_32env_v1",
+        "schema": "forcebench_parallel_sort_32env_v1",
         "task": args.task,
         "seeds": SEEDS,
         "write_seeds": sorted(WRITE_SEEDS),
@@ -857,12 +857,12 @@ try:
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
     print(
-        "CORIBENCH_PARALLEL_SORT=" + json.dumps(summary, separators=(",", ":")),
+        "FORCEBENCH_PARALLEL_SORT=" + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )
 except BaseException as error:
     print(
-        f"CORIBENCH_PARALLEL_SORT_ERROR={type(error).__name__}:{error}",
+        f"FORCEBENCH_PARALLEL_SORT_ERROR={type(error).__name__}:{error}",
         flush=True,
     )
     raise

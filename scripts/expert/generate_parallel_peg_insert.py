@@ -52,9 +52,9 @@ if args.env_spacing < 5.5:
 if not 0.0 < args.translation_speed_m_s <= 0.20:
     parser.error("translation speed must be in (0, 0.20] m/s")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = "peg_insert"
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = "peg_insert"
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -65,11 +65,11 @@ import torch
 from isaaclab.utils import math as math_utils
 from isaaclab.utils.math import compute_pose_error
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.peg_insert.spec import (
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.peg_insert.spec import (
     SPEC,
     evaluate_final_state,
     evaluate_release_stability_batch,
@@ -95,7 +95,7 @@ L20_MIGRATION_SOURCE = {
     "isaac_env": "/home/ubuntu/forcevla_peg/code/tasks/blind_peg_insertion/isaac_peg_env.py",
     "isaac_env_sha256": "98b7586b37ed9b0128dd84b30bb226a9c535b1f8feef7459de0bebe87e8f59a0",
     "policy_semantics_retained": "privileged peg/socket pose feedback after grasp and during contact",
-    "schema_semantics_retained": "CoRiBench complete pickup_transport_insert_release_retract",
+    "schema_semantics_retained": "ForceBench complete pickup_transport_insert_release_retract",
 }
 
 
@@ -108,7 +108,7 @@ def rgb_batch(value) -> np.ndarray:
 
 
 class ParallelPegExpert:
-    def __init__(self, env: CoRiBenchEnv, task, video_path: Path):
+    def __init__(self, env: ForceBenchEnv, task, video_path: Path):
         self.env = env
         self.task = task
         self.buffers = [EpisodeBuffer() for _ in range(NUM_ENVS)]
@@ -531,7 +531,7 @@ class ParallelPegExpert:
         }
 
 
-def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
+def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
     main, wrist = rgb_batch(env.table_rgb), rgb_batch(env.wrist_rgb)
     reports = []
     for env_id in range(NUM_ENVS):
@@ -551,7 +551,7 @@ def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
 
 
 task = load_task("peg_insert", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -559,7 +559,7 @@ configure_runtime(
     solver_iterations=64, num_envs=NUM_ENVS, env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg, task_runtime=task, main_image_size=args.main_image_size,
     wrist_image_size=args.wrist_image_size, enable_cameras=True,
 )
@@ -617,7 +617,7 @@ try:
             failure = {"env_id": env_id, "seed": seed, "report": reports[env_id]}
             failed.append(failure)
             print(
-                "CORIBENCH_PARALLEL_PEG_FINAL_FAILURE="
+                "FORCEBENCH_PARALLEL_PEG_FINAL_FAILURE="
                 + json.dumps(failure, separators=(",", ":")), flush=True,
             )
             continue
@@ -667,7 +667,7 @@ try:
             "l20_migration_source": L20_MIGRATION_SOURCE,
             "semantic_migration_decision": (
                 "retained L20 post-contact privileged pose correction while preserving the "
-                "newer CoRiBench full pickup-transport-insert-release task and per-seed HDF5 schema"
+                "newer ForceBench full pickup-transport-insert-release task and per-seed HDF5 schema"
             ),
             "parallel_environment": {
                 "enabled": True, "single_isaac_process": True, "num_envs": NUM_ENVS,
@@ -689,7 +689,7 @@ try:
         })
 
     summary = {
-        "schema": "coribench_parallel_peg_insert_32env_v1", "task": "peg_insert",
+        "schema": "forcebench_parallel_peg_insert_32env_v1", "task": "peg_insert",
         "seeds": SEEDS, "write_seeds": sorted(WRITE_SEEDS), "num_envs": NUM_ENVS,
         "env_spacing_m": args.env_spacing, "frames_per_episode": len(expert.buffers[0]),
         "video": str(video_path.resolve()), "overview": str(overview_path.resolve()),
@@ -700,9 +700,9 @@ try:
     (args.artifact_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("CORIBENCH_PARALLEL_PEG=" + json.dumps(summary, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_PARALLEL_PEG=" + json.dumps(summary, separators=(",", ":")), flush=True)
 except BaseException as error:
-    print(f"CORIBENCH_PARALLEL_PEG_ERROR={type(error).__name__}:{error}", flush=True)
+    print(f"FORCEBENCH_PARALLEL_PEG_ERROR={type(error).__name__}:{error}", flush=True)
     raise
 finally:
     if expert is not None:

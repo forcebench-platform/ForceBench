@@ -54,11 +54,11 @@ import torch
 from isaaclab.utils import math as math_utils
 from isaaclab.utils.math import compute_pose_error
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.peg_insert.spec import SPEC
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.peg_insert.spec import SPEC
 
 
 DOWN_RPY = np.asarray([math.pi, 0.0, 0.0], dtype=np.float32)
@@ -80,12 +80,12 @@ def rgb(value) -> np.ndarray:
     return image[..., :3].astype(np.uint8)
 
 
-def current_state(env: CoRiBenchEnv) -> np.ndarray:
+def current_state(env: ForceBenchEnv) -> np.ndarray:
     return vector(env.policy_state[0])
 
 
 class RuleEpisode:
-    def __init__(self, env: CoRiBenchEnv, task):
+    def __init__(self, env: ForceBenchEnv, task):
         self.env = env
         self.task = task
         self.buffer = EpisodeBuffer()
@@ -363,7 +363,7 @@ class RuleEpisode:
 
 
 task = load_task("peg_insert", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = args.start_seed
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -374,7 +374,7 @@ configure_runtime(
 )
 cfg.num_rerenders_on_reset = 3
 
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -387,9 +387,9 @@ artifact_dir.mkdir(parents=True, exist_ok=True)
 saved: list[dict[str, object]] = []
 failures: list[dict[str, object]] = []
 
-print("CORIBENCH_SCRIPTED_EXPERT_READY=1", flush=True)
-print(f"CORIBENCH_SCRIPTED_EXPERT_OUTPUT={args.output_dir.resolve()}", flush=True)
-print(f"CORIBENCH_SCRIPTED_EXPERT_PLAN=episodes:{args.episodes},trajectory:privileged_exact", flush=True)
+print("FORCEBENCH_SCRIPTED_EXPERT_READY=1", flush=True)
+print(f"FORCEBENCH_SCRIPTED_EXPERT_OUTPUT={args.output_dir.resolve()}", flush=True)
+print(f"FORCEBENCH_SCRIPTED_EXPERT_PLAN=episodes:{args.episodes},trajectory:privileged_exact", flush=True)
 
 try:
     for episode_slot in range(args.episodes):
@@ -472,7 +472,7 @@ try:
                 }
                 saved.append(record)
                 print(
-                    "CORIBENCH_SCRIPTED_EXPERT_SAVED="
+                    "FORCEBENCH_SCRIPTED_EXPERT_SAVED="
                     + json.dumps(record, separators=(",", ":")),
                     flush=True,
                 )
@@ -487,7 +487,7 @@ try:
                 env.discard_wrench_capture()
                 failures.append(failure)
                 print(
-                    "CORIBENCH_SCRIPTED_EXPERT_RETRY="
+                    "FORCEBENCH_SCRIPTED_EXPERT_RETRY="
                     + json.dumps(failure, separators=(",", ":")),
                     flush=True,
                 )
@@ -508,7 +508,7 @@ try:
     summary_path = artifact_dir / summary_name
     summary_path.write_text(json.dumps(summary, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
-        "CORIBENCH_SCRIPTED_EXPERT_SUMMARY="
+        "FORCEBENCH_SCRIPTED_EXPERT_SUMMARY="
         + json.dumps(summary, separators=(",", ":")),
         flush=True,
     )

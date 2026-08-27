@@ -10,7 +10,7 @@ import traceback
 
 from isaaclab.app import AppLauncher
 
-from coribench.control import ARM_CONTROL_MODE
+from forcebench.control import ARM_CONTROL_MODE
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--rollout_dir", type=Path, required=True)
@@ -55,9 +55,9 @@ import numpy as np
 import torch
 from isaaclab.utils import math as math_utils
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.registry import load_task
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.registry import load_task
 
 
 def rgb(value) -> np.ndarray:
@@ -65,11 +65,11 @@ def rgb(value) -> np.ndarray:
     return image[..., :3].astype(np.uint8)
 
 
-def current_xyz_rpy(env: CoRiBenchEnv) -> np.ndarray:
+def current_xyz_rpy(env: ForceBenchEnv) -> np.ndarray:
     return env.policy_state[0, :6].detach().cpu().numpy().astype(np.float32)
 
 
-def composite_frame(env: CoRiBenchEnv, frame: int, total: int, gripper: float) -> np.ndarray:
+def composite_frame(env: ForceBenchEnv, frame: int, total: int, gripper: float) -> np.ndarray:
     main_bgr = rgb(env.table_rgb[0])[..., ::-1]
     wrist_bgr = rgb(env.wrist_rgb[0])[..., ::-1]
     main_bgr = cv2.resize(main_bgr, (512, 512), interpolation=cv2.INTER_AREA)
@@ -108,7 +108,7 @@ try:
         raise ValueError(f"rollout actions must be finite [T, 7], got {actions.shape}")
 
     task = load_task(task_name, ASSET_DIR)
-    cfg = CoRiBenchEnvCfg()
+    cfg = ForceBenchEnvCfg()
     cfg.seed = seed
     recorded_scene = str(saved_summary["scene_profile"])
     if recorded_scene != task.manifest.scene_profile:
@@ -138,7 +138,7 @@ try:
     cfg.sim.render.enable_shadows = False
     cfg.sim.render.enable_ambient_occlusion = False
 
-    env = CoRiBenchEnv(
+    env = ForceBenchEnv(
         cfg=cfg,
         task_runtime=task,
         main_image_size=args.main_image_size,
@@ -172,7 +172,7 @@ try:
         env.set_cartesian_rpy_target(action[:6], gripper)
         env.step(zero_action)
         if args.progress_interval and (frame % args.progress_interval == 0 or frame == len(actions)):
-            print(f"CORIBENCH_POLICY_REPLAY_PROGRESS={frame}/{len(actions)}", flush=True)
+            print(f"FORCEBENCH_POLICY_REPLAY_PROGRESS={frame}/{len(actions)}", flush=True)
         if frame % args.frame_stride == 0 or frame == len(actions):
             env.update_cameras()
             writer.write(composite_frame(env, frame, total, gripper))
@@ -209,9 +209,9 @@ try:
     }
     result_path = args.video_path.with_suffix(".json")
     result_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
-    print("CORIBENCH_POLICY_REPLAY_RESULT=" + json.dumps(result, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_POLICY_REPLAY_RESULT=" + json.dumps(result, separators=(",", ":")), flush=True)
 except BaseException:
-    print("CORIBENCH_POLICY_REPLAY_ERROR=python_exception", flush=True)
+    print("FORCEBENCH_POLICY_REPLAY_ERROR=python_exception", flush=True)
     traceback.print_exc()
     raise
 finally:

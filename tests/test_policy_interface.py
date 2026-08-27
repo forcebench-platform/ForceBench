@@ -4,14 +4,14 @@ from dataclasses import replace
 import numpy as np
 import pytest
 
-from coribench.policy_adapters import forcevla_ws, openpi_ws
-from coribench.policy_api import (
+from forcebench.policy_adapters import forcevla_ws, openpi_ws
+from forcebench.policy_api import (
     CANONICAL_ACTION_SPACE,
     POLICY_CONTRACT,
     PolicyActionChunk,
     PolicyObservation,
 )
-from coribench.policy_registry import (
+from forcebench.policy_registry import (
     get_policy_adapter_manifest,
     load_policy_adapter,
     policy_adapter_names,
@@ -31,8 +31,8 @@ def observation() -> PolicyObservation:
 
 
 def test_policy_adapters_are_auto_discovered_without_model_imports():
-    assert {"coribench_ws", "forcevla_ws", "openpi_ws"} <= set(policy_adapter_names())
-    assert "coribench.policy_transport" not in sys.modules
+    assert {"forcebench_ws", "forcevla_ws", "openpi_ws"} <= set(policy_adapter_names())
+    assert "forcebench.policy_transport" not in sys.modules
     assert get_policy_adapter_manifest("openpi_ws").adapter_class.endswith(
         ":OpenPIWebSocketAdapter"
     )
@@ -156,7 +156,7 @@ def test_policy_observation_rejects_empty_rollout_id():
 
 
 def test_registered_adapter_owns_transport_repacking(monkeypatch):
-    import coribench.policy_transport as policy_transport
+    import forcebench.policy_transport as policy_transport
 
     class FakeTransport:
         def __init__(self, host, port, *, max_wait_seconds):

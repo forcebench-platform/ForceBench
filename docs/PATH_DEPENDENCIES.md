@@ -1,6 +1,6 @@
 # Hardcoded machine-specific paths found in copied code
 
-Found by grepping the full staged tree for `/home/pc/CoRiBench*`, `/home/ubuntu/`,
+Found by grepping the full staged tree for `/home/pc/ForceBench*`, `/home/ubuntu/`,
 `/data/hanxuan`, `/scratch/` and similar patterns across every copied `.py`
 and `.sh` file. Not fixed here — flagging so whoever wires up the public repo
 can decide the right abstraction (env var already exists in most cases below;
@@ -11,18 +11,18 @@ question is really "what should the *default* be when the env var is unset").
 These three are the important ones — every one of them is already gated by an
 environment variable, so ForceBench works out of the box on another machine
 *if* the operator sets the env var. The risk is only that the unset default
-silently points at a path (`/home/pc/CoRiBench...`) that won't exist off L20,
+silently points at a path (`/home/pc/ForceBench...`) that won't exist off L20,
 so a misconfigured run fails with a confusing "path not found" rather than a
 clear "set this env var" message.
 
-- `coribench/paths.py:11` — `DATA_ROOT = Path(os.environ.get("CORIBENCH_DATA_ROOT", "/home/pc/CoRiBench_data")).resolve()`
-- `coribench/paths.py:13` — `SCRATCH_ROOT` default `"/home/pc/CoRiBench_scratch"` (via `CORIBENCH_SCRATCH_ROOT`)
-- `coribench/paths.py:16` — `ARCHIVE_ROOT` default `"/home/pc/CoRiBench_archive"` (via `CORIBENCH_ARCHIVE_ROOT`)
-- `coribench/env_cfg.py:27` — `ASSET_DIR = Path(os.environ.get("CORIBENCH_ASSET_DIR", "/home/pc/CoRiBench/assets")).resolve()`
-- `run_native.sh:6` — `data_root="${CORIBENCH_DATA_ROOT:-/home/pc/CoRiBench_data}"`
-- `run_native.sh:7` — `scratch_root="${CORIBENCH_SCRATCH_ROOT:-/home/pc/CoRiBench_scratch}"`
+- `forcebench/paths.py:11` — `DATA_ROOT = Path(os.environ.get("FORCEBENCH_DATA_ROOT", "/home/pc/ForceBench_data")).resolve()`
+- `forcebench/paths.py:13` — `SCRATCH_ROOT` default `"/home/pc/ForceBench_scratch"` (via `FORCEBENCH_SCRATCH_ROOT`)
+- `forcebench/paths.py:16` — `ARCHIVE_ROOT` default `"/home/pc/ForceBench_archive"` (via `FORCEBENCH_ARCHIVE_ROOT`)
+- `forcebench/env_cfg.py:27` — `ASSET_DIR = Path(os.environ.get("FORCEBENCH_ASSET_DIR", "/home/pc/ForceBench/assets")).resolve()`
+- `run_native.sh:6` — `data_root="${FORCEBENCH_DATA_ROOT:-/home/pc/ForceBench_data}"`
+- `run_native.sh:7` — `scratch_root="${FORCEBENCH_SCRATCH_ROOT:-/home/pc/ForceBench_scratch}"`
 
-Note `coribench/paths.py` also self-validates that `DATA_ROOT`/`SCRATCH_ROOT`/
+Note `forcebench/paths.py` also self-validates that `DATA_ROOT`/`SCRATCH_ROOT`/
 `ARCHIVE_ROOT` are distinct from each other and from `CODE_ROOT` (see
 `_validate_roots()`), so whatever default is picked must keep that invariant.
 
@@ -52,9 +52,9 @@ mechanical fix.
 ## Not found / already clean
 
 No other absolute machine paths (no `/scratch/`, no `/data/hanxuan/...`, no
-internal IP literals) were found anywhere in the copied `coribench/`,
+internal IP literals) were found anywhere in the copied `forcebench/`,
 `scripts/expert/`, `scripts/evaluation/`, or `tests/` trees. The policy
-adapters (`coribench/policy_adapters/*.py`) take host/port as constructor
+adapters (`forcebench/policy_adapters/*.py`) take host/port as constructor
 arguments with no hardcoded default host, so no gap there.
 
 Separately (not a path, but related): the four dated one-off scripts under

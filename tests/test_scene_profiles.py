@@ -1,6 +1,6 @@
 import pytest
 
-from coribench.scene_profiles import DEFAULT_SCENE_PROFILE, get_scene_profile, scene_profile_names
+from forcebench.scene_profiles import DEFAULT_SCENE_PROFILE, get_scene_profile, scene_profile_names
 
 
 def test_contact_lab_is_the_default_and_only_standard_profiles_are_registered():

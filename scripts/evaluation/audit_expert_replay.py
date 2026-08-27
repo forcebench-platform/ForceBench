@@ -39,7 +39,7 @@ if args.limit is not None and args.limit <= 0:
 if args.enable_cameras:
     parser.error("this audit deliberately forbids --enable_cameras")
 
-os.environ["CORIBENCH_TASK"] = args.task
+os.environ["FORCEBENCH_TASK"] = args.task
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
 
@@ -47,15 +47,15 @@ import h5py
 import numpy as np
 import torch
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import validate_hdf5_episode
-from coribench.registry import load_task
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import validate_hdf5_episode
+from forcebench.registry import load_task
 
 if args.task == "weight_sort":
-    from coribench.tasks.weight_sort.spec import evaluate_final_state
+    from forcebench.tasks.weight_sort.spec import evaluate_final_state
 else:
-    from coribench.tasks.rattle_sort.spec import SPEC, evaluate_final_state
+    from forcebench.tasks.rattle_sort.spec import SPEC, evaluate_final_state
 
 
 PHYSICS_RATE_HZ = 60
@@ -145,7 +145,7 @@ def numeric_deltas(
 def write_payload(results: list[dict[str, object]], *, complete: bool) -> None:
     successes = sum(bool(result.get("success")) for result in results)
     payload = {
-        "schema_version": "coribench_expert_replay_audit_v1",
+        "schema_version": "forcebench_expert_replay_audit_v1",
         "task": args.task,
         "dataset_dir": str(args.dataset_dir.resolve()),
         "physics_rate_hz": PHYSICS_RATE_HZ,
@@ -165,7 +165,7 @@ def write_payload(results: list[dict[str, object]], *, complete: bool) -> None:
 
 
 def update_rattle_inspection(
-    env: CoRiBenchEnv,
+    env: ForceBenchEnv,
     episodes: list[Episode],
     frame: int,
     completed: np.ndarray,
@@ -229,7 +229,7 @@ def update_rattle_inspection(
 
 
 def evaluate_env(
-    env: CoRiBenchEnv,
+    env: ForceBenchEnv,
     env_id: int,
     episode: Episode,
     inspection_completed: bool,
@@ -297,9 +297,9 @@ if args.limit is not None:
     dataset_paths = dataset_paths[: args.limit]
 
 task = load_task(args.task, ASSET_DIR)
-outcome_module = importlib.import_module(f"coribench.tasks.{args.task}.outcome")
+outcome_module = importlib.import_module(f"forcebench.tasks.{args.task}.outcome")
 outcome_evaluator = outcome_module.evaluate_report
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = episode_sort_key(dataset_paths[0])[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -312,10 +312,10 @@ configure_runtime(
 )
 cfg.num_rerenders_on_reset = 0
 
-env: CoRiBenchEnv | None = None
+env: ForceBenchEnv | None = None
 results: list[dict[str, object]] = []
 try:
-    env = CoRiBenchEnv(
+    env = ForceBenchEnv(
         cfg=cfg,
         task_runtime=task,
         enable_cameras=False,
@@ -418,7 +418,7 @@ try:
         results.extend(batch_results)
         write_payload(results, complete=False)
         print(
-            "CORIBENCH_REPLAY_AUDIT_BATCH="
+            "FORCEBENCH_REPLAY_AUDIT_BATCH="
             + json.dumps(
                 {
                     "task": args.task,
@@ -437,7 +437,7 @@ try:
     write_payload(results, complete=True)
     failures = [result for result in results if not result["success"]]
     print(
-        "CORIBENCH_REPLAY_AUDIT_RESULT="
+        "FORCEBENCH_REPLAY_AUDIT_RESULT="
         + json.dumps(
             {
                 "task": args.task,

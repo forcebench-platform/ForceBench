@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect validated CoRiBench expert episodes through one standard interface."""
+"""Collect validated ForceBench expert episodes through one standard interface."""
 
 from __future__ import annotations
 
@@ -8,19 +8,19 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from coribench.expert_collection import (
+from forcebench.expert_collection import (
     ExpertCollectionPlan,
     execute_expert_collection,
     parse_seed_spec,
 )
-from coribench.expert_registry import (
+from forcebench.expert_registry import (
     all_expert_backend_manifests,
     default_expert_backend_name,
     expert_backend_manifests,
     expert_backend_names,
 )
-from coribench.paths import CODE_ROOT, SCRATCH_ROOT, dataset_dir
-from coribench.registry import get_task_manifest, task_names
+from forcebench.paths import CODE_ROOT, SCRATCH_ROOT, dataset_dir
+from forcebench.registry import get_task_manifest, task_names
 
 
 PARALLEL_CLONE_TASKS = frozenset(
@@ -172,7 +172,7 @@ def main(argv: list[str] | None = None) -> int:
             )
         )
         print(
-            "CORIBENCH_EXPERT_COLLECTION="
+            "FORCEBENCH_EXPERT_COLLECTION="
             + json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
             flush=True,
         )
@@ -221,7 +221,7 @@ def main(argv: list[str] | None = None) -> int:
     except (FileNotFoundError, RuntimeError, TypeError, ValueError) as error:
         cli.error(str(error))
     print(
-        "CORIBENCH_EXPERT_COLLECTION="
+        "FORCEBENCH_EXPERT_COLLECTION="
         + json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
         flush=True,
     )

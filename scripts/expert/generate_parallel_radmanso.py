@@ -45,9 +45,9 @@ if not WRITE_SEEDS.issubset(SEEDS):
 if args.env_spacing < 5.5:
     parser.error("env_spacing must be at least 5.5 m")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = "radmanso_drawer_sort_table"
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = "radmanso_drawer_sort_table"
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -56,11 +56,11 @@ import cv2
 import numpy as np
 import torch
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.radmanso_drawer_sort_table.spec import BOTTOM_JOINT, DRAWER_JOINTS, SPEC
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.radmanso_drawer_sort_table.spec import BOTTOM_JOINT, DRAWER_JOINTS, SPEC
 
 
 GRASP_RPY = np.asarray((math.pi / 2.0, 0.0, 0.0), dtype=np.float32)
@@ -86,7 +86,7 @@ def rgb_batch(value) -> np.ndarray:
 
 
 class ParallelRadmansoExpert:
-    def __init__(self, env: CoRiBenchEnv, task, layouts, video_path: Path):
+    def __init__(self, env: ForceBenchEnv, task, layouts, video_path: Path):
         self.env = env
         self.task = task
         self.layouts = tuple(dict(layout) for layout in layouts)
@@ -387,7 +387,7 @@ class ParallelRadmansoExpert:
         }
 
 
-def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
+def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
     main = rgb_batch(env.table_rgb)
     wrist = rgb_batch(env.wrist_rgb)
     reports = []
@@ -404,7 +404,7 @@ def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
 
 
 task = load_task("radmanso_drawer_sort_table", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -413,7 +413,7 @@ configure_runtime(
     env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg, task_runtime=task, main_image_size=args.main_image_size,
     wrist_image_size=args.wrist_image_size, enable_cameras=True,
 )
@@ -532,7 +532,7 @@ try:
         written.append({"env_id": env_id, "seed": seed, "path": str(path), "validation": validation})
 
     summary = {
-        "schema": "coribench_parallel_radmanso_32env_v1",
+        "schema": "forcebench_parallel_radmanso_32env_v1",
         "task": "radmanso_drawer_sort_table",
         "seeds": SEEDS, "write_seeds": sorted(WRITE_SEEDS),
         "num_envs": NUM_ENVS, "physics_rate_hz": PHYSICS_RATE_HZ,
@@ -545,9 +545,9 @@ try:
     (args.artifact_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("CORIBENCH_PARALLEL_RADMANSO=" + json.dumps(summary, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_PARALLEL_RADMANSO=" + json.dumps(summary, separators=(",", ":")), flush=True)
 except BaseException as error:
-    print(f"CORIBENCH_PARALLEL_RADMANSO_ERROR={type(error).__name__}:{error}", flush=True)
+    print(f"FORCEBENCH_PARALLEL_RADMANSO_ERROR={type(error).__name__}:{error}", flush=True)
     raise
 finally:
     if expert is not None:

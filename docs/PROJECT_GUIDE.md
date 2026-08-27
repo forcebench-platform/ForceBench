@@ -1,19 +1,19 @@
-# CoRiBench project guide
+# ForceBench project guide
 
 ## 1. Authoritative locations
 
 | Purpose | Path |
 | --- | --- |
-| Source and bundled runtime | `/home/pc/CoRiBench` |
-| Formal datasets | `/home/pc/CoRiBench_data/datasets` |
-| Formal checkpoints | `/home/pc/CoRiBench_data/checkpoints` |
-| Formal evaluations | `/home/pc/CoRiBench_data/evaluations` |
-| Disposable smoke/previews/logs | `/home/pc/CoRiBench_scratch` |
-| Historical archives | `/home/pc/CoRiBench_archive` |
+| Source and bundled runtime | `/home/pc/ForceBench` |
+| Formal datasets | `/home/pc/ForceBench_data/datasets` |
+| Formal checkpoints | `/home/pc/ForceBench_data/checkpoints` |
+| Formal evaluations | `/home/pc/ForceBench_data/evaluations` |
+| Disposable smoke/previews/logs | `/home/pc/ForceBench_scratch` |
+| Historical archives | `/home/pc/ForceBench_archive` |
 
-`coribench/paths.py` is the Python authority for these roots. Override them only
-with `CORIBENCH_DATA_ROOT`, `CORIBENCH_SCRATCH_ROOT` and
-`CORIBENCH_ARCHIVE_ROOT`. Generated data does not belong in the source tree.
+`forcebench/paths.py` is the Python authority for these roots. Override them only
+with `FORCEBENCH_DATA_ROOT`, `FORCEBENCH_SCRATCH_ROOT` and
+`FORCEBENCH_ARCHIVE_ROOT`. Generated data does not belong in the source tree.
 
 ## 2. Fixed simulator contract
 
@@ -91,7 +91,7 @@ control diagnostics.
 
 ## 5. Formal HDF5 data
 
-New episodes use the stable schema name `coribench_hdf5`. Formal writers accept successful episodes
+New episodes use the stable schema name `forcebench_hdf5`. Formal writers accept successful episodes
 only and write atomically. Each episode contains:
 
 - measured 7-D state and absolute 7-D action;
@@ -115,13 +115,13 @@ not mixed into current datasets.
 All Isaac Lab commands go through `run_native.sh`:
 
 ```bash
-cd /home/pc/CoRiBench
+cd /home/pc/ForceBench
 
-# GELLO collection; defaults to /home/pc/CoRiBench_data/datasets/<task>
-CORIBENCH_TASK=weight_sort ./run_native.sh collect
+# GELLO collection; defaults to /home/pc/ForceBench_data/datasets/<task>
+FORCEBENCH_TASK=weight_sort ./run_native.sh collect
 
-# Disposable smoke output; defaults below /home/pc/CoRiBench_scratch
-CORIBENCH_TASK=weight_sort ./run_native.sh smoke
+# Disposable smoke output; defaults below /home/pc/ForceBench_scratch
+FORCEBENCH_TASK=weight_sort ./run_native.sh smoke
 
 # List task-bound automated expert plugins
 ./run_native.sh expert --list
@@ -142,37 +142,37 @@ CORIBENCH_TASK=weight_sort ./run_native.sh smoke
 ./run_native.sh expert --task nut_thread --seeds 0-19 --workers 2
 
 # Policy evaluation; execute one 50-frame action chunk per inference by default.
-# Select a registered adapter with CORIBENCH_POLICY_ADAPTER.
-CORIBENCH_POLICY_ADAPTER=openpi_ws \
-CORIBENCH_TASK=weight_sort ./run_native.sh policy 200 600 \
-  /home/pc/CoRiBench_data/evaluations/weight_sort/model_name/seed_200
+# Select a registered adapter with FORCEBENCH_POLICY_ADAPTER.
+FORCEBENCH_POLICY_ADAPTER=openpi_ws \
+FORCEBENCH_TASK=weight_sort ./run_native.sh policy 200 600 \
+  /home/pc/ForceBench_data/evaluations/weight_sort/model_name/seed_200
 
 # Replay a current canonical episode
-./run_native.sh replay /home/pc/CoRiBench_data/datasets/<task>/<episode>.hdf5
+./run_native.sh replay /home/pc/ForceBench_data/datasets/<task>/<episode>.hdf5
 ```
 
 Evaluation checks task success after every control frame and terminates once the
-predicate is stable. `CORIBENCH_EXECUTE_CHUNK` may override the default 50 for a
+predicate is stable. `FORCEBENCH_EXECUTE_CHUNK` may override the default 50 for a
 declared experiment; there are no hidden orientation or controller overrides.
 
 ## 7. Adding a model adapter
 
 Policy evaluation consumes one `PolicyObservation` and accepts only a
 `PolicyActionChunk` in the canonical absolute TCP action space. Transport and
-model-specific key layouts live below `coribench/policy_adapters/`, not in the
+model-specific key layouts live below `forcebench/policy_adapters/`, not in the
 evaluation loop.
 
 Built-in adapters are `openpi_ws`, `forcevla_ws` and the native
-`coribench_ws`. Add a non-underscore Python module exporting `MANIFEST` and a
+`forcebench_ws`. Add a non-underscore Python module exporting `MANIFEST` and a
 `PolicyAdapter` implementation; it is discovered automatically. An adapter may
 translate relative or joint actions internally, but it must return 15 Hz
 absolute world-frame TCP `xyz/rpy/gripper` targets. Adapter-specific JSON
-options may be supplied through `CORIBENCH_POLICY_ADAPTER_OPTIONS`.
+options may be supplied through `FORCEBENCH_POLICY_ADAPTER_OPTIONS`.
 
 ## 8. Adding a task/demo and its expert collector
 
 Do not add task switches to the shared environment. Add a package below
-`coribench/tasks/<task_name>/` containing:
+`forcebench/tasks/<task_name>/` containing:
 
 - `__init__.py`: exports one validated `TaskManifest` named `MANIFEST`;
 - `spec.py`: immutable geometry/randomization constants and final-state predicates;
@@ -184,11 +184,11 @@ Do not add task switches to the shared environment. Add a package below
 The task registry discovers packages automatically. Add task-specific assets below
 `assets/normalized/<task_name>/`, record provenance/hashes, and add focused
 task-contract tests. Scripted demo generators belong in `scripts/expert/` and
-must call the shared `CoRiBenchEnv` controller API. They must not implement a
+must call the shared `ForceBenchEnv` controller API. They must not implement a
 second robot controller or write formal data outside the canonical writer.
 
 Automated expert collection for ordinary tasks is a task-bound plugin contract. Add a
-non-underscore module below `coribench/expert_adapters/` that exports one
+non-underscore module below `forcebench/expert_adapters/` that exports one
 `ExpertBackendManifest` and one `ExpertBackend` for exactly that task. Its
 `build_command()` translates the canonical request into one isolated generator
 invocation for one seed. `weight_sort`, `rattle_sort`, `stove_turn_on`,
@@ -201,7 +201,7 @@ and persistent-rebuild generators are not retained. Stove clones retain an
 independent seed-specific detent load model and flame state per environment.
 Other backends keep their
 task-specific process lifecycle. See
-`coribench/expert_adapters/README.md`.
+`forcebench/expert_adapters/README.md`.
 
 Current collection status:
 

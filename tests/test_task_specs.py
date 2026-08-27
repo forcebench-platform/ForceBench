@@ -1,6 +1,6 @@
 import numpy as np
 
-from coribench.tasks.peg_insert.spec import SPEC, evaluate_final_state, sample_initial_state
+from forcebench.tasks.peg_insert.spec import SPEC, evaluate_final_state, sample_initial_state
 
 
 def test_seeded_layout_is_deterministic_and_separated():

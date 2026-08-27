@@ -2,14 +2,14 @@ from pathlib import Path
 
 import numpy as np
 
-from coribench.registry import get_task_manifest, task_names
-from coribench.tasks.gear_mesh.spec import (
+from forcebench.registry import get_task_manifest, task_names
+from forcebench.tasks.gear_mesh.spec import (
     SPEC as GEAR_SPEC,
     evaluate_final_state as evaluate_gear_final_state,
     sample_initial_medium_gear_yaw_jitter_deg,
     sample_initial_state as sample_gear_initial_state,
 )
-from coribench.tasks.nut_thread.spec import (
+from forcebench.tasks.nut_thread.spec import (
     SPEC as NUT_SPEC,
     evaluate_final_state as evaluate_nut_final_state,
     sample_initial_state as sample_nut_initial_state,

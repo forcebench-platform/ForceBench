@@ -2,7 +2,7 @@ import math
 
 import pytest
 
-from coribench.tasks.radmanso_drawer_sort_table.spec import (
+from forcebench.tasks.radmanso_drawer_sort_table.spec import (
     SPEC,
     evaluate_final_state,
     sample_initial_state,

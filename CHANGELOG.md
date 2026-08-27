@@ -2,7 +2,7 @@
 
 ## v0.1.0 (2026-08-26) -- initial scaffold, not yet a tagged benchmark release
 
-First public commit. Extracted and cleaned from the internal CoRiBench
+First public commit. Extracted and cleaned from the internal ForceBench
 codebase, scoped to ForceBench's 8 in-scope tasks
 (`weight_sort, rattle_sort, stove_turn_on, radmanso_drawer_sort_table,
 peg_insert, faucet_turn, gear_mesh, nut_thread`).

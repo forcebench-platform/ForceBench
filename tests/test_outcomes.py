@@ -3,13 +3,13 @@ import inspect
 
 import pytest
 
-from coribench.outcome import OUTCOME_SCHEMA_VERSION
-from coribench.registry import task_names
+from forcebench.outcome import OUTCOME_SCHEMA_VERSION
+from forcebench.registry import task_names
 
 
 @pytest.mark.parametrize("task_name", task_names())
 def test_every_task_has_an_explicit_outcome_judge(task_name):
-    module = importlib.import_module(f"coribench.tasks.{task_name}.outcome")
+    module = importlib.import_module(f"forcebench.tasks.{task_name}.outcome")
     assert module.CRITERIA
     passing = {criterion.field: criterion.expected for criterion in module.CRITERIA}
     passing["success"] = True
@@ -22,7 +22,7 @@ def test_every_task_has_an_explicit_outcome_judge(task_name):
 
 @pytest.mark.parametrize("task_name", task_names())
 def test_each_outcome_criterion_has_a_stable_failure_code(task_name):
-    module = importlib.import_module(f"coribench.tasks.{task_name}.outcome")
+    module = importlib.import_module(f"forcebench.tasks.{task_name}.outcome")
     baseline = {criterion.field: criterion.expected for criterion in module.CRITERIA}
     for criterion in module.CRITERIA:
         failing = {**baseline, criterion.field: not criterion.expected, "success": True}
@@ -33,8 +33,8 @@ def test_each_outcome_criterion_has_a_stable_failure_code(task_name):
 
 
 def test_rattle_sort_has_no_stationary_inspection_success_gate():
-    outcome = importlib.import_module("coribench.tasks.rattle_sort.outcome")
-    spec = importlib.import_module("coribench.tasks.rattle_sort.spec")
+    outcome = importlib.import_module("forcebench.tasks.rattle_sort.outcome")
+    spec = importlib.import_module("forcebench.tasks.rattle_sort.spec")
 
     assert tuple(criterion.field for criterion in outcome.CRITERIA) == (
         "box_in_correct_destination",

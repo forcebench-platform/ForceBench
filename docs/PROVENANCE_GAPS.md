@@ -3,7 +3,7 @@
 `assets/ASSET_PROVENANCE.md` (as copied into this staging tree) states that
 "All nine borrowed USDs retain explicit provenance and their deployed hashes
 are recorded in `assets/SHA256SUMS`." That claim is incorrect for the copy of
-`assets/SHA256SUMS` shipped in the source CoRiBench tree (and therefore in
+`assets/SHA256SUMS` shipped in the source ForceBench tree (and therefore in
 this extraction, which copies that ledger verbatim per scope: text/hash files
 only, no binaries).
 
@@ -24,7 +24,7 @@ only, no binaries).
 Only 3 of the 9 are present: `peg_8mm.usd`, `hole_8mm.usd`, `franka_mimic.usd`.
 
 (Note: `assets/SHA256SUMS` also has an entry for `peg_8mm_convex.usd`, which is
-a CoRiBench-derived asset, not one of the nine "borrowed" files, so it doesn't
+a ForceBench-derived asset, not one of the nine "borrowed" files, so it doesn't
 count against or for this gap either way.)
 
 ## Missing entries (6 of 9) — all six gear/nut/bolt FORGE-derived files
@@ -42,7 +42,7 @@ None of these six appear anywhere in `assets/SHA256SUMS`, despite
 ## Computed hashes for the six missing files (ready to slot in)
 
 The actual `.usd` binaries are small (all well under 1.5 MB each) and were
-directly reachable read-only on L20 at `/home/pc/CoRiBench/assets/`, so rather
+directly reachable read-only on L20 at `/home/pc/ForceBench/assets/`, so rather
 than just flagging the gap, `sha256sum` was run against them in place (no
 binaries were copied into this staging tree — code/text only, per scope).
 Whoever wires up the asset-hosting pipeline for these six files can drop these
@@ -58,7 +58,7 @@ f62c054f1f2ddfe4c6e96d2c6bcb5b9bcbc7cc87cb4c35d5e32d0d7c6e5367bf  gear_small.usd
 e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654  bolt_m16.usd
 ```
 
-(Source: `/home/pc/CoRiBench/assets/{gear_base,gear_medium,gear_small,gear_large,nut_m16,bolt_m16}.usd`
+(Source: `/home/pc/ForceBench/assets/{gear_base,gear_medium,gear_small,gear_large,nut_m16,bolt_m16}.usd`
 on L20, hashed 2026-08-26. File sizes ranged ~342 KB to ~1.24 MB — small enough
 that hashing in place was safe and cheap; not verified against the original
 FORGE/Factory source hashes cited in `ASSET_PROVENANCE.md`, only against the
@@ -67,7 +67,7 @@ bytes currently deployed on L20.)
 ## Also worth knowing
 
 `ASSET_PROVENANCE.md` cites two additional raw *source* hashes (for the small
-and large flanking gears, before CoRiBench's own flattening step) that are
+and large flanking gears, before ForceBench's own flattening step) that are
 themselves not represented in `SHA256SUMS` under any name — they describe an
 upstream/pre-flatten artifact, not the deployed file, so they're a separate,
 smaller gap not counted above:

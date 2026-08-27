@@ -7,22 +7,22 @@ import sys
 import numpy as np
 import pytest
 
-import coribench.expert_collection as expert_collection
-from coribench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest
-from coribench.expert_collection import (
+import forcebench.expert_collection as expert_collection
+from forcebench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest
+from forcebench.expert_collection import (
     EMA_WRENCH_FIELD,
     RAW_WRENCH_FIELD,
     RECORDED_WRENCH_FIELDS,
     parse_seed_spec,
 )
-from coribench.expert_registry import (
+from forcebench.expert_registry import (
     all_expert_backend_manifests,
     default_expert_backend_name,
     expert_backend_manifests,
     expert_backend_names,
     load_expert_backend,
 )
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter
 from scripts.expert.parallel_sort_collection import (
     DEFAULT_CLONE_COUNT,
     PARALLEL_TASKS,
@@ -178,7 +178,7 @@ def test_seed_spec_is_unambiguous_and_deduplicated():
 
 
 def test_expert_contract_records_raw_and_ema_but_uses_raw_for_policy():
-    assert EXPERT_COLLECTION_CONTRACT == "coribench_expert_collection"
+    assert EXPERT_COLLECTION_CONTRACT == "forcebench_expert_collection"
     assert RAW_WRENCH_FIELD.endswith("eef_wrench_joint_raw")
     assert EMA_WRENCH_FIELD.endswith("eef_wrench_joint_ema")
     assert RECORDED_WRENCH_FIELDS == (RAW_WRENCH_FIELD, EMA_WRENCH_FIELD)
@@ -187,10 +187,10 @@ def test_expert_contract_records_raw_and_ema_but_uses_raw_for_policy():
 def test_training_and_inference_use_raw_wrench():
     root = Path(__file__).resolve().parents[1]
     converter = (root / "convert_hdf5_to_lerobot.py").read_text(encoding="utf-8")
-    # Renamed from inference_coribench.py during the 2026-08-25 vectorized-eval
+    # Renamed from inference_forcebench.py during the 2026-08-25 vectorized-eval
     # migration; the old name is archived, not part of this extraction.
     inference = (
-        root / "scripts/evaluation/inference_coribench_vectorized.py"
+        root / "scripts/evaluation/inference_forcebench_vectorized.py"
     ).read_text(encoding="utf-8")
     assert 'handle["forces/control/eef_wrench_joint_raw"]' in converter
     # The vectorized eval loop batches this across all cloned envs

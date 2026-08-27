@@ -5,8 +5,8 @@ from __future__ import annotations
 
 import argparse
 
-from coribench.registry import get_task_manifest
-from coribench.scene_profiles import get_scene_profile
+from forcebench.registry import get_task_manifest
+from forcebench.scene_profiles import get_scene_profile
 
 
 parser = argparse.ArgumentParser(description=__doc__)

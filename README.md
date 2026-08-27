@@ -51,7 +51,7 @@ yet evidence for or against force-sensing the way the five above are.
 
 Per-task documentation cards are not written yet (tracked in
 `CHANGELOG.md`); until then, `spec.py`/`runtime.py` under
-`coribench/tasks/<name>/` are the source of truth, and
+`forcebench/tasks/<name>/` are the source of truth, and
 [`docs/PROJECT_GUIDE.md`](./docs/PROJECT_GUIDE.md) covers the shared
 simulator/controller/data contract all eight share.
 
@@ -83,9 +83,9 @@ python -m pytest tests/
 # everything below needs a real Isaac Lab 2.3.2 / Isaac Sim 5.1 environment
 # and the assets in place (see NOTICE.md for where each task's assets come
 # from -- there is no download script yet, this is a v1.0 tracked item):
-CORIBENCH_TASK=weight_sort ./run_native.sh smoke
-CORIBENCH_POLICY_ADAPTER=openpi_ws \
-CORIBENCH_TASK=weight_sort ./run_native.sh policy 200 600 \
+FORCEBENCH_TASK=weight_sort ./run_native.sh smoke
+FORCEBENCH_POLICY_ADAPTER=openpi_ws \
+FORCEBENCH_TASK=weight_sort ./run_native.sh policy 200 600 \
   ./results/weight_sort/my_model/seed_200
 ```
 
@@ -107,9 +107,9 @@ doc exists.
 
 One `PolicyObservation` in, one `PolicyActionChunk` out (15 Hz, absolute
 world-frame TCP pose + gripper) -- see
-[`coribench/policy_adapters/README.md`](./coribench/policy_adapters/README.md)
+[`forcebench/policy_adapters/README.md`](./forcebench/policy_adapters/README.md)
 for the exact contract. Built-in adapters: `openpi_ws` (pi0/pi0.5),
-`forcevla_ws` (force-fusion MoE), `coribench_ws` (native).
+`forcevla_ws` (force-fusion MoE), `forcebench_ws` (native).
 
 ## Data & assets
 

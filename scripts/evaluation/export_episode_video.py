@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export a recorded CoRiBench HDF5 episode as a main+wrist MP4."""
+"""Export a recorded ForceBench HDF5 episode as a main+wrist MP4."""
 
 from __future__ import annotations
 
@@ -79,4 +79,4 @@ result = {
     "duration_s": total / fps,
 }
 args.output.with_suffix(".json").write_text(json.dumps(result, indent=2), encoding="utf-8")
-print("CORIBENCH_EPISODE_VIDEO=" + json.dumps(result, separators=(",", ":")))
+print("FORCEBENCH_EPISODE_VIDEO=" + json.dumps(result, separators=(",", ":")))

@@ -51,9 +51,9 @@ if args.env_spacing < 5.5:
 if args.grasp_height_offset_m <= 0.0:
     parser.error("grasp_height_offset_m must be positive")
 
-os.environ.setdefault("CORIBENCH_EXPERT_COLLECTION_CONTRACT", "coribench_expert_collection")
-os.environ["CORIBENCH_TASK"] = "stove_turn_on"
-os.environ.setdefault("CORIBENCH_EXPERT_BACKEND", "scripted")
+os.environ.setdefault("FORCEBENCH_EXPERT_COLLECTION_CONTRACT", "forcebench_expert_collection")
+os.environ["FORCEBENCH_TASK"] = "stove_turn_on"
+os.environ.setdefault("FORCEBENCH_EXPERT_BACKEND", "scripted")
 
 launcher = AppLauncher(args, multi_gpu=False)
 simulation_app = launcher.app
@@ -63,11 +63,11 @@ import numpy as np
 import torch
 import warp as wp
 
-from coribench.env import CoRiBenchEnv
-from coribench.env_cfg import ASSET_DIR, CoRiBenchEnvCfg, configure_runtime
-from coribench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
-from coribench.registry import load_task
-from coribench.tasks.stove_turn_on.spec import (
+from forcebench.env import ForceBenchEnv
+from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
+from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
+from forcebench.registry import load_task
+from forcebench.tasks.stove_turn_on.spec import (
     SPEC,
     detent_effort_nm,
     detent_resistance_nm,
@@ -103,7 +103,7 @@ def rgb_batch(value) -> np.ndarray:
 
 
 class ParallelStoveExpert:
-    def __init__(self, env: CoRiBenchEnv, specs, video_path: Path):
+    def __init__(self, env: ForceBenchEnv, specs, video_path: Path):
         self.env = env
         self.specs = tuple(specs)
         self.buffers = [EpisodeBuffer() for _ in range(NUM_ENVS)]
@@ -441,7 +441,7 @@ class ParallelStoveExpert:
         }
 
 
-def reset_visual_qc(env: CoRiBenchEnv) -> list[dict[str, object]]:
+def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
     main = rgb_batch(env.table_rgb)
     wrist = rgb_batch(env.wrist_rgb)
     reports = []
@@ -483,7 +483,7 @@ def load_model_metadata(spec) -> dict[str, object]:
 
 
 task = load_task("stove_turn_on", ASSET_DIR)
-cfg = CoRiBenchEnvCfg()
+cfg = ForceBenchEnvCfg()
 cfg.seed = SEEDS[0]
 cfg.scene_profile = task.manifest.scene_profile
 configure_runtime(
@@ -495,7 +495,7 @@ configure_runtime(
     env_spacing=args.env_spacing,
 )
 cfg.num_rerenders_on_reset = 1
-env = CoRiBenchEnv(
+env = ForceBenchEnv(
     cfg=cfg,
     task_runtime=task,
     main_image_size=args.main_image_size,
@@ -542,7 +542,7 @@ try:
             failure = {"env_id": env_id, "seed": seed, "report": reports[env_id]}
             failed.append(failure)
             print(
-                "CORIBENCH_PARALLEL_STOVE_FINAL_FAILURE="
+                "FORCEBENCH_PARALLEL_STOVE_FINAL_FAILURE="
                 + json.dumps(failure, separators=(",", ":")), flush=True,
             )
             continue
@@ -613,7 +613,7 @@ try:
         written.append({"env_id": env_id, "seed": seed, "path": str(path), "validation": validation})
 
     summary = {
-        "schema": "coribench_parallel_stove_32env_v1",
+        "schema": "forcebench_parallel_stove_32env_v1",
         "task": "stove_turn_on",
         "seeds": SEEDS,
         "write_seeds": sorted(WRITE_SEEDS),
@@ -629,9 +629,9 @@ try:
     (args.artifact_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    print("CORIBENCH_PARALLEL_STOVE=" + json.dumps(summary, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_PARALLEL_STOVE=" + json.dumps(summary, separators=(",", ":")), flush=True)
 except BaseException as error:
-    print(f"CORIBENCH_PARALLEL_STOVE_ERROR={type(error).__name__}:{error}", flush=True)
+    print(f"FORCEBENCH_PARALLEL_STOVE_ERROR={type(error).__name__}:{error}", flush=True)
     raise
 finally:
     if expert is not None:

@@ -8,12 +8,12 @@ last_seed="${3:?missing last seed}"
 max_steps="${4:?missing max steps; use auto for the task-configured limit}"
 output_dir="${5:?missing output directory}"
 num_envs="${6:-auto}"
-host="${CORIBENCH_POLICY_HOST:?set CORIBENCH_POLICY_HOST}"
-port="${CORIBENCH_POLICY_PORT:-8002}"
-ports="${CORIBENCH_POLICY_PORTS:-}"
-adapter="${CORIBENCH_POLICY_ADAPTER:?set CORIBENCH_POLICY_ADAPTER}"
-env_spacing="${CORIBENCH_ENV_SPACING:-6.0}"
-adapter_options="${CORIBENCH_POLICY_ADAPTER_OPTIONS:-}"
+host="${FORCEBENCH_POLICY_HOST:?set FORCEBENCH_POLICY_HOST}"
+port="${FORCEBENCH_POLICY_PORT:-8002}"
+ports="${FORCEBENCH_POLICY_PORTS:-}"
+adapter="${FORCEBENCH_POLICY_ADAPTER:?set FORCEBENCH_POLICY_ADAPTER}"
+env_spacing="${FORCEBENCH_ENV_SPACING:-6.0}"
+adapter_options="${FORCEBENCH_POLICY_ADAPTER_OPTIONS:-}"
 if [[ -z "$adapter_options" ]]; then
   adapter_options='{}'
 fi
@@ -75,15 +75,15 @@ run_batch() {
   status_file="$output_dir/${batch_name}.status"
   aggregate_filename="${batch_name}.aggregate.json"
   started=$(date +%s)
-  if CORIBENCH_TASK="$task" \
-    CORIBENCH_POLICY_HOST="$host" \
-    CORIBENCH_POLICY_PORT="$port" \
-    CORIBENCH_POLICY_PORTS="$ports" \
-    CORIBENCH_POLICY_ADAPTER="$adapter" \
-    CORIBENCH_ENV_SPACING="$env_spacing" \
-    CORIBENCH_GUI=0 \
-    CORIBENCH_EXECUTE_CHUNK="${CORIBENCH_EXECUTE_CHUNK:-50}" \
-    CORIBENCH_POLICY_ADAPTER_OPTIONS="$adapter_options" \
+  if FORCEBENCH_TASK="$task" \
+    FORCEBENCH_POLICY_HOST="$host" \
+    FORCEBENCH_POLICY_PORT="$port" \
+    FORCEBENCH_POLICY_PORTS="$ports" \
+    FORCEBENCH_POLICY_ADAPTER="$adapter" \
+    FORCEBENCH_ENV_SPACING="$env_spacing" \
+    FORCEBENCH_GUI=0 \
+    FORCEBENCH_EXECUTE_CHUNK="${FORCEBENCH_EXECUTE_CHUNK:-50}" \
+    FORCEBENCH_POLICY_ADAPTER_OPTIONS="$adapter_options" \
       "$root/run_native.sh" policy-vector \
         "$batch_start" "$batch_count" "$max_steps" "$output_dir" \
         "$aggregate_filename" >"$log" 2>&1; then
@@ -110,7 +110,7 @@ done
 
 python3 - "$output_dir" "$task" "$first_seed" "$last_seed" "$max_steps" \
   "$num_envs" "$host" "$port" "$adapter" \
-  "${CORIBENCH_MODEL_NAME:-unknown}" "${CORIBENCH_CHECKPOINT:-unknown}" \
+  "${FORCEBENCH_MODEL_NAME:-unknown}" "${FORCEBENCH_CHECKPOINT:-unknown}" \
   "$batch_count_total" "$ports" <<'PY'
 import json
 from pathlib import Path
@@ -173,7 +173,7 @@ latencies = [
     if record.get("mean_inference_latency_s") is not None
 ]
 result = {
-    "schema": "coribench_vectorized_policy_evaluation_v1",
+    "schema": "forcebench_vectorized_policy_evaluation_v1",
     "task": task,
     "seed_range": [first, last],
     "requested_rollouts": last - first + 1,
@@ -198,7 +198,7 @@ result = {
 (out / "aggregate.json").write_text(
     json.dumps(result, indent=2) + "\n", encoding="utf-8"
 )
-print("CORIBENCH_VECTOR_EVAL_COMPLETE=" + json.dumps({
+print("FORCEBENCH_VECTOR_EVAL_COMPLETE=" + json.dumps({
     key: result[key]
     for key in (
         "task",

@@ -13,7 +13,7 @@
 - Joint angles and measured TCP RPY are continuous across the `-pi/+pi` branch.
 - Physics is fixed at 60 Hz, policy control at 15 Hz and solver position
   iterations at 64.
-- Formal data uses the stable schema name `coribench_hdf5` and excludes
+- Formal data uses the stable schema name `forcebench_hdf5` and excludes
   device-specific teleoperation readings. Previous datasets and checkpoints are
   retained under the external archive root and are not accepted as new formal
   inputs.
@@ -31,10 +31,10 @@
 
 ## Storage separation
 
-- code/runtime: `/home/pc/CoRiBench`
-- formal datasets/checkpoints/evaluations: `/home/pc/CoRiBench_data`
-- smoke tests, previews and disposable outputs: `/home/pc/CoRiBench_scratch`
-- immutable historical artifacts: `/home/pc/CoRiBench_archive`
+- code/runtime: `/home/pc/ForceBench`
+- formal datasets/checkpoints/evaluations: `/home/pc/ForceBench_data`
+- smoke tests, previews and disposable outputs: `/home/pc/ForceBench_scratch`
+- immutable historical artifacts: `/home/pc/ForceBench_archive`
 
 The archive manifest records original paths, sizes and move time. New smoke or
 debug output must never be written below the formal `datasets/` directory.

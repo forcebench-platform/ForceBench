@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert a validated CoRiBench HDF5 snapshot to LeRobot v2.1."""
+"""Convert a validated ForceBench HDF5 snapshot to LeRobot v2.1."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import cv2
 import h5py
 import numpy as np
 
-from coribench.recording import validate_hdf5_episode
+from forcebench.recording import validate_hdf5_episode
 from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
 
 
@@ -106,7 +106,7 @@ def main() -> None:
             raise ValueError(f"SHA-256 mismatch: {path}")
         validate_hdf5_episode(path)
         with h5py.File(path, "r") as handle:
-            if str(handle.attrs.get("schema_version", "")) != "coribench_hdf5":
+            if str(handle.attrs.get("schema_version", "")) != "forcebench_hdf5":
                 raise ValueError(f"unsupported non-canonical HDF5 schema: {path}")
             metadata = json.loads(str(handle.attrs["metadata_json"]))
             if not bool(handle.attrs["success"]) or not bool(metadata.get("success")):
@@ -144,7 +144,7 @@ def main() -> None:
             dataset.save_episode()
             converted_frames += frames
             print(
-                f"CORIBENCH_LEROBOT_EPISODE={episode_index + 1}/{len(records)},"
+                f"FORCEBENCH_LEROBOT_EPISODE={episode_index + 1}/{len(records)},"
                 f"file={path.name},frames={frames}",
                 flush=True,
             )
@@ -161,10 +161,10 @@ def main() -> None:
         "prompts": sorted(prompts),
         "source_manifest": manifest,
     }
-    (output_path / "coribench_conversion.json").write_text(
+    (output_path / "forcebench_conversion.json").write_text(
         json.dumps(conversion, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
     )
-    print("CORIBENCH_LEROBOT_COMPLETE=" + json.dumps(conversion, separators=(",", ":")), flush=True)
+    print("FORCEBENCH_LEROBOT_COMPLETE=" + json.dumps(conversion, separators=(",", ":")), flush=True)
 
 
 if __name__ == "__main__":

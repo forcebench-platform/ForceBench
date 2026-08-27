@@ -9,9 +9,9 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
-from coribench.expert_collection import _run_process, parse_seed_spec, successful_episodes
-from coribench.paths import CODE_ROOT, SCRATCH_ROOT, dataset_dir
-from coribench.registry import get_task_manifest
+from forcebench.expert_collection import _run_process, parse_seed_spec, successful_episodes
+from forcebench.paths import CODE_ROOT, SCRATCH_ROOT, dataset_dir
+from forcebench.registry import get_task_manifest
 
 
 PARALLEL_TASKS = (
@@ -123,7 +123,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     manifest_path = run_dir / "manifest.jsonl"
     summary_path = run_dir / "summary.json"
     plan_payload = {
-        "schema": "coribench_parallel_sort_collection_32env_v1",
+        "schema": "forcebench_parallel_sort_collection_32env_v1",
         "task": args.task,
         "clone_count": clone_count,
         "requested_seeds": list(requested),
@@ -160,8 +160,8 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     if not launcher.is_file() or not generator.is_file():
         raise FileNotFoundError("Isaac Lab launcher or 32-env task generator is missing")
     environment = os.environ.copy()
-    environment["CORIBENCH_TASK"] = args.task
-    environment["CORIBENCH_EXPERT_COLLECTION_CONTRACT"] = "coribench_expert_collection"
+    environment["FORCEBENCH_TASK"] = args.task
+    environment["FORCEBENCH_EXPERT_COLLECTION_CONTRACT"] = "forcebench_expert_collection"
     batch_results: list[dict[str, object]] = []
     failed_seeds: list[int] = []
 
@@ -255,7 +255,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     final = successful_episodes(formal_dir, args.task)
     successful = [seed for seed in requested if seed in final]
     summary = {
-        "schema": "coribench_parallel_sort_collection_32env_v1",
+        "schema": "forcebench_parallel_sort_collection_32env_v1",
         "task": args.task,
         "clone_count": clone_count,
         "dataset_dir": str(formal_dir),
@@ -278,7 +278,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser().parse_args(argv)
     summary = collect(args)
     print(
-        "CORIBENCH_PARALLEL_SORT_COLLECTION="
+        "FORCEBENCH_PARALLEL_SORT_COLLECTION="
         + json.dumps(summary, ensure_ascii=False, separators=(",", ":")),
         flush=True,
     )
