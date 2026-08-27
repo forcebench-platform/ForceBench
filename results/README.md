@@ -14,25 +14,21 @@
 | `missing` 行 | 尚无有效结果的格子，**显式列出而不是省略**，这样覆盖缺口是可见的 |
 | `head_to_head` | 模型两两对比，含 Fisher 精确检验的 p 值与多重比较校正结果 |
 
-## ⚠️ 当前状态
-
-**截至本次文档提交，`results/leaderboard.json` 尚未落盘到本仓库。**
-commit `9db0c81` 的提交信息描述了该文件，但该 commit 实际只包含了
-`docs/tasks/` 下的八份任务卡片。文件补上之前，本目录只有这份说明。
-
-该文件补上后，下面描述的覆盖状态应以文件内容为准。
-
 ## 结果覆盖状态
 
-**这不是一个完成的 leaderboard。** 32 个 (任务, 模型) 格子中只有约 **12 格**
+**这不是一个完成的 leaderboard。** 32 个 (任务, 模型) 格子中只有 **12 格**
 有有效数据：
 
 | 模型 | 状态 |
 |---|---|
-| π0.5 | 覆盖 8 个任务中的 **7 个**（缺 `gear_mesh`、`peg_insert`） |
-| ForceVLA | 覆盖 8 个任务中的 **7 个**（缺 `gear_mesh`、`peg_insert`） |
+| π0.5 | 覆盖 8 个任务中的 **6 个**（缺 `gear_mesh`、`peg_insert`） |
+| ForceVLA | 覆盖 8 个任务中的 **6 个**（缺 `gear_mesh`、`peg_insert`） |
 | π0.5 + 力 6D | **只有故障修复前的评测，已作废，尚未重跑** |
 | ForceFlow | **尚未训练** |
+
+6 个任务 × 2 个模型 = 12 格，与 `leaderboard.json` 中 `status:"complete"`
+的行数一致。有结果的六个任务是：`weight_sort`、`rattle_sort`、`stove_turn_on`、
+`faucet_turn`、`radmanso_drawer_sort_table`、`nut_thread`。
 
 ## ⚠️ 两个已修复的评测故障
 
