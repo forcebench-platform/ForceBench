@@ -1,24 +1,79 @@
-# Changelog
+# 更新日志
 
-## v0.1.0 (2026-08-26) -- initial scaffold, not yet a tagged benchmark release
+## v0.1.0（2026-08-26 起）—— 初始脚手架，尚不是一个正式发布的 benchmark
 
-First public commit. Extracted and cleaned from the internal ForceBench
-codebase, scoped to ForceBench's 8 in-scope tasks
-(`weight_sort, rattle_sort, stove_turn_on, radmanso_drawer_sort_table,
-peg_insert, faucet_turn, gear_mesh, nut_thread`).
+首次公开提交。从内部 ForceBench 代码库中提取并清理，范围限定为 ForceBench 的
+8 个任务（`weight_sort`、`rattle_sort`、`stove_turn_on`、
+`radmanso_drawer_sort_table`、`peg_insert`、`faucet_turn`、`gear_mesh`、
+`nut_thread`）。
 
-What's here: task definitions, shared simulator/controller contract, policy
-adapters, expert-collection and evaluation scripts, a passing test suite
-(102/109 tests green without Isaac Sim -- see `KNOWN_ISSUES.md`), and
-provenance/licensing documentation (`NOTICE.md`).
+### 已有的内容
 
-What's not here yet, tracked for v1.0:
-- Formal episode data hosted on HuggingFace Datasets (`scripts/download_datasets.py`
-  is not yet implemented).
-- `scripts/download_assets.sh` pointing at each vendor's official asset
-  channel (not yet implemented).
-- Per-task documentation cards under `docs/tasks/`.
-- `docs/eval_protocol.md` and `docs/policy_interface.md`.
-- Baseline results for at least one external policy.
-- Resolution of the two `NOTICE.md` open licensing items (ArtVIP, peg_insert
-  asset chain) and the four `KNOWN_ISSUES.md` test failures.
+- 八个任务的完整定义（`spec.py` / `outcome.py` / `runtime.py`）
+- 共享的仿真器 / 控制器契约
+- 策略适配器（`openpi_ws`、`forcevla_ws`、`forcebench_ws`）
+- 专家采集与评测脚本
+- 可运行的测试套件（无 Isaac Sim 环境下 102/109 通过，见 `KNOWN_ISSUES.md`）
+- 溯源与授权文档（`NOTICE.md`）
+
+### 2026-08-27 文档重构
+
+- 全部面向用户的文档**改为中文**，文件名统一为英文（ASCII 小写 + 下划线），
+  理由见 [`docs/README.md`](./docs/README.md) 的"文档约定"一节。
+- 目录结构按 LIBERO 风格重组：
+  - `docs/` 下新增 `getting_started.md`、`eval_protocol.md`、`policy_interface.md`、
+    `dataset.md`、`reproduce.md` 和 `README.md`（索引）；
+  - **新增 `docs/tasks/` 下的八份任务说明卡片**——这是 CHANGELOG 此前记录的 v1.0
+    待办项之一，现已完成；
+  - 从内部代码库继承的六份英文文档移入 `docs/developer/` 并翻译为中文，技术事实未改；
+  - 新增 `results/` 目录及其说明。
+- 顶层文档（`README.md`、`NOTICE.md`、`CHANGELOG.md`、`CONTRIBUTING.md`、
+  `KNOWN_ISSUES.md`）改写为中文。
+- 补充记录了三处此前未在文档中说明的事实：
+  - `run_native.sh` 的 `collect`、`smoke` 及各类 `*-smoke` / `*-views` 入口依赖
+    `scripts/collection/`、`scripts/smoke/`、`scripts/tuning/`，而这些目录**不在**
+    本次公开提取范围内；`policy` 入口已归档，直接调用会以退出码 2 提示改用
+    `policy-vector`。
+  - `assets/SHA256SUMS` 中原先缺失的 6 条 gear/nut/bolt 记录**已经补齐**，
+    因此 `PROVENANCE_GAPS` 记录的主要缺口已闭合。
+  - 三个接触密集任务（`peg_insert`、`gear_mesh`、`nut_thread`）的 "force-sensitive"
+    措辞在当前实现下并不成立，已在 README、任务索引和三份任务卡片中明确标注。
+
+## v1.0 待办清单
+
+### 数据与资产
+
+- [ ] 在 HuggingFace Datasets 上托管正式 episode 数据
+      （`scripts/download_datasets.py` **尚未实现**）
+- [ ] 实现 `scripts/download_assets.sh`，指向各厂商官方资产渠道
+      （**尚未实现**）
+- [ ] 补齐 `peg_insert`（189/200）和 `gear_mesh`（62/200）的专家数据
+
+### 授权与溯源
+
+- [ ] 确认 ArtVIP RADMANSO 柜子资产的许可证（`NOTICE.md` 未确认项 1）
+- [ ] 追溯 `peg_insert` 三个 usd 的实际上游来源与许可证（`NOTICE.md` 未确认项 2）
+- [ ] 补上两个展平前的上游源哈希（`provenance_gaps.md` 剩余缺口）
+- [ ] 对 `NOTICE.md` 的资产表做一次法律审阅
+
+### 评测
+
+- [ ] 补齐 baseline 覆盖：当前 32 个 (任务, 模型) 格子中只有约 12 格有有效数据。
+      π0.5 与 ForceVLA 各覆盖 7/8 个任务（缺 `gear_mesh`、`peg_insert`）；
+      π0.5+力6D 只有故障修复前的评测、已作废、尚未重跑；ForceFlow 尚未训练。
+- [ ] 实现自动计算 Clopper-Pearson 区间的脚本（当前 `aggregate.json` 只写
+      `success_rate`，区间需人工计算）
+- [ ] 实现 Fisher 精确检验 / Bonferroni 校正的脚本（当前 `head_to_head` 的数字是
+      人工核算后写入的）
+- [ ] 实现 leaderboard 结果提交流程
+- [ ] 把"力信息强度分级"固化成标准配置，而不是依赖各适配器自行屏蔽
+
+### 代码与测试
+
+- [ ] 解决 `KNOWN_ISSUES.md` 中的 5 个已知失败测试
+- [ ] 补齐 `scripts/collection/`、`scripts/smoke/`、`scripts/tuning/`，
+      使 `run_native.sh` 的全部入口可用
+- [ ] 为三个接触密集任务加入依赖力的成功判定，或者把它们的 "force-sensitive"
+      描述改成与实现一致的措辞
+- [ ] 决定 `forcebench/paths.py` 未设环境变量时的默认行为
+      （见 `docs/developer/path_dependencies.md`）
