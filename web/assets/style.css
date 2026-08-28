@@ -409,6 +409,10 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
 
 /* ---------- Leaderboard 表 ---------- */
 .table-scroll {
+  /* position:relative 是必需的，不是装饰：表格里的 .visually-hidden 是绝对定位，
+     没有已定位的祖先时它会以视口为包含块，在窄屏上把整个文档撑宽 —— 表现为
+     手机上莫名其妙的横向滚动。让滚动容器成为包含块，它就被一起裁掉了。 */
+  position: relative;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
