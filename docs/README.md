@@ -10,6 +10,8 @@
 | [策略接入](./policy_interface.md) | `PolicyObservation` / `PolicyActionChunk` 契约，怎么写适配器 |
 | [数据说明](./dataset.md) | HDF5 格式、字段含义、wrench 语义、LeRobot 转换 |
 | [复现指南](./reproduce.md) | 如何从零重新生成专家数据 |
+| [数据集卡片](./dataset_card.md) | 拟发布到 HuggingFace 的 dataset card 草稿 |
+| [开源发布计划](./release_plan.md) | 数据集/checkpoint 的发布时间线、体积与许可证约束、待人工操作的步骤 |
 
 ## 任务说明卡片
 
