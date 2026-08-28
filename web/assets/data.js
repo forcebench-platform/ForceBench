@@ -132,6 +132,102 @@ var FB = (function () {
       desc: '跑完了但结果不可信（例如三个模型同时全 0，疑似评测链路故障），不作为分数使用。' }
   };
 
+  /* ---------- 站外链接 ----------
+     只登记确实存在的地址。尚未发布的东西（论文、数据集）不给链接，
+     只给状态文字 —— 死链比没有链接更糟。 */
+  var REPO = 'https://github.com/pkuhanxuan/ForceBench';
+  var LINKS = {
+    repo: REPO,
+    docs: REPO + '/tree/main/docs',
+    docsIndex: REPO + '/blob/main/docs/README.md',
+    evalProtocol: REPO + '/blob/main/docs/eval_protocol.md',
+    policyInterface: REPO + '/blob/main/docs/policy_interface.md',
+    datasetDoc: REPO + '/blob/main/docs/dataset.md',
+    reproduce: REPO + '/blob/main/docs/reproduce.md',
+    resultsJson: REPO + '/blob/main/results/leaderboard.json',
+    issues: REPO + '/issues',
+    commits: REPO + '/commits/main',
+    taskDoc: function (id) { return REPO + '/blob/main/docs/tasks/' + id + '.md'; },
+    commit: function (hash) { return REPO + '/commit/' + hash; }
+  };
+
+  /* 尚未存在的产物 —— 页面上只显示状态，不生成链接 */
+  var PENDING = {
+    paper: { label: '论文', status: '准备中，尚未发表',
+      detail: '论文尚未投稿/发表，因此本站不提供论文入口，也没有可引用的 arXiv 编号。' },
+    dataset: { label: '数据集与 checkpoint', status: '尚未发布',
+      detail: '专家数据与训练好的 checkpoint 目前都只在项目内部的机器上，尚未上传到任何公开托管（包括 HuggingFace）。' +
+        '计划在论文投稿之后再开放下载。在那之前本站不提供下载链接 —— 指向一个还不存在的仓库只会浪费你的时间。' }
+  };
+
+  /* ---------- 更新时间线 ----------
+     每一条都对应本仓库 git 历史里真实存在的一次提交，附 commit 短哈希可自行核对
+     （git log --oneline，或点条目上的哈希跳到 GitHub）。
+     本项目至今没有发布过任何 release/tag，所以这里不写"版本发布"。 */
+  var NEWS = [
+    { date: '2026-08-28', commit: null, kind: 'web',
+      title: '站点补齐提交记录、多视角排序与更新时间线',
+      detail: '参照成熟 benchmark 站点的结构，补上贡献者/评测日期、任务范围与排序切换、' +
+        '文档入口和这条时间线；同时把置信区间、缺格标注与显著性检验原样保留。' },
+    { date: '2026-08-27', commit: '8a1bd1b', kind: 'fix',
+      title: '兼容旧版 HDF5 schema 标签，并把 episode 计数改成与磁盘一致',
+      detail: '文档里的专家数据条数此前与实际落盘的数据对不上，已按磁盘实际情况更正。' },
+    { date: '2026-08-27', commit: '367c68a', kind: 'results',
+      title: 'results/leaderboard.json 正式落盘，并修正任务覆盖口径',
+      detail: '在此之前 leaderboard 的权威数据文件并不在仓库里，站点无数可读。' },
+    { date: '2026-08-27', commit: '9d4df40', kind: 'web',
+      title: '上线纯静态中文站点与 leaderboard 页面',
+      detail: '无构建步骤、无 npm、不依赖任何外部 CDN，所有数字运行时从数据文件读取。' },
+    { date: '2026-08-27', commit: 'e9c52ed', kind: 'docs',
+      title: '把「数据托管状态」与「下载脚本状态」在文档中拆开陈述',
+      detail: '两件事此前被混为一谈，容易让人以为数据已经可以下载。' },
+    { date: '2026-08-27', commit: '27b0365', kind: 'docs',
+      title: '顶层文档改写为中文' },
+    { date: '2026-08-27', commit: 'c9cd720', kind: 'docs',
+      title: '新增面向使用者的中文指南、任务索引与 results 目录骨架' },
+    { date: '2026-08-27', commit: '9db0c81', kind: 'results',
+      title: '汇总 08-25 / 08-26 两批已核对的 baseline 评测结果',
+      detail: '只收录环境间距为 6 m、且评测 arming 缺陷修复之后的运行；更早的结果全部作废。' },
+    { date: '2026-08-27', commit: '4e103a4', kind: 'docs',
+      title: '内部文档迁入 docs/developer/ 并翻译为中文' },
+    { date: '2026-08-27', commit: 'cd70dd2', kind: 'repo',
+      title: '全仓库更名：coribench → forcebench' },
+    { date: '2026-08-26', commit: '9384626', kind: 'repo',
+      title: '初始骨架：8 个力感知仿真任务' },
+    { date: '2026-08-26', commit: '04fd445', kind: 'repo',
+      title: '仓库创建' }
+  ];
+
+  var NEWS_KIND = {
+    results: { label: '评测结果', glyph: '▣' },
+    eval:    { label: '评测运行', glyph: '▣' },
+    web:     { label: '站点', glyph: '◧' },
+    docs:    { label: '文档', glyph: '◫' },
+    fix:     { label: '修复', glyph: '◈' },
+    repo:    { label: '仓库', glyph: '◇' }
+  };
+
+  /* ---------- 贡献者 ----------
+     数据契约 forcebench-results-v1 目前没有 contributor 字段。
+     没有就如实显示"项目自测"，不编造投稿人。
+     将来 models[] 或 results[] 里出现 contributor / submitted_by 时会自动采用。 */
+  var SELF_CONTRIBUTOR = 'ForceBench 团队';
+  var SELF_CONTRIBUTOR_NOTE =
+    '当前 leaderboard 上的全部结果都由项目自己评测，不是外部提交。' +
+    '数据文件（forcebench-results-v1）目前没有 contributor 字段，' +
+    '因此这一列统一显示为「' + SELF_CONTRIBUTOR + '」；' +
+    '等数据文件里出现 contributor / submitted_by 字段后，这里会直接显示提交者。';
+
+  function contributorOf(model, rows) {
+    var c = model && (model.contributor || model.submitted_by);
+    for (var i = 0; !c && i < rows.length; i++) {
+      c = rows[i].contributor || rows[i].submitted_by;
+    }
+    if (!c) return { name: SELF_CONTRIBUTOR, url: null, external: false };
+    if (typeof c === 'string') return { name: c, url: null, external: true };
+    return { name: c.name || String(c), url: c.url || null, external: true };
+  }
+
   /* ---------- 小工具 ---------- */
 
   function esc(s) {
@@ -266,6 +362,86 @@ var FB = (function () {
     };
   }
 
+  /* ---------- 提交记录 ----------
+     一个模型 = 一次"提交"。贡献者与评测日期都从数据里取，取不到就如实说明缺。
+     这里刻意不给排名：本站不做跨任务平均分，理由见 leaderboard 页面。 */
+  function submissions(idx) {
+    return idx.models.map(function (m) {
+      var rows = [], done = 0, dates = [];
+      idx.tasks.forEach(function (t) {
+        var r = idx.get(t.id, m.id);
+        rows.push(r);
+        if (r.status === 'complete' || r.status === 'partial') done++;
+        if (r.evaluated_at) dates.push(String(r.evaluated_at).slice(0, 10));
+      });
+      dates.sort();
+      return {
+        model: m,
+        rows: rows,
+        done: done,
+        total: idx.tasks.length,
+        firstEval: dates.length ? dates[0] : null,
+        lastEval: dates.length ? dates[dates.length - 1] : null,
+        contributor: contributorOf(m, rows)
+      };
+    });
+  }
+
+  /* 从 results[] 的 evaluated_at 里还原"哪天跑了哪些格子"，用于时间线。
+     完全由数据驱动 —— 数据文件里没有的日期，时间线上也不会出现。 */
+  function evalMilestones(idx) {
+    var by = {};
+    (idx.raw.results || []).forEach(function (r) {
+      if (!r.evaluated_at) return;
+      if (r.status !== 'complete' && r.status !== 'partial') return;
+      var d = String(r.evaluated_at).slice(0, 10);
+      if (!by[d]) by[d] = { date: d, cells: [], tasks: {}, models: {} };
+      by[d].cells.push(r);
+      by[d].tasks[r.task] = 1;
+      by[d].models[r.model] = 1;
+    });
+    return Object.keys(by).sort().reverse().map(function (d) {
+      var e = by[d];
+      return {
+        date: d,
+        cells: e.cells.length,
+        tasks: Object.keys(e.tasks),
+        models: Object.keys(e.models)
+      };
+    });
+  }
+
+  /* ---------- 查询串状态 ----------
+     视角/筛选写进地址栏，方便把某个视角直接发给别人。
+     ?data=sample 等既有参数会原样保留。 */
+  function qsGet() {
+    var out = {};
+    var s = location.search.replace(/^\?/, '');
+    if (!s) return out;
+    s.split('&').forEach(function (kv) {
+      if (!kv) return;
+      var i = kv.indexOf('=');
+      var k = i < 0 ? kv : kv.slice(0, i);
+      var v = i < 0 ? '' : kv.slice(i + 1);
+      try { out[decodeURIComponent(k)] = decodeURIComponent(v.replace(/\+/g, ' ')); }
+      catch (e) { out[k] = v; }
+    });
+    return out;
+  }
+
+  function qsSet(patch) {
+    var p = qsGet();
+    Object.keys(patch).forEach(function (k) {
+      if (patch[k] == null || patch[k] === '') delete p[k];
+      else p[k] = patch[k];
+    });
+    var parts = Object.keys(p).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(p[k]);
+    });
+    var url = location.pathname + (parts.length ? '?' + parts.join('&') : '') + location.hash;
+    if (history && history.replaceState) history.replaceState(null, '', url);
+  }
+
   /* 显著性分级 —— 颜色之外同时给字形和文字，不靠颜色单独承载信息 */
   function significance(c) {
     if (!c) return null;
@@ -379,6 +555,17 @@ var FB = (function () {
     CATEGORY: CATEGORY,
     FORCE_INPUT_DESC: FORCE_INPUT_DESC,
     STATUS: STATUS,
+    LINKS: LINKS,
+    PENDING: PENDING,
+    NEWS: NEWS,
+    NEWS_KIND: NEWS_KIND,
+    SELF_CONTRIBUTOR: SELF_CONTRIBUTOR,
+    SELF_CONTRIBUTOR_NOTE: SELF_CONTRIBUTOR_NOTE,
+    contributorOf: contributorOf,
+    submissions: submissions,
+    evalMilestones: evalMilestones,
+    qsGet: qsGet,
+    qsSet: qsSet,
     esc: esc,
     pct: pct,
     pctNum: pctNum,
