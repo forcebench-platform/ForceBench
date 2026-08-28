@@ -13,7 +13,7 @@ ForceBench 的中文前端站点，含 leaderboard。**纯静态**：原生 HTML
 
 ```
 web/
-├── index.html               首页：项目定位、评测进度、八任务概览
+├── index.html               首页：项目定位、评测进度、更新记录、资源状态、八任务概览
 ├── leaderboard.html         Leaderboard（核心页面）
 ├── tasks.html               八个任务的说明，区分两类任务
 ├── about.html               项目背景、与 ForceVLA 论文的区别、引用、许可证
@@ -95,8 +95,16 @@ python -m http.server 8000
 顶层字段：`schema_version`、`benchmark_version`、`generated_at`、`eval_protocol`、
 `models[]`、`tasks[]`、`results[]`。
 
-- `models[].force_input` ∈ `none` / `wrench6_concat` / `moe_fusion`，
-  模型 id 固定为 `pi05`、`pi05_force6`、`forcevla`。
+- `models[].force_input` ∈ `none` / `wrench6_concat` / `moe_fusion`。
+  模型 id 与顺序以数据文件的 `models[]` 为准；`assets/data.js` 的 `MODEL_ORDER`
+  只决定已知 id 的排列先后，**没列进去的模型会排在后面而不会被丢掉**。
+- `results[].evaluated_at`（`YYYY-MM-DD`）会同时喂给两处：提交记录表的
+  「最近评测日期」列，和首页更新时间线里的「评测运行」条目。没有这个字段，
+  那两处就如实显示「尚无评测」，不会猜一个日期出来。
+- **可选**：`models[].contributor` 或 `results[].contributor`（也接受 `submitted_by`），
+  取值可以是字符串，也可以是 `{"name": "...", "url": "..."}`。
+  没有这个字段时，提交记录表统一显示「ForceBench 团队 · 项目自测」，
+  并在表下方说明这一列为什么全都一样 —— **不要为了让表格好看而编造投稿人**。
 - `tasks[].force_category` ∈ `force_classification`（5 个）/ `contact_rich`（3 个）。
   这个区分在前端始终可见，不要去掉。
 - `results[]` 每个 (task, model) 组合都要有一条，**包括没跑过的**，
@@ -146,16 +154,32 @@ python -m http.server 8000
 3. **覆盖率必须显式呈现。** 首页和 leaderboard 顶部都有覆盖率面板：
    「N / 总格数 已完成」+ 进度条 + 四种状态的计数 + 任务 × 模型的状态矩阵。
    分母由数据文件决定，不写死。
-4. **不下任何方向的因果结论，并且不让并排的百分数误导读者。**
+4. **排序与筛选不许改变数字，也不许把缺格变成 0。**
+   leaderboard 表格上方的「看这张表的角度」可以切换任务范围（全部 / 只看力分类 /
+   只看接触密集）、排序方式（类别分组 / 名称 / 已完成模型数 / 按某个模型的成功率）
+   和模型列范围。这些只影响顺序与显示范围：
+   - 按成功率排序时，`missing` / `invalid` 的任务**一律沉到最后**，
+     绝不当成 0% 参与比较，页面上也明说了这一点；
+   - 打乱类别分组时，力分类 / 接触密集的标记会**跟到每一行上**，这个区分不能消失；
+   - 覆盖率面板始终按**完整网格**统计，不随筛选变化；
+   - 当前视角写进地址栏（`?scope=&sort=&ref=&cols=`），可以把某个视角发给别人。
+5. **不下任何方向的因果结论，并且不让并排的百分数误导读者。**
    凡是把两个模型成功率并排展示的地方（表格行、对比表），
    **同一行必须同时给出该任务的 p 值和显著性标记**，
    并明确区分「p&lt;0.05」和「多重比较校正后仍显著」。
    页面不说「力有帮助」，也不说「力没用」；
    方向清点只在**达到显著的那几组**里做（否则会把噪声也算进方向）；
    并且**不提供跨任务平均成功率和总排名** —— 任务间差异太大，平均值会掩盖真实信号。
-5. **原型状态声明**常驻首页和 leaderboard 顶部：v0.1 原型、覆盖不完整、数字会变、请勿引用。
+6. **原型状态声明**常驻首页和 leaderboard 顶部：v0.1 原型、覆盖不完整、数字会变、请勿引用。
+7. **没有的东西不给链接。** 数据集、checkpoint、论文都尚未发布，
+   页面只写状态（「尚未发布」/「准备中」），**不放指向不存在的 HuggingFace 仓库
+   或 arXiv 编号的链接**。导航里的「论文」是一段文字而不是 `<a>`。
 
-另外：颜色不是唯一的信息载体（每种状态都同时有字形、文字标签和底纹），
+状态标记用**四重编码**，任何一条都能单独区分「没跑」和「跑出了低分」：
+字形（`○` / `⚠` / `✓`）+ 文字标签 + 边框样式（虚线 / 双线 / 实线）+ 斜纹底。
+色盲、灰度打印、截图压缩之后都还认得出来。
+
+另外：颜色不是唯一的信息载体，
 表格用 `<th scope>`、`<caption>`、分组 `<tbody>`，页面有跳转正文链接。
 
 ---
@@ -183,6 +207,21 @@ https://pkuhanxuan.github.io/ForceBench/web/index.html
 
 ---
 
+## 更新时间线的内容从哪来
+
+首页的「更新记录」由两个来源合并而成，**没有第三种**：
+
+1. `assets/data.js` 里的 `NEWS` —— 每一条都对应本仓库 git 历史里真实存在的一次提交，
+   带 commit 短哈希，条目上的哈希直接链到 GitHub，可以逐条核对（`git log --oneline`）。
+2. `results/leaderboard.json` 里 `results[].evaluated_at` 还原出来的「评测运行」条目 ——
+   哪天真的跑了哪些格子，完全由数据算出来，页面不写死任何日期。
+
+加条目时请照这个规矩来：**不要写没有对应提交的"版本发布"**。
+本项目至今没有发过任何 release 或 tag，时间线上因此不会出现 "v1.0 发布" 这类条目。
+数据文件读不到时，时间线仍会显示 git 那部分，只是少掉评测条目。
+
+---
+
 ## 读不到数据时会怎样
 
 如果 `results/leaderboard.json` 不存在或解析失败，页面显示明确的
@@ -198,5 +237,6 @@ https://pkuhanxuan.github.io/ForceBench/web/index.html
 ## 浏览器兼容
 
 用的都是老特性：`fetch`、`Array.prototype.forEach/filter/map`、CSS Grid/Flexbox、
-CSS 自定义属性、`position: sticky`。没有 ES 模块、没有可选链、没有构建产物。
+CSS 自定义属性、`position: sticky`、`history.replaceState`。
+没有 ES 模块、没有可选链、没有构建产物。
 现代 Chrome / Edge / Firefox / Safari 都可以直接跑。
