@@ -1,5 +1,28 @@
 # ForceBench
 
+**[官网](https://pkuhanxuan.github.io/ForceBench/web/index.html)**（待开启）&nbsp;·&nbsp;
+**[Leaderboard](https://pkuhanxuan.github.io/ForceBench/web/leaderboard.html)**（待开启）&nbsp;·&nbsp;
+**[文档](./docs/README.md)**&nbsp;·&nbsp;
+**[任务说明](./docs/tasks/README.md)**&nbsp;·&nbsp;
+**[评测协议](./docs/eval_protocol.md)**&nbsp;·&nbsp;
+数据集 *尚未发布*&nbsp;·&nbsp;
+论文 *准备中*
+
+> **上面这排链接的当前状态，请照字面理解：**
+>
+> - **GitHub Pages 尚未开启**，前两个链接现在打不开。需要仓库所有者在
+>   *Settings → Pages* 手动开启，并且 **Source 必须设为 `main` 分支的 `/(root)`，
+>   不能选 `/docs`** —— 站点是在运行时读取 `../results/leaderboard.json` 的，
+>   以 `/docs` 为根会让它读不到数据文件。开启前可以本地预览：
+>   在仓库根目录执行 `python -m http.server 8000`，然后访问
+>   `http://localhost:8000/web/index.html`（同样必须从**仓库根目录**起服务）。
+> - **数据集与 checkpoint 尚未发布**，没有上传到 HuggingFace 或任何其他公开托管，
+>   所以这里不放下载链接。计划在论文投稿之后再开放。
+> - **论文尚未投稿也尚未发表**，没有可引用的 arXiv 编号。
+>
+> 这排链接刻意不用图片徽章：徽章图床在国内经常加载不出来，而这个项目的
+> 目标读者主要在国内。
+
 > ## ⚠️ 状态：v0.1 原型（prototype），不是成品
 >
 > 代码和测试已经在仓库里并且能跑（无 Isaac Sim 环境下 102/109 通过，
