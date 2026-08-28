@@ -18,6 +18,8 @@
         <li><a href="./index.html" data-nav="home">首页</a></li>
         <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
         <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
+        <li><a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档<span class="ext-mark" aria-hidden="true">↗</span><span class="visually-hidden">（GitHub 上的 markdown 文档，外部链接）</span></a></li>
+        <li><span class="nav-pending">论文<span class="pending-mark">准备中</span><span class="visually-hidden">：论文尚未发表，因此没有链接</span></span></li>
         <li><a href="./about.html" data-nav="about">关于与引用</a></li>
       </ul>
     </nav>
@@ -45,6 +47,7 @@
       <div class="hero-actions">
         <a class="btn" href="./leaderboard.html">查看 Leaderboard</a>
         <a class="btn secondary" href="./tasks.html">八个任务</a>
+        <a class="btn secondary" href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档</a>
         <a class="btn secondary" href="https://github.com/pkuhanxuan/ForceBench">GitHub 仓库</a>
       </div>
     </section>
@@ -55,6 +58,11 @@
     <div id="home-coverage">
       <p class="loading">正在读取 <code>results/leaderboard.json</code> ……</p>
     </div>
+
+    <h2>更新记录</h2>
+    <p class="muted">下面每一条都对应仓库里一次真实的提交，或数据文件里一次真实的评测运行 ——
+    没有为了让页面显得热闹而编出来的「版本发布」。</p>
+    <div id="home-news"></div>
 
     <h2>当前能说什么、不能说什么</h2>
     <div class="grid cols-2">
@@ -93,6 +101,50 @@
     <h2>八个任务</h2>
     <p class="muted">两类任务的性质不同，页面上始终分开标注，理由见<a href="./tasks.html">任务说明</a>。</p>
     <div class="grid cols-3" id="home-tasks"></div>
+
+    <h2>资源与当前状态</h2>
+    <p class="muted">已经能用的给链接，还没有的只写状态 ——
+    本站不放指向「将来会有」的东西的链接。</p>
+    <div class="grid cols-2">
+      <div class="card res-card">
+        <h3>代码与文档<span class="rs rs-ready">可用</span></h3>
+        <p class="small">八个任务的实现、策略适配层、评测脚本和中文文档都在仓库里。
+        任务的权威定义是 <code>forcebench/tasks/&lt;name&gt;/spec.py</code>，
+        文档与代码冲突时以代码为准。</p>
+        <p class="small">
+          <a href="https://github.com/pkuhanxuan/ForceBench">代码仓库</a> ·
+          <a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档目录</a> ·
+          <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/eval_protocol.md">评测协议</a> ·
+          <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/policy_interface.md">接入自己的策略</a>
+        </p>
+      </div>
+      <div class="card res-card">
+        <h3>评测结果<span class="rs rs-partial">部分可用</span></h3>
+        <p class="small">机器可读的权威文件是 <code>results/leaderboard.json</code>，
+        本站所有数字都从它运行时读取。覆盖尚不完整，具体缺哪些格见
+        <a href="./leaderboard.html">Leaderboard</a> 上方的覆盖率面板。</p>
+        <p class="small"><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/results/leaderboard.json">leaderboard.json</a></p>
+      </div>
+      <div class="card res-card">
+        <h3>数据集与 checkpoint<span class="rs rs-pending">尚未发布</span></h3>
+        <p class="small">专家数据与训练好的 checkpoint 目前都还在项目内部的机器上，
+        <b>没有上传到任何公开托管</b>（包括 HuggingFace），因此这里没有下载链接 ——
+        指向一个还不存在的仓库只会浪费你的时间。计划在论文投稿之后再开放。</p>
+        <p class="small">数据格式与 wrench 语义已经写好：
+        <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/dataset.md">数据说明</a> ·
+        <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/reproduce.md">从零复现</a>。</p>
+        <p class="small muted">另需注意：<code>gear_mesh</code> 任务当前<b>没有可用的专家数据</b>，
+        源机器上的正式数据集已不存在。</p>
+      </div>
+      <div class="card res-card">
+        <h3>论文<span class="rs rs-pending">准备中</span></h3>
+        <p class="small">论文尚未投稿也尚未发表，所以本站没有论文入口，
+        也没有可以引用的 arXiv 编号。要引用这个项目本身，
+        请用<a href="./about.html">关于与引用</a>页面上的仓库条目。</p>
+        <p class="small muted">这里指的是 ForceBench 自己的论文。
+        ForceVLA 架构的原论文已发表，链接在<a href="./about.html">关于</a>页。</p>
+      </div>
+    </div>
 
     <div class="note info" style="margin-top:32px">
       <span class="note-title">与 ForceVLA 论文的关系</span>

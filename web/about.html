@@ -18,6 +18,8 @@
         <li><a href="./index.html" data-nav="home">首页</a></li>
         <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
         <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
+        <li><a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档<span class="ext-mark" aria-hidden="true">↗</span><span class="visually-hidden">（GitHub 上的 markdown 文档，外部链接）</span></a></li>
+        <li><span class="nav-pending">论文<span class="pending-mark">准备中</span><span class="visually-hidden">：论文尚未发表，因此没有链接</span></span></li>
         <li><a href="./about.html" data-nav="about">关于与引用</a></li>
       </ul>
     </nav>
@@ -43,13 +45,17 @@
     一个固定的仿真契约、一条分级的力信号阶梯（从纯本体感受，到原始 6 轴 wrench，再到架构级融合），
     以及一个共享的评测协议 —— 好让「力有帮助」成为一个可复现的基准结果，
     而不是绑定在某一篇论文特定实验设置上的说法。</p>
-    <p>在这个框架里，ForceVLA 是三个基线之一（<code>forcevla</code>，<code>force_input: moe_fusion</code>），
-    与 π0.5（<code>none</code>）和 π0.5+力6D（<code>wrench6_concat</code>）并列，
-    而不是被评价的对象或对照的靶子。</p>
+    <p>在这个框架里，ForceVLA 只是力信号阶梯上的一档（<code>forcevla</code>，
+    <code>force_input: moe_fusion</code>），与 π0.5（<code>none</code>）、
+    π0.5+力6D（<code>wrench6_concat</code>）、ForceFlow 并列，
+    而不是被评价的对象或对照的靶子。完整名单以
+    <code>results/leaderboard.json</code> 的 <code>models[]</code> 为准，
+    见 <a href="./leaderboard.html">Leaderboard</a> 的提交记录表。</p>
 
     <h2>评测协议</h2>
-    <p class="muted small">评测协议的正式文档尚未写就（仓库 <code>CHANGELOG.md</code> 中作为 v1.0 待办跟踪）。
-    以下参数直接读自结果数据文件。</p>
+    <p class="muted small">评测协议的正式文档在仓库的
+    <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/eval_protocol.md"><code>docs/eval_protocol.md</code></a>；
+    以下参数直接读自结果数据文件，不在本页硬编码。</p>
     <div id="about-protocol">
       <p class="loading">正在读取 <code>results/leaderboard.json</code> ……</p>
     </div>
@@ -63,9 +69,37 @@
     <h2>原型状态与免责</h2>
     <div class="note caution">
       <span class="note-title">⚠ v0.1 原型，请勿引用其中的数字</span>
-      <p>评测覆盖不完整，多个「任务 × 模型」组合从未跑过；部分结果已判定为无效；
-      成功判定本身仍在调整。数据托管、逐任务文档、评测协议正式文档、复现文档都还是 v1.0 的待办项。
+      <p>评测覆盖不完整，多个「任务 × 模型」组合从未跑过；成功判定本身仍在调整。
+      具体来说：目前只有 π0.5 与 ForceVLA 两个模型有有效结果，覆盖 8 个任务中的 6 个
+      （缺 <code>gear_mesh</code> 与 <code>peg_insert</code>）；
+      π0.5+力6D 只有故障修复前的评测、已作废且尚未重跑；
+      ForceFlow 的 checkpoint 存在但从未评测。
+      <code>gear_mesh</code> 任务当前还<b>没有可用的专家数据</b>。
+      数据与 checkpoint 的公开托管也尚未搭建。
       在这些补齐之前，请把本站与本仓库中的任何成功率都视为<b>临时数值</b>。</p>
+    </div>
+
+    <h2>数据集、checkpoint 与论文的状态</h2>
+    <div class="tbl-wrap">
+      <table class="plain">
+        <thead><tr><th scope="col">产物</th><th scope="col">状态</th><th scope="col">说明</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">代码与文档</th><td><span class="rs rs-ready">可用</span></td>
+              <td>在 <a href="https://github.com/pkuhanxuan/ForceBench">GitHub 仓库</a>，
+              文档见 <a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs"><code>docs/</code></a>。</td></tr>
+          <tr><th scope="row">评测结果</th><td><span class="rs rs-partial">部分可用</span></td>
+              <td>权威文件是 <code>results/leaderboard.json</code>，覆盖尚不完整。</td></tr>
+          <tr><th scope="row">专家数据集</th><td><span class="rs rs-pending">尚未发布</span></td>
+              <td><b>还没有上传到任何公开托管（包括 HuggingFace），因此这里没有下载链接。</b>
+              计划在论文投稿之后再开放。格式与语义已在
+              <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/dataset.md">数据说明</a>中写明。
+              另需注意 <code>gear_mesh</code> 当前没有可用的专家数据。</td></tr>
+          <tr><th scope="row">训练好的 checkpoint</th><td><span class="rs rs-pending">尚未发布</span></td>
+              <td>目前只存在于项目内部的机器上，同样计划在论文投稿之后再开放。</td></tr>
+          <tr><th scope="row">ForceBench 论文</th><td><span class="rs rs-pending">准备中</span></td>
+              <td>尚未投稿也尚未发表，没有可引用的 arXiv 编号，因此本站不提供论文入口。</td></tr>
+        </tbody>
+      </table>
     </div>
 
     <h2>引用格式</h2>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Leaderboard —— ForceBench</title>
-<meta name="description" content="ForceBench v0.1 原型 leaderboard：8 个任务 × 3 个基线模型的成功率与 95% 置信区间，含评测覆盖率。">
+<meta name="description" content="ForceBench v0.1 原型 leaderboard：逐任务成功率与 Clopper-Pearson 95% 置信区间，含评测覆盖率、缺格标注与 Fisher 精确检验。">
 <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body data-page="leaderboard">
@@ -18,6 +18,8 @@
         <li><a href="./index.html" data-nav="home">首页</a></li>
         <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
         <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
+        <li><a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档<span class="ext-mark" aria-hidden="true">↗</span><span class="visually-hidden">（GitHub 上的 markdown 文档，外部链接）</span></a></li>
+        <li><span class="nav-pending">论文<span class="pending-mark">准备中</span><span class="visually-hidden">：论文尚未发表，因此没有链接</span></span></li>
         <li><a href="./about.html" data-nav="about">关于与引用</a></li>
       </ul>
     </nav>
@@ -78,6 +80,14 @@
         因此本站同时标注 Bonferroni 校正后是否仍然显著。
         <b>校正后仍显著的对比数量非常少</b>，而达到显著的那几组方向还不一致 ——
         这正是本站不给出「力有帮助」或「力没用」任何一方总体结论的原因。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">换个角度看同一批数字</h3>
+        <p class="small">表格上方可以切换<b>任务范围</b>（全部 / 只看力分类 / 只看接触密集）和
+        <b>排序方式</b>（类别分组 / 名称 / 已完成模型数 / 按某个模型的成功率）。
+        这些只改变显示顺序和范围，<b>不改变任何数字</b>，也不会把缺格变成 0：
+        按成功率排序时，没跑过的任务一律沉到最后，而不是被当成 0% 排在最底部参与比较。
+        当前视角会写进地址栏，可以直接把链接发给别人。</p>
       </div>
       <div class="card">
         <h3 style="margin-top:0">空列是预留位，不是零分</h3>

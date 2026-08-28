@@ -18,6 +18,8 @@
         <li><a href="./index.html" data-nav="home">首页</a></li>
         <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
         <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
+        <li><a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档<span class="ext-mark" aria-hidden="true">↗</span><span class="visually-hidden">（GitHub 上的 markdown 文档，外部链接）</span></a></li>
+        <li><span class="nav-pending">论文<span class="pending-mark">准备中</span><span class="visually-hidden">：论文尚未发表，因此没有链接</span></span></li>
         <li><a href="./about.html" data-nav="about">关于与引用</a></li>
       </ul>
     </nav>
@@ -33,10 +35,12 @@
     <div id="sample-slot"></div>
 
     <div class="note info">
-      <span class="note-title">任务卡片尚未成文</span>
-      <p>逐任务的正式文档卡片还没写（仓库 <code>CHANGELOG.md</code> 中作为 v1.0 待办跟踪）。
-      在那之前，任务的权威定义是仓库里 <code>forcebench/tasks/&lt;name&gt;/</code> 下的
-      <code>spec.py</code> 与 <code>runtime.py</code>；本页只是面向读者的概览。</p>
+      <span class="note-title">本页是概览，正式定义在仓库里</span>
+      <p>逐任务的文档卡片在
+      <a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs/tasks">
+      <code>docs/tasks/</code></a>，每张卡片下方都有链接。
+      但任务的<b>权威</b>定义始终是代码：<code>forcebench/tasks/&lt;name&gt;/</code> 下的
+      <code>spec.py</code> 与 <code>runtime.py</code>。文档与代码不一致时，以代码为准。</p>
     </div>
 
     <h2><span class="cat force_classification"><span class="glyph" aria-hidden="true">◆</span>力分类任务</span>（5 个）</h2>
