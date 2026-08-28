@@ -165,7 +165,7 @@ var FB = (function () {
      （git log --oneline，或点条目上的哈希跳到 GitHub）。
      本项目至今没有发布过任何 release/tag，所以这里不写"版本发布"。 */
   var NEWS = [
-    { date: '2026-08-28', commit: null, kind: 'web',
+    { date: '2026-08-28', commit: '55f4090', kind: 'web',
       title: '站点补齐提交记录、多视角排序与更新时间线',
       detail: '参照成熟 benchmark 站点的结构，补上贡献者/评测日期、任务范围与排序切换、' +
         '文档入口和这条时间线；同时把置信区间、缺格标注与显著性检验原样保留。' },
