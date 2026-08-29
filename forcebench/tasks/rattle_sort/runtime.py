@@ -288,8 +288,7 @@ class RattleSortTask(TaskRuntime):
             gripper_open_fraction = float(grippers[env_index].item())
             held = bool(
                 box_height_m >= SPEC.inspection_min_lift_height_m
-                and gripper_open_fraction
-                <= SPEC.inspection_max_gripper_open_fraction
+                and gripper_open_fraction <= SPEC.inspection_max_gripper_open_fraction
                 and tcp_box_distance_m <= SPEC.inspection_max_tcp_box_distance_m
             )
             stationary = bool(
@@ -323,6 +322,7 @@ class RattleSortTask(TaskRuntime):
 
     def evaluate_final_state_for(self, env, env_id: int) -> dict[str, object]:
         self._ensure_batch_state(env.num_envs)
+        env_id = int(env_id)
         box_position, _ = env.entity_local_pose("box")
         velocity = env.entity("box").data.root_lin_vel_w.torch[env_id]
         return evaluate_report(
@@ -330,9 +330,10 @@ class RattleSortTask(TaskRuntime):
                 box_kind=str(env.layouts[env_id]["box_kind"]),
                 box_position_m=box_position[env_id].detach().cpu().numpy(),
                 box_linear_velocity_m_s=velocity.detach().cpu().numpy(),
+                inspection_completed=self._inspection_completed_batch[env_id],
                 gripper_open_fraction=float(
                     env.gripper_open_fraction_tensor[env_id].item()
-                ),
+                )
             ).to_dict()
         )
 
@@ -340,31 +341,21 @@ class RattleSortTask(TaskRuntime):
         return self.evaluate_final_state_for(env, 0)
 
     def privileged_observations(self, env):
-        self._ensure_batch_state(env.num_envs)
         inspection_state = torch.tensor(
-            [
-                [
-                    self._inspection_hold_s_batch[env_index],
-                    float(self._inspection_completed_batch[env_index]),
-                ]
-                for env_index in range(env.num_envs)
-            ],
+            [self._inspection_hold_s, float(self._inspection_completed)],
             dtype=torch.float32,
             device=env.device,
         )
-        com_offsets = torch.as_tensor(
-            [layout["center_of_mass_offset_local_m"] for layout in env.layouts],
+        com_offset = torch.as_tensor(
+            env.layout["center_of_mass_offset_local_m"],
             dtype=torch.float32,
             device=env.device,
         )
-        observations = {
-            "objects/box/pose": env.entity_world_pose("box"),
-            "objects/box/center_of_mass_offset_local": com_offsets,
+        return {
+            "objects/box/pose": env.entity_world_pose("box")[0],
+            "objects/box/center_of_mass_offset_local": com_offset,
             "inspection/static_hold_state": inspection_state,
         }
-        if env.num_envs == 1:
-            return {key: value[0] for key, value in observations.items()}
-        return observations
 
     def wrench_reference_position(self, env):
         reference = torch.tensor(
@@ -412,6 +403,13 @@ class RattleSortTask(TaskRuntime):
             "perfect_dataset_balance": {
                 "uniform": "one per consecutive seed pair",
                 "imbalanced": "one per consecutive seed pair",
+            },
+            "pickup_randomization": {
+                "profile": SPEC.pickup_region_profile,
+                "distribution": "independent_seeded_uniform_xy",
+                "x_range_m": list(SPEC.pickup_x_range_m),
+                "y_range_m": list(SPEC.pickup_y_range_m),
+                "reason": "exclude_black_basket_edge_collision_envelope",
             },
             "destinations": {
                 "imbalanced": "large_black_container_f27_left",

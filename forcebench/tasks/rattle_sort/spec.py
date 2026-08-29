@@ -57,6 +57,12 @@ class RattleSortSpec:
     box_angular_damping: float = 1.0
     box_root_z_m: float = 0.002
     pickup_x_m: float = 0.46
+    # Keep the complete open-gripper approach envelope away from the near
+    # corner of the black basket collision walls.  The former far-X/negative-Y
+    # corner allowed (0.52, -0.06) and made seed 40 contact the basket edge.
+    # This 80 x 85 mm rectangle preserves substantial pose diversity while
+    # adding at least 30 mm in X and 35 mm in Y at the hazardous corner.
+    pickup_region_profile: str = "basket_edge_safe_rectangle_v2"
     pickup_x_range_m: tuple[float, float] = (0.40, 0.48)
     pickup_y_range_m: tuple[float, float] = (-0.025, 0.06)
     pickup_yaw_rad: float = np.pi / 2.0
@@ -190,6 +196,9 @@ def sample_initial_state(seed: int, spec: RattleSortSpec = SPEC) -> dict[str, ob
         "imbalance_axis": "front_back",
         "heavy_end": heavy_end,
         "destination": destination,
+        "pickup_region_profile": spec.pickup_region_profile,
+        "pickup_x_range_m": list(spec.pickup_x_range_m),
+        "pickup_y_range_m": list(spec.pickup_y_range_m),
         "black_basket_center_xy_m": list(spec.black_basket_center_xy_m),
         "conveyor_center_xy_m": list(spec.conveyor_center_xy_m),
     }
@@ -215,6 +224,7 @@ class SuccessReport:
     box_location: str
     placement_failure_reason: str | None
     box_position_m: tuple[float, float, float]
+    inspection_completed: bool
     box_released: bool
     box_settled: bool
     box_root_z_m: float
@@ -230,6 +240,7 @@ def evaluate_final_state(
     box_kind: str,
     box_position_m,
     box_linear_velocity_m_s,
+    inspection_completed: bool,
     gripper_open_fraction: float,
     spec: RattleSortSpec = SPEC,
 ) -> SuccessReport:
@@ -278,6 +289,7 @@ def evaluate_final_state(
     return SuccessReport(
         success=bool(
             box_in_correct_destination
+            and inspection_completed
             and box_released
             and box_settled
         ),
@@ -289,6 +301,7 @@ def evaluate_final_state(
         box_location=box_location,
         placement_failure_reason=placement_failure_reason,
         box_position_m=tuple(float(value) for value in position),
+        inspection_completed=bool(inspection_completed),
         box_released=bool(box_released),
         box_settled=bool(box_settled),
         box_root_z_m=float(position[2]),

@@ -16,6 +16,22 @@
 - 可运行的测试套件（无 Isaac Sim 环境下 102/109 通过，见 `KNOWN_ISSUES.md`）
 - 溯源与授权文档（`NOTICE.md`）
 
+### 2026-08-29 与采集主机代码同步
+
+以 .48 采集主机（内部主本，2026-08-29 15:41 状态)为准做了一次全量代码同步，
+只覆盖正典 8 任务范围：
+
+- 刷新 11 个漂移文件：`episode_qc`、`recording`、`scene_profiles`、
+  `policy_transport`、faucet_turn/gear_mesh/nut_thread 三个专家适配器，
+  以及 gear_mesh / rattle_sort / stove_turn_on 的任务定义
+- 新增 `forcebench/sort_expert_path.py`（`generate_parallel_sort.py`
+  的新依赖，此前缺失会导致排序类专家采集不可运行）
+- 新增 `scripts/expert/generate_parallel_stove.py`，同步 8 个专家/评测脚本
+- 移除 9 个主本已淘汰的旧生成器（scripted/privileged/peak/knob 系列与
+  `run_persistent_expert_worker`），专家采集统一走 `collect_expert.py` 调度
+- 同步内容仅做 `coribench→forcebench` 机械重命名，逐文件经 py_compile 验证；
+  完整测试套件需要在带 torch 的机器上复跑
+
 ### 2026-08-27 文档重构
 
 - 全部面向用户的文档**改为中文**，文件名统一为英文（ASCII 小写 + 下划线），

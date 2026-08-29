@@ -68,7 +68,9 @@ APPROACH_STANDOFF_M = 0.100
 PULL_RATE_M = 0.00045
 MAX_PULL_M = 0.120
 STABLE_STEPS = 6
-PROFILE_ORDER = ("slowdown_resume", "uniform", "perfect")
+# Formal RADMANSO demonstrations use only continuous pull profiles.  Assigning
+# by seed parity keeps the 0--199 formal set deterministic and exactly balanced.
+PROFILE_ORDER = ("perfect", "uniform")
 PHASES = (
     "observe", "approach", "descend", "grasp", "bias", "pull_free",
     "intentional_slowdown", "intentional_pause", "resume_pull",
@@ -281,18 +283,6 @@ class ParallelRadmansoExpert:
         desired = np.zeros(NUM_ENVS, dtype=np.float64)
         triggered = np.zeros(NUM_ENVS, dtype=bool)
         failed = np.zeros(NUM_ENVS, dtype=bool)
-        slowdown_done = np.asarray([profile != "slowdown_resume" for profile in self.profiles])
-        slowdown_remaining = np.zeros(NUM_ENVS, dtype=np.int64)
-        slowdown_kind = []
-        slowdown_opening = np.zeros(NUM_ENVS, dtype=np.float64)
-        for env_id, seed in enumerate(SEEDS):
-            rng = np.random.default_rng(int(seed) ^ 0x71A9C3)
-            slowdown_opening[env_id] = float(
-                rng.uniform(0.30, 0.65) * float(self.layouts[env_id]["resistance_start_open_m"])
-            )
-            slowdown_remaining[env_id] = int(rng.integers(15, 31))
-            slowdown_kind.append("pause" if int(seed) % 2 == 0 else "slowdown")
-
         start = len(self.buffers[0])
         for _ in range(420):
             openings = self.openings()
@@ -304,17 +294,6 @@ class ParallelRadmansoExpert:
                 if self.task.latch_broken_for(env_id):
                     failed[env_id] = True
                     continue
-                if not slowdown_done[env_id] and openings[env_id] >= slowdown_opening[env_id]:
-                    if slowdown_remaining[env_id] > 0:
-                        if slowdown_kind[env_id] == "pause":
-                            phases[env_id] = "intentional_pause"
-                        else:
-                            pulled[env_id] = min(MAX_PULL_M, pulled[env_id] + 0.18 * PULL_RATE_M)
-                            phases[env_id] = "intentional_slowdown"
-                        slowdown_remaining[env_id] -= 1
-                        command[env_id] = pull_origin[env_id] + pulled[env_id] * self.axes[env_id]
-                        continue
-                    slowdown_done[env_id] = True
                 desired[env_id] = min(MAX_PULL_M, desired[env_id] + PULL_RATE_M)
                 if self.profiles[env_id] == "uniform":
                     lead = max(0.0, resistances[env_id] - SPEC.free_resistance_n) / 300.0
@@ -324,8 +303,6 @@ class ParallelRadmansoExpert:
                 command[env_id] = pull_origin[env_id] + pulled[env_id] * self.axes[env_id]
                 if openings[env_id] >= float(self.layouts[env_id]["resistance_start_open_m"]):
                     phases[env_id] = "resistance_rise"
-                elif slowdown_done[env_id] and self.profiles[env_id] == "slowdown_resume":
-                    phases[env_id] = "resume_pull"
             self.step(command, np.zeros(NUM_ENVS), phases)
             openings = self.openings()
             resistances = self.resistances()
@@ -496,7 +473,7 @@ try:
                 "wrist": [args.wrist_image_size, args.wrist_image_size, 3],
             },
             "phase_schema": PHASE_SCHEMA,
-            "scripted_expert_generator_version": "radmanso_resistance_stop_32env_tiled_v1_physics60",
+            "scripted_expert_generator_version": "radmanso_resistance_stop_32env_tiled_v2_continuous_physics60",
             "scripted_expert_details": expert.details(env_id),
             "trajectory_profile": expert.profiles[env_id],
             "resistance_profile": {

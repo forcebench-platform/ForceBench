@@ -13,5 +13,4 @@ MANIFEST = TaskManifest(
     dataset_subdir="gear_mesh",
     scene_profile="gear_assembly_cell",
     description="Force-sensitive gear alignment, meshing, release, and retraction.",
-    evaluation_max_steps=1500,
 )

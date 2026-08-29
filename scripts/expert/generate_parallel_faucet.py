@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect 16 physical faucet-turn demonstrations in one Isaac process."""
+"""Collect 32 physical faucet-turn demonstrations in one Isaac process."""
 
 from __future__ import annotations
 
@@ -37,7 +37,7 @@ def parse_seed_list(value: str) -> list[int]:
 
 SEEDS = parse_seed_list(args.seeds)
 WRITE_SEEDS = frozenset(parse_seed_list(args.write_seeds))
-NUM_ENVS = 16
+NUM_ENVS = 32
 PHYSICS_RATE_HZ = 60
 CONTROL_RATE_HZ = 15
 PHASE_SCHEMA = {
@@ -57,7 +57,7 @@ PHASE_SCHEMA = {
     )
 }
 if len(SEEDS) != NUM_ENVS:
-    parser.error("the parallel faucet collector requires exactly 16 seeds")
+    parser.error("the parallel faucet collector requires exactly 32 seeds")
 if not WRITE_SEEDS.issubset(SEEDS):
     parser.error("--write_seeds must be a subset of --seeds")
 if args.env_spacing < 5.5:
@@ -522,7 +522,7 @@ try:
                 "collision_filtering": True,
                 "replicate_physics": True,
             },
-            "scripted_expert_generator_version": "parallel_faucet_physical_detent_v1_physics60",
+            "scripted_expert_generator_version": "parallel_faucet_physical_detent_32env_v2_physics60",
             "scene_roles": list(env.entity_roles),
             "asset_usd_paths": asset_paths,
             **task_metadata,
@@ -541,7 +541,7 @@ try:
             }
         )
     summary = {
-        "schema": "forcebench_parallel_faucet_16env_v1",
+        "schema": "forcebench_parallel_faucet_32env_v1",
         "task": "faucet_turn",
         "seeds": SEEDS,
         "write_seeds": sorted(WRITE_SEEDS),

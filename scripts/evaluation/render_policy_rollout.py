@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import json
 from pathlib import Path
 import traceback
@@ -11,6 +12,13 @@ import traceback
 from isaaclab.app import AppLauncher
 
 from forcebench.control import ARM_CONTROL_MODE
+from forcebench.recording import CANONICAL_RUNTIME_PROFILE
+
+
+CANONICAL_PHYSICS_RATE_HZ = int(CANONICAL_RUNTIME_PROFILE["physics_rate_hz"])
+CANONICAL_SOLVER_POSITION_ITERATIONS = int(
+    CANONICAL_RUNTIME_PROFILE["solver_position_iterations"]
+)
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--rollout_dir", type=Path, required=True)
@@ -20,8 +28,18 @@ parser.add_argument("--fps", type=float, default=15.0)
 parser.add_argument("--frame_stride", type=int, default=1)
 parser.add_argument("--main_image_size", type=int, default=224)
 parser.add_argument("--wrist_image_size", type=int, default=224)
-parser.add_argument("--physics_rate_hz", type=int, choices=(60,), default=60)
-parser.add_argument("--solver_position_iterations", type=int, choices=(64,), default=64)
+parser.add_argument(
+    "--physics_rate_hz",
+    type=int,
+    choices=(CANONICAL_PHYSICS_RATE_HZ,),
+    default=CANONICAL_PHYSICS_RATE_HZ,
+)
+parser.add_argument(
+    "--solver_position_iterations",
+    type=int,
+    choices=(CANONICAL_SOLVER_POSITION_ITERATIONS,),
+    default=CANONICAL_SOLVER_POSITION_ITERATIONS,
+)
 parser.add_argument("--final_settle_frames", type=int, default=8)
 parser.add_argument("--progress_interval", type=int, default=100)
 AppLauncher.add_app_launcher_args(parser)
@@ -45,7 +63,10 @@ task_name = args.task or str(saved_summary["task"])
 seed = int(saved_summary["seed"])
 physics_rate_hz = args.physics_rate_hz
 if int(saved_summary.get("physics_rate_hz", physics_rate_hz)) != physics_rate_hz:
-    parser.error("rollout physics rate does not match the fixed 60 Hz benchmark contract")
+    parser.error(
+        "rollout physics rate does not match the canonical collection/evaluation "
+        f"contract ({physics_rate_hz} Hz)"
+    )
 
 launcher = AppLauncher(args)
 simulation_app = launcher.app
@@ -115,6 +136,12 @@ try:
         raise ValueError(
             f"rollout scene {recorded_scene!r} does not match the task manifest "
             f"{task.manifest.scene_profile!r}"
+        )
+    recorded_camera = saved_summary.get("camera_profile")
+    expected_camera = json.loads(json.dumps(asdict(task.camera_profile)))
+    if isinstance(recorded_camera, dict) and recorded_camera != expected_camera:
+        raise ValueError(
+            "rollout camera profile does not match the current task camera profile"
         )
     cfg.scene_profile = task.manifest.scene_profile
     configure_runtime(
@@ -201,6 +228,7 @@ try:
         "arm_control_mode": env.arm_control_mode,
         "arm_controller_profile": env.arm_controller_profile,
         "scene_profile": env.scene_profile_name,
+        "camera_profile": expected_camera,
         "physics_rate_hz": physics_rate_hz,
         "duration_s": total / args.fps,
         "video_path": str(args.video_path.resolve()),

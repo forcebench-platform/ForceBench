@@ -83,7 +83,10 @@ class MessagePackWebSocketTransport:
         while time.monotonic() < deadline:
             try:
                 self._socket = websockets.sync.client.connect(
-                    self.uri, compression=compression, max_size=None, open_timeout=10
+                    self.uri,
+                    compression=compression,
+                    max_size=None,
+                    open_timeout=10,
                 )
                 metadata = self._socket.recv()
                 if isinstance(metadata, str):

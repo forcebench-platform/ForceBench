@@ -64,6 +64,11 @@ from forcebench.env_cfg import ASSET_DIR, ForceBenchEnvCfg, configure_runtime
 from forcebench.episode_qc import weight_sort_visual_errors, weight_sort_visual_metrics
 from forcebench.recording import EpisodeBuffer, HDF5EpisodeWriter, validate_hdf5_episode
 from forcebench.registry import load_task
+from forcebench.sort_expert_path import (
+    bounded_box_feedback_tcp_targets,
+    direct_transport_waypoints,
+    limit_tcp_command_step,
+)
 
 if args.task == "weight_sort":
     from forcebench.tasks.weight_sort.spec import SPEC, evaluate_final_state
@@ -73,6 +78,27 @@ else:
 
 NUM_ENVS = 32
 PHYSICS_RATE_HZ = 60
+TRANSPORT_CLEARANCE_Z_M = 0.24
+PLACEMENT_POSITION_TOLERANCE_M = 0.008
+RELEASE_BOX_GAP_TARGET_M = 0.040
+# The smaller rattle parcel can be lowered to 30--50 mm over its destination.
+# The weight-sort gripper is wider than the 100 mm container opening and its
+# fingers reach the 75 mm rim before the held box can enter that envelope.
+# Keep the box just above the rim instead of commanding through the container.
+RELEASE_BOX_GAP_RANGE_M = (
+    (0.050, 0.065) if args.task == "weight_sort" else (0.030, 0.050)
+)
+RELEASE_FEEDBACK_GAIN_XYZ = (0.12, 0.12, 0.08)
+RELEASE_MAX_COMMAND_STEP_M = 0.003
+RELEASE_STABLE_FRAMES = 6
+RELEASE_MAX_CONTROL_LINEAR_SPEED_M_S = 0.030
+RELEASE_MAX_CONTROL_ANGULAR_SPEED_RAD_S = 0.30
+RELEASE_FORCE_GUARD_N = 20.0
+RELEASE_COMMAND_Z_SAFETY_MARGIN_M = 0.010
+RELEASE_COMMAND_XY_BOUND_M = 0.040
+DIAGNOSE_RELEASE_ENVELOPE = os.environ.get(
+    "FORCEBENCH_DIAGNOSE_RELEASE_ENVELOPE", "0"
+) == "1"
 DOWN_RPY = np.asarray([math.pi, 0.0, 0.0], dtype=np.float32)
 TASK_PHASES = {
     "weight_sort": (
@@ -166,6 +192,7 @@ def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
     main = rgb_batch(env.table_rgb)
     wrist = rgb_batch(env.wrist_rgb)
     reports: list[dict[str, object]] = []
+    failures: list[str] = []
     for env_id in range(NUM_ENVS):
         if args.task == "weight_sort":
             metrics = weight_sort_visual_metrics(main[env_id], wrist[env_id])
@@ -195,8 +222,10 @@ def reset_visual_qc(env: ForceBenchEnv) -> list[dict[str, object]]:
                 if condition
             )
         if errors:
-            raise RuntimeError(f"env_{env_id} reset visual QC failed: {'; '.join(errors)}")
+            failures.append(f"env_{env_id}: {'; '.join(errors)}")
         reports.append({"env_id": env_id, "seed": SEEDS[env_id], "metrics": metrics})
+    if failures:
+        raise RuntimeError("reset visual QC failed: " + " | ".join(failures))
     return reports
 
 
@@ -258,6 +287,11 @@ class ParallelSortExpert:
         self.inspection_hold_s = np.zeros(NUM_ENVS, dtype=np.float32)
         self.inspection_max_hold_s = np.zeros(NUM_ENVS, dtype=np.float32)
         self.inspection_completed = np.zeros(NUM_ENVS, dtype=bool)
+        self.inspection_previous_box_position = None
+        self.inspection_previous_box_quaternion = None
+        self.inspection_max_position_step_m = np.zeros(NUM_ENVS, dtype=np.float32)
+        self.inspection_max_rotation_step_rad = np.zeros(NUM_ENVS, dtype=np.float32)
+        self.release_envelope_diagnostics: list[dict[str, object]] = []
         video_path.parent.mkdir(parents=True, exist_ok=True)
         size = int(args.video_tile_size)
         self.video = cv2.VideoWriter(
@@ -274,19 +308,45 @@ class ParallelSortExpert:
     def _update_rattle_inspection(self, phase: str) -> None:
         if args.task != "rattle_sort" or phase != "static_inspect":
             return
-        box_position, _ = self.env.entity_local_pose("box")
-        box = self.env.entity("box")
-        linear_speed = torch.linalg.vector_norm(box.data.root_lin_vel_w.torch, dim=1)
-        angular_speed = torch.linalg.vector_norm(box.data.root_ang_vel_w.torch, dim=1)
+        box_position, box_quaternion = self.env.entity_local_pose("box")
         distance = torch.linalg.vector_norm(box_position - self.env.fingertip_midpoint_pos, dim=1)
         held = (
             (box_position[:, 2] >= SPEC.inspection_min_lift_height_m)
             & (self.env.gripper_open_fraction_tensor <= SPEC.inspection_max_gripper_open_fraction)
             & (distance <= SPEC.inspection_max_tcp_box_distance_m)
         )
+        if self.inspection_previous_box_position is None:
+            position_step = torch.full(
+                (NUM_ENVS,), float("inf"), dtype=torch.float32, device=self.env.device
+            )
+            rotation_step = position_step.clone()
+        else:
+            position_step = torch.linalg.vector_norm(
+                box_position - self.inspection_previous_box_position, dim=1
+            )
+            quaternion_dot = torch.abs(
+                torch.sum(
+                    box_quaternion * self.inspection_previous_box_quaternion, dim=1
+                )
+            ).clamp(max=1.0)
+            rotation_step = 2.0 * torch.acos(quaternion_dot)
+        self.inspection_previous_box_position = box_position.clone()
+        self.inspection_previous_box_quaternion = box_quaternion.clone()
+        finite_position_step = torch.where(
+            torch.isfinite(position_step), position_step, torch.zeros_like(position_step)
+        )
+        finite_rotation_step = torch.where(
+            torch.isfinite(rotation_step), rotation_step, torch.zeros_like(rotation_step)
+        )
+        self.inspection_max_position_step_m = np.maximum(
+            self.inspection_max_position_step_m, as_numpy(finite_position_step)
+        )
+        self.inspection_max_rotation_step_rad = np.maximum(
+            self.inspection_max_rotation_step_rad, as_numpy(finite_rotation_step)
+        )
         stationary = (
-            (linear_speed <= SPEC.inspection_max_box_linear_speed_m_s)
-            & (angular_speed <= SPEC.inspection_max_box_angular_speed_rad_s)
+            (position_step <= SPEC.inspection_max_control_position_step_m)
+            & (rotation_step <= SPEC.inspection_max_control_rotation_step_rad)
         )
         valid = as_numpy(held & stationary)
         self.inspection_hold_s = np.where(
@@ -295,7 +355,10 @@ class ParallelSortExpert:
         self.inspection_max_hold_s = np.maximum(
             self.inspection_max_hold_s, self.inspection_hold_s
         )
-        self.inspection_completed |= valid
+        self.inspection_completed |= (
+            self.inspection_hold_s + np.float32(1.0e-6)
+            >= np.float32(SPEC.inspection_required_hold_s)
+        )
 
     def _privileged(self, box_pose: np.ndarray, env_id: int) -> dict[str, np.ndarray]:
         fields = {"objects/box/pose": box_pose[env_id]}
@@ -411,14 +474,26 @@ class ParallelSortExpert:
         self.phase_ranges.append({"name": phase, "start": start, "end": len(self.buffers[0])})
         if not bool(torch.all(stable >= SPEED_PROFILE["convergence_stable_frames"])):
             bad = as_numpy(stable < SPEED_PROFILE["convergence_stable_frames"])
+            actual_tcp = as_numpy(self.env.fingertip_midpoint_pos)
+            box_position, _ = self.env.entity_local_pose("box")
+            actual_box = as_numpy(box_position)
             details = [
                 {
                     "env_id": index,
                     "seed": SEEDS[index],
                     "position_error_m": float(as_numpy(position_error)[index]),
                     "rotation_error_rad": float(as_numpy(rotation_error)[index]),
+                    "target_tcp_position_m": targets[index].tolist(),
+                    "actual_tcp_position_m": actual_tcp[index].tolist(),
+                    "tcp_minus_target_m": (
+                        actual_tcp[index] - targets[index]
+                    ).tolist(),
+                    "box_position_m": actual_box[index].tolist(),
+                    "tcp_minus_box_m": (
+                        actual_tcp[index] - actual_box[index]
+                    ).tolist(),
                 }
-                for index in np.flatnonzero(bad)
+                for index in map(int, np.flatnonzero(bad))
             ]
             raise RuntimeError(f"phase {phase} did not converge: {json.dumps(details)}")
         print(
@@ -451,6 +526,181 @@ class ParallelSortExpert:
             values = np.stack(samples)
             self.load_signals_n = np.mean(values[len(values) // 2 :], axis=0)
 
+    def move_box_to_release_envelope(
+        self,
+        destination_xy_m: np.ndarray,
+        surface_z_m: np.ndarray,
+        gripper,
+        phase: str,
+        *,
+        max_frames: int = 300,
+    ) -> None:
+        destinations = np.asarray(destination_xy_m, dtype=np.float32).reshape(NUM_ENVS, 2)
+        surfaces = np.asarray(surface_z_m, dtype=np.float32).reshape(NUM_ENVS)
+        target_box = np.column_stack(
+            (
+                destinations,
+                surfaces + np.float32(RELEASE_BOX_GAP_TARGET_M),
+            )
+        ).astype(np.float32)
+        stable = np.zeros(NUM_ENVS, dtype=np.int64)
+        converged_frame = np.full(NUM_ENVS, -1, dtype=np.int64)
+        maximum_command_step = np.zeros(NUM_ENVS, dtype=np.float32)
+        maximum_force = np.zeros(NUM_ENVS, dtype=np.float32)
+        force_guard_triggered = np.zeros(NUM_ENVS, dtype=bool)
+        force_guard_first_frame = np.full(NUM_ENVS, -1, dtype=np.int64)
+        minimum_gap = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+        previous_box_position = None
+        previous_box_quaternion = None
+        box_position, _ = self.env.entity_local_pose("box")
+        command_tcp = as_numpy(self.env.fingertip_midpoint_pos).copy()
+        tcp_box_offset_z = command_tcp[:, 2] - as_numpy(box_position)[:, 2]
+        command_z_floor = (
+            surfaces
+            + np.float32(RELEASE_BOX_GAP_RANGE_M[0])
+            + np.maximum(tcp_box_offset_z, np.float32(0.0))
+            + np.float32(RELEASE_COMMAND_Z_SAFETY_MARGIN_M)
+        )
+        start = len(self.buffers[0])
+        final_xy_error = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+        final_gap = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+        final_linear_speed = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+        final_angular_speed = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+        for frame in range(max_frames):
+            box_position, _ = self.env.entity_local_pose("box")
+            targets, command_step = bounded_box_feedback_tcp_targets(
+                command_tcp,
+                as_numpy(box_position),
+                target_box,
+                gain=RELEASE_FEEDBACK_GAIN_XYZ,
+                max_command_step_m=RELEASE_MAX_COMMAND_STEP_M,
+            )
+            targets[:, :2] = np.clip(
+                targets[:, :2],
+                destinations - np.float32(RELEASE_COMMAND_XY_BOUND_M),
+                destinations + np.float32(RELEASE_COMMAND_XY_BOUND_M),
+            )
+            force_before = as_numpy(
+                torch.linalg.vector_norm(
+                    self.env.force_sensor_joint_raw[:, :3], dim=1
+                )
+            )
+            newly_guarded = (~force_guard_triggered) & (
+                force_before > RELEASE_FORCE_GUARD_N
+            )
+            force_guard_first_frame[newly_guarded] = frame + 1
+            force_guard_triggered |= force_before > RELEASE_FORCE_GUARD_N
+            descending_while_guarded = force_guard_triggered & (
+                targets[:, 2] < command_tcp[:, 2]
+            )
+            current_gap = as_numpy(box_position)[:, 2] - surfaces
+            descending_below_gap_floor = (
+                current_gap < RELEASE_BOX_GAP_RANGE_M[0]
+            ) & (targets[:, 2] < command_tcp[:, 2])
+            descending_while_guarded |= descending_below_gap_floor
+            targets[descending_while_guarded, 2] = command_tcp[
+                descending_while_guarded, 2
+            ]
+            targets[:, 2] = np.maximum(targets[:, 2], command_z_floor)
+            targets, command_step = limit_tcp_command_step(
+                command_tcp,
+                targets,
+                max_command_step_m=RELEASE_MAX_COMMAND_STEP_M,
+            )
+            command_norm = np.linalg.norm(command_step, axis=1)
+            if np.any(command_norm > RELEASE_MAX_COMMAND_STEP_M + 1.0e-5):
+                raise RuntimeError("release command limiter violated its 3D norm bound")
+            command_tcp = targets.copy()
+            maximum_command_step = np.maximum(
+                maximum_command_step, np.linalg.norm(command_step, axis=1)
+            )
+            self._record_and_step(targets, gripper, phase)
+            box_position, box_quaternion = self.env.entity_local_pose("box")
+            position = as_numpy(box_position)
+            quaternion = box_quaternion
+            final_xy_error = np.linalg.norm(position[:, :2] - destinations, axis=1)
+            final_gap = position[:, 2] - surfaces
+            minimum_gap = np.minimum(minimum_gap, final_gap)
+            if previous_box_position is None:
+                control_linear_speed = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+                control_angular_speed = np.full(NUM_ENVS, np.inf, dtype=np.float32)
+            else:
+                control_linear_speed = as_numpy(
+                    torch.linalg.vector_norm(
+                        box_position - previous_box_position, dim=1
+                    )
+                ) / np.float32(self.env.step_dt)
+                quaternion_dot = torch.abs(
+                    torch.sum(quaternion * previous_box_quaternion, dim=1)
+                ).clamp(max=1.0)
+                control_angular_speed = as_numpy(
+                    2.0 * torch.acos(quaternion_dot)
+                ) / np.float32(self.env.step_dt)
+            previous_box_position = box_position.clone()
+            previous_box_quaternion = quaternion.clone()
+            final_linear_speed = control_linear_speed
+            final_angular_speed = control_angular_speed
+            maximum_force = np.maximum(
+                maximum_force,
+                as_numpy(
+                    torch.linalg.vector_norm(
+                        self.env.force_sensor_joint_raw[:, :3], dim=1
+                    )
+                ),
+            )
+            within = (
+                (final_xy_error <= PLACEMENT_POSITION_TOLERANCE_M)
+                & (final_gap >= RELEASE_BOX_GAP_RANGE_M[0])
+                & (final_gap <= RELEASE_BOX_GAP_RANGE_M[1])
+                & (final_linear_speed <= RELEASE_MAX_CONTROL_LINEAR_SPEED_M_S)
+                & (final_angular_speed <= RELEASE_MAX_CONTROL_ANGULAR_SPEED_RAD_S)
+            )
+            stable = np.where(within, stable + 1, 0)
+            newly_converged = (converged_frame < 0) & (stable >= RELEASE_STABLE_FRAMES)
+            converged_frame[newly_converged] = frame + 1
+            if np.all(stable >= RELEASE_STABLE_FRAMES):
+                break
+        self.phase_ranges.append({"name": phase, "start": start, "end": len(self.buffers[0])})
+        diagnostics = [
+            {
+                "env_id": env_id,
+                "seed": SEEDS[env_id],
+                "converged": bool(converged_frame[env_id] >= 0),
+                "converged_control_frames": int(converged_frame[env_id]),
+                "max_command_step_m": float(maximum_command_step[env_id]),
+                "box_xy_error_m": float(final_xy_error[env_id]),
+                "box_bottom_surface_gap_m": float(final_gap[env_id]),
+                "control_observed_linear_speed_m_s": float(
+                    final_linear_speed[env_id]
+                ),
+                "control_observed_angular_speed_rad_s": float(
+                    final_angular_speed[env_id]
+                ),
+                "max_wrist_force_norm_n": float(maximum_force[env_id]),
+                "minimum_box_bottom_surface_gap_m": float(minimum_gap[env_id]),
+                "force_guard_triggered": bool(force_guard_triggered[env_id]),
+                "force_guard_first_frame": int(force_guard_first_frame[env_id]),
+                "command_z_floor_m": float(command_z_floor[env_id]),
+            }
+            for env_id in range(NUM_ENVS)
+        ]
+        self.release_envelope_diagnostics = diagnostics
+        print(
+            "FORCEBENCH_RELEASE_ENVELOPE="
+            + json.dumps(diagnostics, separators=(",", ":")),
+            flush=True,
+        )
+        if not np.all(stable >= RELEASE_STABLE_FRAMES):
+            raise RuntimeError(
+                "release envelope did not converge: "
+                + json.dumps(
+                    [item for item in diagnostics if not item["converged"]],
+                    separators=(",", ":"),
+                )
+            )
+        if DIAGNOSE_RELEASE_ENVELOPE:
+            raise RuntimeError("release envelope diagnostic completed without opening gripper")
+
     def _pickup(self, lift_phase: str, inspection_phase: str | None) -> None:
         open_gripper = np.ones(NUM_ENVS, dtype=np.float32)
         closed_gripper = np.zeros(NUM_ENVS, dtype=np.float32)
@@ -482,6 +732,27 @@ class ParallelSortExpert:
                 closed_gripper,
                 str(inspection_phase),
             )
+            if not np.all(self.inspection_completed):
+                details = [
+                    {
+                        "env_id": int(env_id),
+                        "seed": SEEDS[env_id],
+                        "max_consecutive_hold_s": float(
+                            self.inspection_max_hold_s[env_id]
+                        ),
+                        "max_position_step_m": float(
+                            self.inspection_max_position_step_m[env_id]
+                        ),
+                        "max_rotation_step_rad": float(
+                            self.inspection_max_rotation_step_rad[env_id]
+                        ),
+                    }
+                    for env_id in np.flatnonzero(~self.inspection_completed)
+                ]
+                raise RuntimeError(
+                    "rattle static inspection did not complete: "
+                    + json.dumps(details, separators=(",", ":"))
+                )
         lifted, _ = self.env.entity_local_pose("box")
         self.lifted_box_heights_m = as_numpy(lifted[:, 2])
         if np.any(self.lifted_box_heights_m < 0.075):
@@ -496,24 +767,6 @@ class ParallelSortExpert:
         self.hold(SPEED_PROFILE["observe_frames"], open_gripper, "observe_layout")
         self._pickup("lift_and_weigh", None)
         is_light = np.asarray([layout["box_kind"] == "light" for layout in self.env.layouts])
-        waypoint_1 = np.where(
-            is_light[:, None],
-            np.asarray([0.50, 0.10, 0.22], dtype=np.float32),
-            np.asarray([0.44, 0.10, 0.20], dtype=np.float32),
-        )
-        waypoint_2 = np.where(
-            is_light[:, None],
-            np.asarray([0.58, 0.24, 0.21], dtype=np.float32),
-            np.asarray([0.36, 0.24, 0.20], dtype=np.float32),
-        )
-        for waypoint in (waypoint_1, waypoint_2):
-            self.move(
-                waypoint,
-                closed_gripper,
-                "transport_to_container",
-                max_frames=170,
-                tolerance_m=0.040,
-            )
         destination = np.asarray(
             [
                 [*SPEC.black_container_center_xy_m, 0.20]
@@ -523,12 +776,25 @@ class ParallelSortExpert:
             ],
             dtype=np.float32,
         )
-        self.move(
+        transport_route = direct_transport_waypoints(
+            as_numpy(self.env.fingertip_midpoint_pos),
             destination,
+            clearance_z_m=TRANSPORT_CLEARANCE_Z_M,
+            release_z_m=0.12,
+        )
+        for index, waypoint in enumerate(transport_route[:2]):
+            self.move(
+                waypoint,
+                closed_gripper,
+                "transport_to_container",
+                max_frames=220 if index < 2 else 300,
+                tolerance_m=0.020,
+            )
+        self.move_box_to_release_envelope(
+            destination[:, :2],
+            np.zeros(NUM_ENVS, dtype=np.float32),
             closed_gripper,
             "transport_to_container",
-            max_frames=300,
-            tolerance_m=0.030,
         )
         self.hold(
             SPEED_PROFILE["pre_release_hold_frames"],
@@ -536,10 +802,8 @@ class ParallelSortExpert:
             "transport_to_container",
         )
         self.hold(SPEED_PROFILE["release_open_frames"], open_gripper, "release_box")
-        retract = np.asarray(
-            [[0.56, 0.22, 0.25] if light else [0.36, 0.20, 0.25] for light in is_light],
-            dtype=np.float32,
-        )
+        retract = destination.copy()
+        retract[:, 2] = 0.27
         self.move(retract, open_gripper, "release_box", max_frames=180)
         self.hold(SPEED_PROFILE["post_release_hold_frames"], open_gripper, "release_box")
         self.hold(
@@ -567,26 +831,6 @@ class ParallelSortExpert:
         imbalanced = np.asarray(
             [layout["box_kind"] == "imbalanced" for layout in self.env.layouts]
         )
-        waypoint_1 = np.where(
-            imbalanced[:, None],
-            np.asarray([0.44, -0.12, 0.24], dtype=np.float32),
-            np.asarray([0.50, 0.14, 0.24], dtype=np.float32),
-        )
-        waypoint_2 = np.where(
-            imbalanced[:, None],
-            np.asarray([0.40, -0.23, 0.22], dtype=np.float32),
-            np.asarray(
-                [SPEC.conveyor_center_xy_m[0], 0.26, 0.22], dtype=np.float32
-            ),
-        )
-        for waypoint in (waypoint_1, waypoint_2):
-            self.move(
-                waypoint,
-                closed_gripper,
-                "transport_to_destination",
-                max_frames=170,
-                tolerance_m=0.040,
-            )
         destination = np.asarray(
             [
                 [*SPEC.black_basket_center_xy_m, 0.20]
@@ -596,12 +840,30 @@ class ParallelSortExpert:
             ],
             dtype=np.float32,
         )
-        self.move(
+        transport_route = direct_transport_waypoints(
+            as_numpy(self.env.fingertip_midpoint_pos),
             destination,
+            clearance_z_m=TRANSPORT_CLEARANCE_Z_M,
+            release_z_m=0.12,
+        )
+        for index, waypoint in enumerate(transport_route[:2]):
+            self.move(
+                waypoint,
+                closed_gripper,
+                "transport_to_destination",
+                max_frames=220 if index < 2 else 300,
+                tolerance_m=0.020,
+            )
+        release_surfaces = np.where(
+            imbalanced,
+            np.float32(SPEC.black_basket_visual_floor_z_m),
+            np.float32(SPEC.conveyor_surface_z_m),
+        )
+        self.move_box_to_release_envelope(
+            destination[:, :2],
+            release_surfaces,
             closed_gripper,
             "transport_to_destination",
-            max_frames=300,
-            tolerance_m=0.040,
         )
         self.hold(
             SPEED_PROFILE["pre_release_hold_frames"],
@@ -609,15 +871,8 @@ class ParallelSortExpert:
             "transport_to_destination",
         )
         self.hold(SPEED_PROFILE["release_open_frames"], open_gripper, "release_box")
-        retract = np.asarray(
-            [
-                [0.40, -0.20, 0.27]
-                if value
-                else [SPEC.conveyor_center_xy_m[0], 0.23, 0.27]
-                for value in imbalanced
-            ],
-            dtype=np.float32,
-        )
+        retract = destination.copy()
+        retract[:, 2] = 0.27
         self.move(retract, open_gripper, "release_box", max_frames=180)
         self.hold(SPEED_PROFILE["post_release_hold_frames"], open_gripper, "release_box")
         self.hold(
@@ -659,6 +914,11 @@ class ParallelSortExpert:
             "lifted_box_height_m": float(self.lifted_box_heights_m[env_id]),
             "destination": layout["destination"],
             "phase_ranges_control_frames": list(self.phase_ranges),
+            "release_envelope": (
+                self.release_envelope_diagnostics[env_id]
+                if self.release_envelope_diagnostics
+                else None
+            ),
         }
         if args.task == "weight_sort":
             common["load_signals_n"] = {"box": float(self.load_signals_n[env_id])}
@@ -684,6 +944,13 @@ class ParallelSortExpert:
                         ),
                         "inspection_completed": bool(
                             self.inspection_completed[env_id]
+                        ),
+                        "required_hold_s": float(SPEC.inspection_required_hold_s),
+                        "max_position_step_m": float(
+                            self.inspection_max_position_step_m[env_id]
+                        ),
+                        "max_rotation_step_rad": float(
+                            self.inspection_max_rotation_step_rad[env_id]
                         ),
                     },
                 }
@@ -725,8 +992,8 @@ try:
         env.sim.render()
     env.update_cameras()
     extents = weight_container_extents()
-    visual_qc = reset_visual_qc(env)
     write_overview(overview_path, env, "initial_reset")
+    visual_qc = reset_visual_qc(env)
 
     env.start_wrench_capture()
     expert = ParallelSortExpert(env, video_path)
@@ -764,11 +1031,11 @@ try:
         if args.task == "weight_sort":
             end_reason = "scripted_parallel_weight_sort_final_check"
             control_source = "scripted_32env_single_process_weight_sort_pose_oracle"
-            version = "weight_sort_32env_tiled_v3_physics60"
+            version = "weight_sort_32env_tiled_v8_dynamic_route_box_feedback_release_physics60"
         else:
             end_reason = "scripted_parallel_rattle_sort_final_check"
             control_source = "scripted_32env_single_process_rattle_sort_pose_oracle"
-            version = "rattle_sort_32env_tiled_v1_physics60"
+            version = "rattle_sort_32env_tiled_v8_basket_safe_pickup_rectangle_thick_floor_bounded_pi_box_feedback_static2s_physics60"
         metadata = {
             "task": args.task,
             "prompt": task.manifest.prompt,
@@ -786,6 +1053,20 @@ try:
             "state_semantics": "world_tcp_xyz_rpy_gripper_open_minus1_plus1",
             "action_semantics": "world_target_tcp_xyz_rpy_gripper_open_minus1_plus1",
             "control_source": control_source,
+            "transport_path_profile": {
+                "type": "current_tcp_raise_layout_destination_midpoint_release_retract",
+                "clearance_tcp_z_m": TRANSPORT_CLEARANCE_Z_M,
+                "release_box_gap_target_m": RELEASE_BOX_GAP_TARGET_M,
+                "release_box_gap_range_m": list(RELEASE_BOX_GAP_RANGE_M),
+                "placement_position_tolerance_m": PLACEMENT_POSITION_TOLERANCE_M,
+                "release_feedback_gain_xyz": list(RELEASE_FEEDBACK_GAIN_XYZ),
+                "release_max_command_step_m": RELEASE_MAX_COMMAND_STEP_M,
+                "release_stable_frames": RELEASE_STABLE_FRAMES,
+                "release_force_guard_n": RELEASE_FORCE_GUARD_N,
+                "release_command_z_safety_margin_m": (
+                    RELEASE_COMMAND_Z_SAFETY_MARGIN_M
+                ),
+            },
             "wrench_profile": env.wrench_profile,
             "wrench_storage": "raw_and_ema",
             "primary_wrist_wrench_dataset": "forces/control/eef_wrench_joint_raw",

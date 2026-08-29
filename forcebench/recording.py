@@ -19,15 +19,7 @@ from .control import (
 )
 
 
-# Tag written into every new episode.
 HDF5_SCHEMA_VERSION = "forcebench_hdf5"
-# The project was called CoRiBench when the currently published expert data was
-# collected, so every existing .hdf5 on disk carries the old tag. Readers must
-# accept both; only writers use HDF5_SCHEMA_VERSION above. Do not "clean this
-# up" by dropping the legacy value — it would make the released converter
-# unable to read the released data.
-HDF5_SCHEMA_VERSION_LEGACY = "coribench_hdf5"
-HDF5_SCHEMA_VERSIONS_ACCEPTED = (HDF5_SCHEMA_VERSION, HDF5_SCHEMA_VERSION_LEGACY)
 MODEL_VECTOR_DIM = 7
 WRENCH_DIM = 6
 CANONICAL_WRENCH_PROFILE = {
@@ -54,6 +46,11 @@ CANONICAL_ARM_CONTROLLER_PROFILE = DEFAULT_ARM_CONTROLLER_PROFILE
 # 120 Hz remains readable only so legacy datasets can still be audited.  Every
 # current collection entry point is fixed to the 60 Hz production contract.
 SUPPORTED_PHYSICS_RATES_HZ = (60, 120)
+CONTROL_SOURCE_TYPE_SCHEMA = {
+    "expert": 0,
+    "exploration": 1,
+    "expert_recovery": 2,
+}
 
 
 def runtime_profile(physics_rate_hz: int) -> dict[str, float | int]:
@@ -172,9 +169,11 @@ class EpisodeBuffer:
     terminated_flags: list[bool] = field(default_factory=list)
     truncated_flags: list[bool] = field(default_factory=list)
     phase_ids: list[int] = field(default_factory=list)
+    control_source_type_ids: list[int] = field(default_factory=list)
     _images_present: bool | None = field(default=None, init=False, repr=False)
     _privileged_keys: tuple[str, ...] | None = field(default=None, init=False, repr=False)
     _phase_present: bool | None = field(default=None, init=False, repr=False)
+    _control_source_type_present: bool | None = field(default=None, init=False, repr=False)
 
     def append(
         self,
@@ -191,6 +190,7 @@ class EpisodeBuffer:
         tcp_pose: Any | None = None,
         privileged: dict[str, Any] | None = None,
         phase_id: int | None = None,
+        control_source_type_id: int | None = None,
     ) -> None:
         if not math.isfinite(timestamp) or timestamp < 0:
             raise ValueError("timestamp must be finite and non-negative")
@@ -259,6 +259,17 @@ class EpisodeBuffer:
             if not 0 <= int(phase_id) <= 255:
                 raise ValueError("phase_id must fit in uint8")
             self.phase_ids.append(int(phase_id))
+        source_type_present = control_source_type_id is not None
+        if self._control_source_type_present is None:
+            self._control_source_type_present = source_type_present
+        elif self._control_source_type_present != source_type_present:
+            raise ValueError(
+                "control_source_type_id must be present either on every frame or no frames"
+            )
+        if source_type_present:
+            if not 0 <= int(control_source_type_id) <= 255:
+                raise ValueError("control_source_type_id must fit in uint8")
+            self.control_source_type_ids.append(int(control_source_type_id))
 
     def set_last_transition_outcome(
         self, *, reward: float, success: bool, terminated: bool, truncated: bool
@@ -310,6 +321,14 @@ class EpisodeBuffer:
             if len(self.phase_ids) != len(self):
                 raise ValueError("phase_id is not present for every episode frame")
             arrays["phase_id"] = np.asarray(self.phase_ids, dtype=np.uint8)
+        if self.control_source_type_ids:
+            if len(self.control_source_type_ids) != len(self):
+                raise ValueError(
+                    "control_source_type_id is not present for every episode frame"
+                )
+            arrays["control_source_type_id"] = np.asarray(
+                self.control_source_type_ids, dtype=np.uint8
+            )
         return arrays
 
 
@@ -427,6 +446,32 @@ class HDF5EpisodeWriter:
             raise ValueError("physics joint wrench contains NaN or Inf")
 
         arrays = episode.arrays()
+        source_schema = metadata.get("control_source_type_schema")
+        trajectory_type = metadata.get("trajectory_type")
+        source_array = arrays.get("control_source_type_id")
+        if any(value is not None for value in (source_schema, trajectory_type, source_array)):
+            if source_schema != CONTROL_SOURCE_TYPE_SCHEMA:
+                raise ValueError(
+                    "control_source_type_schema must match the canonical source mapping"
+                )
+            if trajectory_type not in {"expert", "exploration"}:
+                raise ValueError("trajectory_type must be 'expert' or 'exploration'")
+            if source_array is None or source_array.shape != (len(episode),):
+                raise ValueError(
+                    "source-labelled episode requires control/source_type on every frame"
+                )
+            actual_source_types = {int(value) for value in np.unique(source_array)}
+            if trajectory_type == "expert" and actual_source_types != {
+                CONTROL_SOURCE_TYPE_SCHEMA["expert"]
+            }:
+                raise ValueError("expert episode contains a non-expert control source")
+            if trajectory_type == "exploration" and not {
+                CONTROL_SOURCE_TYPE_SCHEMA["exploration"],
+                CONTROL_SOURCE_TYPE_SCHEMA["expert_recovery"],
+            }.issubset(actual_source_types):
+                raise ValueError(
+                    "exploration episode requires exploration and expert_recovery frames"
+                )
         images_present = "observation.image" in arrays
         if bool(metadata.get("images_present", images_present)) != images_present:
             raise ValueError("metadata images_present does not match episode arrays")
@@ -483,6 +528,8 @@ class HDF5EpisodeWriter:
                 handle.attrs["num_frames"] = len(episode)
                 handle.attrs["success"] = True
                 handle.attrs["task"] = metadata["task"]
+                if "trajectory_type" in metadata:
+                    handle.attrs["trajectory_type"] = str(metadata["trajectory_type"])
                 handle.attrs["metadata_json"] = json.dumps(document, ensure_ascii=False)
 
                 observations = handle.create_group("observations")
@@ -510,6 +557,12 @@ class HDF5EpisodeWriter:
                 if "phase_id" in arrays:
                     phases = handle.create_group("phases")
                     self._dataset(phases, "id", arrays["phase_id"])
+
+                if "control_source_type_id" in arrays:
+                    control = handle.create_group("control")
+                    self._dataset(
+                        control, "source_type", arrays["control_source_type_id"]
+                    )
 
                 forces = handle.create_group("forces")
                 control_forces = forces.create_group("control")
@@ -582,10 +635,9 @@ def validate_hdf5_episode(path: str | Path) -> dict[str, Any]:
     path = Path(path)
     with h5py.File(path, "r") as handle:
         schema = str(handle.attrs.get("schema_version", ""))
-        if schema not in HDF5_SCHEMA_VERSIONS_ACCEPTED:
+        if schema != HDF5_SCHEMA_VERSION:
             raise ValueError(
-                f"unsupported HDF5 schema: {schema!r}; "
-                f"expected one of {HDF5_SCHEMA_VERSIONS_ACCEPTED!r}"
+                f"unsupported HDF5 schema: {schema!r}; expected {HDF5_SCHEMA_VERSION!r}"
             )
         frames = int(handle.attrs["num_frames"])
         metadata = json.loads(str(handle.attrs["metadata_json"]))
@@ -682,6 +734,39 @@ def validate_hdf5_episode(path: str | Path) -> dict[str, Any]:
             actual = {int(value) for value in np.unique(handle["phases/id"][...])}
             if not actual.issubset(declared):
                 raise ValueError("episode contains a phase id not declared in phase_schema")
+
+        source_schema = metadata.get("control_source_type_schema")
+        trajectory_type = metadata.get("trajectory_type")
+        source_present = "control/source_type" in handle
+        if any(value is not None for value in (source_schema, trajectory_type)) or source_present:
+            if source_schema != CONTROL_SOURCE_TYPE_SCHEMA:
+                raise ValueError(
+                    "control_source_type_schema must match the canonical source mapping"
+                )
+            if trajectory_type not in {"expert", "exploration"}:
+                raise ValueError("trajectory_type must be 'expert' or 'exploration'")
+            if not source_present or handle["control/source_type"].shape != (frames,):
+                raise ValueError(
+                    "source-labelled episode is missing control/source_type"
+                )
+            source_values = handle["control/source_type"][...]
+            if source_values.dtype != np.uint8:
+                raise ValueError("control/source_type must use uint8")
+            actual_source_types = {int(value) for value in np.unique(source_values)}
+            declared_source_types = {int(value) for value in source_schema.values()}
+            if not actual_source_types.issubset(declared_source_types):
+                raise ValueError("episode contains an undeclared control source type")
+            if trajectory_type == "expert" and actual_source_types != {
+                CONTROL_SOURCE_TYPE_SCHEMA["expert"]
+            }:
+                raise ValueError("expert episode contains a non-expert control source")
+            if trajectory_type == "exploration" and not {
+                CONTROL_SOURCE_TYPE_SCHEMA["exploration"],
+                CONTROL_SOURCE_TYPE_SCHEMA["expert_recovery"],
+            }.issubset(actual_source_types):
+                raise ValueError(
+                    "exploration episode requires exploration and expert_recovery frames"
+                )
 
         for key in ("observations/images/main", "observations/images/wrist"):
             image = handle[key]

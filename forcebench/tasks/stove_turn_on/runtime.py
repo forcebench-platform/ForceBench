@@ -445,6 +445,7 @@ class StoveTurnOnTask(TaskRuntime):
 
     def evaluate_final_state_for(self, env, env_id: int) -> dict[str, object]:
         self._ensure_batch_state(env.num_envs)
+        env_id = int(env_id)
         episode_spec = self._episode_specs[env_id]
         report = evaluate_angle(self._last_angle_rad_batch[env_id], episode_spec)
         report["ignition_detent_crossed"] = self._detent_crossed_batch[env_id]
@@ -464,14 +465,11 @@ class StoveTurnOnTask(TaskRuntime):
 
     def privileged_observations(self, env):
         entity = env.entity("stove_knob")
-        observations = {
-            "objects/stove_knob/pose": env.entity_world_pose("stove_knob"),
-            "objects/stove_knob/joint_position": entity.data.joint_pos.torch,
-            "objects/stove_knob/joint_velocity": entity.data.joint_vel.torch,
+        return {
+            "objects/stove_knob/pose": env.entity_world_pose("stove_knob")[0],
+            "objects/stove_knob/joint_position": entity.data.joint_pos.torch[0],
+            "objects/stove_knob/joint_velocity": entity.data.joint_vel.torch[0],
         }
-        if env.num_envs == 1:
-            return {key: value[0] for key, value in observations.items()}
-        return observations
 
     def wrench_reference_position(self, env):
         self._ensure_batch_state(env.num_envs)

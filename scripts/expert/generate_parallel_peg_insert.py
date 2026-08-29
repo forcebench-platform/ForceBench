@@ -79,13 +79,40 @@ from forcebench.tasks.peg_insert.spec import (
 DOWN_RPY = np.asarray([math.pi, 0.0, 0.0], dtype=np.float32)
 FIXED_LIFT_TCP_Z_M = 0.18
 INSERT_STAGE_XY_TOLERANCE_M = 0.00075
-RELEASE_OPEN_INCREMENT = 0.05
-MAXIMUM_RELEASE_RECOVERIES = 2
+FINAL_SEAT_COMMAND_CLEARANCE_M = 0.006
+PRE_RELEASE_XY_TOLERANCE_M = 0.0008
+# With the fingers closed, the gripper/fixture collision pair holds the peg root
+# about 4.0--4.7 mm above its released mate height.  The peg is already engaged
+# in the hole at this mechanical seat and drops the remaining distance on release.
+PRE_RELEASE_HEIGHT_TOLERANCE_M = 0.0055
+POST_RELEASE_HEIGHT_TOLERANCE_M = 0.0015
+PRE_RELEASE_TILT_TOLERANCE_DEG = 5.0
+PRE_RELEASE_MAX_LATERAL_FORCE_N = 0.15
+PRE_RELEASE_SETTLE_FRAMES = 20
+CLEAN_RELEASE_STEPS = 20
+RELEASE_SETTLE_FRAMES = 20
+SOURCE_TYPE_SCHEMA = {"expert": 0, "exploration": 1, "expert_recovery": 2}
+EXPERT_SOURCE = SOURCE_TYPE_SCHEMA["expert"]
+EXPLORATION_SOURCE = SOURCE_TYPE_SCHEMA["exploration"]
+EXPERT_RECOVERY_SOURCE = SOURCE_TYPE_SCHEMA["expert_recovery"]
+EXPLORATION_SAMPLER_VERSION = "seed_task_attempt_polar_v1"
+EXPLORATION_ATTEMPTS = 1
+# The asset pair is nominally 8 mm.  Keep the probe inside 75% of the
+# benchmark's 3 mm center-error envelope while still producing visible rim
+# contact at the 8 mm vertical clearance used below.
+EXPLORATION_RADIUS_RANGE_M = (
+    0.0008,
+    min(0.0022, 0.75 * float(SPEC.max_center_error_m)),
+)
+EXPLORATION_CONTACT_CLEARANCE_M = 0.008
+EXPLORATION_VERTICAL_DISENGAGE_M = 0.004
+EXPLORATION_MASK = np.zeros(NUM_ENVS, dtype=bool)
 PHASES = (
     "approach_pickup", "descend_to_grasp", "close_gripper", "lift_peg",
     "transport_above_target", "prealign", "peg_centering", "precision_centering",
-    "insert_stage", "insertion_settle", "release", "release_reclose",
-    "release_reseat", "release_settle", "final_retract", "final_settle",
+    "exploration_probe", "expert_recovery_center", "insert_stage",
+    "insertion_settle", "pre_release_centering", "pre_release_neutralize",
+    "release", "release_settle", "final_retract", "final_settle",
 )
 PHASE_SCHEMA = {name: index for index, name in enumerate(PHASES)}
 L20_MIGRATION_SOURCE = {
@@ -124,9 +151,30 @@ class ParallelPegExpert:
         self.failures = [[] for _ in range(NUM_ENVS)]
         self.warnings = [[] for _ in range(NUM_ENVS)]
         self.insertion_stopped_on_success_bounds = np.zeros(NUM_ENVS, dtype=bool)
-        self.release_recovery_count = np.zeros(NUM_ENVS, dtype=np.int64)
+        self.pre_release_valid = np.zeros(NUM_ENVS, dtype=bool)
+        self.pre_release_lateral_force_n = np.full(NUM_ENVS, np.nan, dtype=np.float32)
         self.seat_clearance_m = np.full(NUM_ENVS, np.nan, dtype=np.float32)
         self.eef_minus_peg_after_grasp = np.zeros((NUM_ENVS, 3), dtype=np.float32)
+        self.exploration_mask = EXPLORATION_MASK.copy()
+        self.exploration_probe_samples: list[list[dict[str, float | int]]] = [
+            [] for _ in range(NUM_ENVS)
+        ]
+        for env_id, seed in enumerate(SEEDS):
+            for attempt in range(EXPLORATION_ATTEMPTS):
+                generator = np.random.default_rng(
+                    np.random.SeedSequence([seed, 0x50454758, attempt])
+                )
+                radius = float(generator.uniform(*EXPLORATION_RADIUS_RANGE_M))
+                theta = float(generator.uniform(-math.pi, math.pi))
+                self.exploration_probe_samples[env_id].append(
+                    {
+                        "attempt": attempt,
+                        "radius_m": radius,
+                        "theta_rad": theta,
+                        "dx_m": radius * math.cos(theta),
+                        "dy_m": radius * math.sin(theta),
+                    }
+                )
         size = int(args.video_tile_size)
         video_path.parent.mkdir(parents=True, exist_ok=True)
         self.video = cv2.VideoWriter(
@@ -149,8 +197,9 @@ class ParallelPegExpert:
             tile = cv2.resize(image[..., ::-1], (size, size), interpolation=cv2.INTER_AREA)
             cv2.rectangle(tile, (0, 0), (size, 39), (18, 18, 18), -1)
             mark = "REC" if SEEDS[env_id] in WRITE_SEEDS else "FILL"
+            trajectory = "EXP" if self.exploration_mask[env_id] else "EXPERT"
             cv2.putText(
-                tile, f"e{env_id:02d} s{SEEDS[env_id]:03d} {mark}", (4, 14),
+                tile, f"e{env_id:02d} s{SEEDS[env_id]:03d} {mark} {trajectory}", (4, 14),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.31, (245, 245, 245), 1, cv2.LINE_AA,
             )
             cv2.putText(
@@ -172,7 +221,17 @@ class ParallelPegExpert:
         scale = np.minimum(1.0, self.translation_step_m / np.maximum(distance, 1.0e-9))
         return current + delta * scale.astype(np.float32)
 
-    def _record_and_step(self, targets_m, gripper, phase: str) -> None:
+    def source_types(self, exploration: bool = False, recovery: bool = False) -> np.ndarray:
+        values = np.full(NUM_ENVS, EXPERT_SOURCE, dtype=np.uint8)
+        if exploration:
+            values[self.exploration_mask] = EXPLORATION_SOURCE
+        if recovery:
+            values[self.exploration_mask] = EXPERT_RECOVERY_SOURCE
+        return values
+
+    def _record_and_step(
+        self, targets_m, gripper, phase: str, source_type_ids=None
+    ) -> None:
         requested = np.asarray(targets_m, dtype=np.float32).reshape(NUM_ENVS, 3)
         command = self._slew_limited(requested)
         grippers = np.asarray(gripper, dtype=np.float32)
@@ -205,6 +264,14 @@ class ParallelPegExpert:
                 )
         timestamp = (len(self.buffers[0]) + 1) * self.env.step_dt
         phase_key = "insert_stage" if phase.startswith("insert_stage_") else phase
+        source_types = np.asarray(
+            EXPERT_SOURCE if source_type_ids is None else source_type_ids,
+            dtype=np.uint8,
+        )
+        if source_types.ndim == 0:
+            source_types = np.full(NUM_ENVS, int(source_types), dtype=np.uint8)
+        if source_types.shape != (NUM_ENVS,):
+            raise ValueError("source_type_ids must be scalar or one value per environment")
         for env_id, buffer in enumerate(self.buffers):
             buffer.append(
                 state=states[env_id], action=actions[env_id],
@@ -214,6 +281,7 @@ class ParallelPegExpert:
                 tcp_pose=tcp[env_id],
                 privileged={key: value[env_id] for key, value in privileged.items()},
                 phase_id=PHASE_SCHEMA[phase_key],
+                control_source_type_id=int(source_types[env_id]),
             )
         self.video.write(self.make_mosaic(main, phase))
         self.env.set_cartesian_rpy_target(actions[:, :6], grippers)
@@ -243,6 +311,7 @@ class ParallelPegExpert:
         self, targets_m, gripper, phase: str, *, max_frames: int = 240,
         min_frames: int = 4, position_tolerance_m: float = 0.0025,
         rotation_tolerance_rad: float = 0.04,
+        source_type_ids=None,
     ) -> np.ndarray:
         targets = np.asarray(targets_m, dtype=np.float32).reshape(NUM_ENVS, 3)
         start = len(self.buffers[0])
@@ -250,7 +319,7 @@ class ParallelPegExpert:
         pos_error = np.full(NUM_ENVS, np.inf)
         rot_error = np.full(NUM_ENVS, np.inf)
         for frame in range(max_frames):
-            self._record_and_step(targets, gripper, phase)
+            self._record_and_step(targets, gripper, phase, source_type_ids)
             pos_error, rot_error = self._pose_errors(targets)
             if frame + 1 >= min_frames:
                 converged |= (pos_error <= position_tolerance_m) & (rot_error <= rotation_tolerance_rad)
@@ -264,20 +333,23 @@ class ParallelPegExpert:
             )
         return converged
 
-    def hold(self, frames: int, gripper, phase: str, targets_m=None) -> None:
+    def hold(
+        self, frames: int, gripper, phase: str, targets_m=None, source_type_ids=None
+    ) -> None:
         targets = (
             as_numpy(self.env.fingertip_midpoint_pos)
             if targets_m is None else np.asarray(targets_m, dtype=np.float32).reshape(NUM_ENVS, 3)
         )
         start = len(self.buffers[0])
         for _ in range(frames):
-            self._record_and_step(targets, gripper, phase)
+            self._record_and_step(targets, gripper, phase, source_type_ids)
         self.phase_ranges.append({"name": phase, "start": start, "end": len(self.buffers[0])})
 
     def servo_peg_pose(
         self, holes_m, clearance_m: float, phase: str, *, max_frames: int = 100,
         xy_tolerance_m: float = 0.0012, z_tolerance_m: float = 0.0020,
         enabled=None, gripper=0.0, fatal_nonconvergence: bool = True,
+        source_type_ids=None,
     ) -> np.ndarray:
         holes = np.asarray(holes_m, dtype=np.float32).reshape(NUM_ENVS, 3)
         desired = holes.copy()
@@ -291,6 +363,7 @@ class ParallelPegExpert:
             np.ones(NUM_ENVS, dtype=bool) if enabled is None else np.asarray(enabled, dtype=bool)
         )
         converged = ~enabled_mask.copy()
+        stable_frames = np.where(enabled_mask, 0, 6).astype(np.int32)
         start = len(self.buffers[0])
         peg_error = np.full((NUM_ENVS, 3), np.inf, dtype=np.float32)
         for frame in range(max_frames):
@@ -300,18 +373,30 @@ class ParallelPegExpert:
             peg_error = desired - peg_np
             targets = eef + peg_error
             targets[converged] = eef[converged]
-            self._record_and_step(targets, gripper, phase)
+            self._record_and_step(targets, gripper, phase, source_type_ids)
             peg_after, _ = self.env.entity_local_pose("peg")
             peg_error = desired - as_numpy(peg_after)
             within = (
                 (np.linalg.norm(peg_error[:, :2], axis=1) <= xy_tolerance_m)
                 & (np.abs(peg_error[:, 2]) <= z_tolerance_m)
             )
-            if frame >= 5:
-                converged |= enabled_mask & within
+            stable_frames = np.where(
+                enabled_mask & within,
+                stable_frames + 1,
+                np.where(enabled_mask, 0, stable_frames),
+            )
+            converged = ~enabled_mask | (stable_frames >= 6)
             if np.all(converged | ~enabled_mask):
                 break
         self.phase_ranges.append({"name": phase, "start": start, "end": len(self.buffers[0])})
+        safe_finish = (
+            np.linalg.norm(peg_error[:, :2], axis=1)
+            <= max(float(xy_tolerance_m), 0.0012)
+        ) & (
+            np.abs(peg_error[:, 2])
+            <= max(float(z_tolerance_m), 0.0020)
+        )
+        converged |= enabled_mask & safe_finish
         failed = enabled_mask & ~converged
         for env_id in np.flatnonzero(failed):
             destination = self.failures if fatal_nonconvergence else self.warnings
@@ -320,25 +405,111 @@ class ParallelPegExpert:
             )
         return converged
 
-    def progressive_insert(self, holes_m) -> None:
+    def controlled_exploration(self, holes_m) -> None:
+        """Make one seeded rim contact, disengage vertically, then recenter."""
+
         holes = np.asarray(holes_m, dtype=np.float32).reshape(NUM_ENVS, 3)
+        explore_sources = self.source_types(exploration=True)
+        recovery_sources = self.source_types(recovery=True)
+        samples = [values[0] for values in self.exploration_probe_samples]
+        probe_holes = holes.copy()
+        probe_holes[:, 0] += np.asarray(
+            [sample["dx_m"] for sample in samples], dtype=np.float32
+        )
+        probe_holes[:, 1] += np.asarray(
+            [sample["dy_m"] for sample in samples], dtype=np.float32
+        )
+        peg_before, _ = self.env.entity_local_pose("peg")
+        approach_clearance = as_numpy(peg_before)[:, 2] - holes[:, 2]
+        # Move laterally at the measured pre-contact height, make one short
+        # downward contact, then lift exactly 4 mm from the measured contact
+        # pose before returning to center.  This avoids both sustained rubbing
+        # and an arbitrary absolute recovery height.
         self.servo_peg_pose(
-            holes, 0.032, "precision_centering", max_frames=100,
+            probe_holes,
+            approach_clearance,
+            "exploration_probe",
+            max_frames=60,
+            xy_tolerance_m=0.0015,
+            z_tolerance_m=0.0020,
+            enabled=self.exploration_mask,
+            fatal_nonconvergence=False,
+            source_type_ids=explore_sources,
+        )
+        self.servo_peg_pose(
+            probe_holes,
+            EXPLORATION_CONTACT_CLEARANCE_M,
+            "exploration_probe",
+            max_frames=8,
+            xy_tolerance_m=0.0015,
+            z_tolerance_m=0.0020,
+            enabled=self.exploration_mask,
+            fatal_nonconvergence=False,
+            source_type_ids=explore_sources,
+        )
+        peg_after_contact, _ = self.env.entity_local_pose("peg")
+        retreat_clearance = (
+            as_numpy(peg_after_contact)[:, 2]
+            - holes[:, 2]
+            + np.float32(EXPLORATION_VERTICAL_DISENGAGE_M)
+        )
+        self.servo_peg_pose(
+            probe_holes,
+            retreat_clearance,
+            "expert_recovery_center",
+            max_frames=30,
+            xy_tolerance_m=0.0015,
+            z_tolerance_m=0.0020,
+            enabled=self.exploration_mask,
+            fatal_nonconvergence=False,
+            source_type_ids=recovery_sources,
+        )
+        self.servo_peg_pose(
+            holes,
+            retreat_clearance,
+            "expert_recovery_center",
+            max_frames=60,
+            xy_tolerance_m=0.0006,
+            z_tolerance_m=0.0012,
+            enabled=self.exploration_mask,
+            fatal_nonconvergence=True,
+            source_type_ids=recovery_sources,
+        )
+
+    def progressive_insert(self, holes_m, source_type_ids=None) -> None:
+        holes = np.asarray(holes_m, dtype=np.float32).reshape(NUM_ENVS, 3)
+        peg_before, _ = self.env.entity_local_pose("peg")
+        commanded_clearance = as_numpy(peg_before)[:, 2] - holes[:, 2]
+        self.servo_peg_pose(
+            holes, commanded_clearance, "precision_centering", max_frames=100,
             xy_tolerance_m=0.0005, z_tolerance_m=0.001,
             fatal_nonconvergence=False,
+            source_type_ids=source_type_ids,
         )
         # The physical convex-hull pair bottoms out at a repeatable peg-root
         # height of about 7.3 mm.  A 6 mm command reaches that stable contact
         # seat and satisfies the formal mate-height bound.  Driving on toward
         # the nominal 3 mm visual mate height only stores lateral contact
         # energy and can eject the peg when the fingers open.
-        clearances = list(np.arange(0.030, 0.005, -0.002, dtype=np.float32))
+        stage_count = int(np.clip(
+            math.ceil(
+                (float(np.max(commanded_clearance)) - FINAL_SEAT_COMMAND_CLEARANCE_M)
+                / 0.002
+            ),
+            1,
+            24,
+        ))
         seated = np.zeros(NUM_ENVS, dtype=bool)
-        for index, clearance in enumerate(clearances, start=1):
+        for index in range(1, stage_count + 1):
+            commanded_clearance = np.maximum(
+                np.float32(FINAL_SEAT_COMMAND_CLEARANCE_M),
+                commanded_clearance - np.float32(0.002),
+            )
             self.servo_peg_pose(
-                holes, max(float(clearance), 0.0), f"insert_stage_{index:02d}",
+                holes, commanded_clearance, f"insert_stage_{index:02d}",
                 max_frames=55, xy_tolerance_m=INSERT_STAGE_XY_TOLERANCE_M,
                 z_tolerance_m=0.001, enabled=~seated, fatal_nonconvergence=False,
+                source_type_ids=source_type_ids,
             )
             center_error, height_error, tilt_deg, peg_np = self.insertion_geometry(holes)
             newly_seated = (~seated) & evaluate_release_stability_batch(
@@ -377,72 +548,119 @@ class ParallelPegExpert:
         tilt_deg = np.degrees(np.arccos(np.clip(np.abs(peg_axis[:, 2]) / axis_norm, 0.0, 1.0)))
         return center_error, height_error, tilt_deg, peg_np
 
-    def neutralize_grasp(self, enabled, gripper, phase: str, frames: int = 8) -> None:
-        """Remove asymmetric finger preload without moving the seated peg."""
-
-        enabled_mask = np.asarray(enabled, dtype=bool)
-        peg_position, _ = self.env.entity_local_pose("peg")
-        targets = as_numpy(self.env.fingertip_midpoint_pos)
-        neutral = as_numpy(peg_position) + self.eef_minus_peg_after_grasp
-        targets[enabled_mask] = neutral[enabled_mask]
-        self.hold(frames, gripper, phase, targets)
-
-    def guarded_release(self, holes_m) -> None:
-        """Open each gripper independently and recover incipient slips."""
+    def prepare_clean_release(self, holes_m, source_type_ids=None) -> np.ndarray:
+        """Center the seated peg and remove the grasp's lateral position offset."""
 
         holes = np.asarray(holes_m, dtype=np.float32).reshape(NUM_ENVS, 3)
-        levels = np.zeros(NUM_ENVS, dtype=np.float32)
-        permanently_failed = ~self.insertion_stopped_on_success_bounds.copy()
-        for _ in range(48):
-            active = (levels < 1.0 - 1.0e-6) & ~permanently_failed
-            if not np.any(active):
-                break
-            levels[active] = np.minimum(1.0, levels[active] + RELEASE_OPEN_INCREMENT)
-            # Inspect after every small opening increment so asymmetric finger
-            # preload is caught before it can tilt or eject the seated peg.
-            self.hold(1, levels, "release")
-            center_error, height_error, tilt_deg, peg_np = self.insertion_geometry(holes)
-            stable = evaluate_release_stability_batch(center_error, height_error, tilt_deg)
-            slipping = active & ~stable
-            recoverable = slipping & (
-                self.release_recovery_count < MAXIMUM_RELEASE_RECOVERIES
+        eligible = self.insertion_stopped_on_success_bounds.copy()
+        seat = self.seat_clearance_m.copy()
+        invalid_seat = ~np.isfinite(seat)
+        seat[invalid_seat] = FINAL_SEAT_COMMAND_CLEARANCE_M
+
+        # First put the held peg back on the measured stable seat with tighter
+        # XY/Z tolerances than the final task success gate.
+        self.servo_peg_pose(
+            holes,
+            seat,
+            "pre_release_centering",
+            max_frames=90,
+            xy_tolerance_m=0.0005,
+            z_tolerance_m=0.0008,
+            enabled=eligible,
+            fatal_nonconvergence=True,
+            source_type_ids=source_type_ids,
+        )
+
+        # The old implementation preserved the lateral EEF-to-peg offset that
+        # was measured immediately after pickup.  Center the two fingers on the
+        # current peg XY instead, while preserving the current vertical grasp.
+        peg_position, _ = self.env.entity_local_pose("peg")
+        peg_np = as_numpy(peg_position)
+        neutral_targets = as_numpy(self.env.fingertip_midpoint_pos)
+        neutral_targets[eligible, :2] = peg_np[eligible, :2]
+        self.hold(
+            12,
+            0.0,
+            "pre_release_neutralize",
+            neutral_targets,
+            source_type_ids,
+        )
+
+        # The centering move above is intentionally small, but it can move the
+        # grasped peg by the same sub-millimetre amount.  Re-center the peg once
+        # more without changing its measured seat depth, then let contact settle.
+        self.servo_peg_pose(
+            holes,
+            seat,
+            "pre_release_centering",
+            max_frames=90,
+            xy_tolerance_m=0.0005,
+            z_tolerance_m=0.0008,
+            enabled=eligible,
+            fatal_nonconvergence=True,
+            source_type_ids=source_type_ids,
+        )
+        release_targets = as_numpy(self.env.fingertip_midpoint_pos)
+        self.hold(
+            PRE_RELEASE_SETTLE_FRAMES,
+            0.0,
+            "pre_release_neutralize",
+            release_targets,
+            source_type_ids,
+        )
+
+        center_error, height_error, tilt_deg, _ = self.insertion_geometry(holes)
+        lateral_force = as_numpy(
+            torch.linalg.vector_norm(self.env.force_sensor_joint_smooth[:, :2], dim=1)
+        )
+        self.pre_release_lateral_force_n = lateral_force.astype(np.float32)
+        self.pre_release_valid = eligible & (
+            (center_error <= PRE_RELEASE_XY_TOLERANCE_M)
+            & (np.abs(height_error) <= PRE_RELEASE_HEIGHT_TOLERANCE_M)
+            & (tilt_deg <= PRE_RELEASE_TILT_TOLERANCE_DEG)
+            & (lateral_force <= PRE_RELEASE_MAX_LATERAL_FORCE_N)
+        )
+        for env_id in np.flatnonzero(eligible & ~self.pre_release_valid):
+            self.failures[env_id].append(
+                "clean pre-release gate failed: "
+                f"center={center_error[env_id]:.4f}m "
+                f"height={height_error[env_id]:.4f}m "
+                f"tilt={tilt_deg[env_id]:.2f}deg "
+                f"lateral_force={lateral_force[env_id]:.3f}N"
             )
-            unrecoverable = slipping & ~recoverable
-            permanently_failed |= unrecoverable
-            for env_id in np.flatnonzero(unrecoverable):
-                self.failures[env_id].append(
-                    "release stability gate exhausted recoveries: "
-                    f"center={center_error[env_id]:.4f}m height={height_error[env_id]:.4f}m "
-                    f"tilt={tilt_deg[env_id]:.2f}deg"
-                )
-            if not np.any(recoverable):
-                continue
-            self.release_recovery_count[recoverable] += 1
-            # Re-closing in one command can add another lateral impulse to an
-            # already slipping peg. Ramp the fingers closed, then re-center at
-            # the measured stable seat without adding a long global recovery
-            # segment to every cloned trajectory.
-            while np.any(recoverable & (levels > 1.0e-6)):
-                closing = recoverable & (levels > 1.0e-6)
-                levels[closing] = np.maximum(
-                    0.0, levels[closing] - RELEASE_OPEN_INCREMENT
-                )
-                self.hold(1, levels, "release_reclose")
-            self.hold(8, levels, "release_reclose")
-            seat = self.seat_clearance_m.copy()
-            invalid_seat = ~np.isfinite(seat)
-            seat[invalid_seat] = 0.006
-            self.servo_peg_pose(
-                holes, seat, "release_reseat", max_frames=60,
-                xy_tolerance_m=0.0010, z_tolerance_m=0.0020,
-                enabled=recoverable, gripper=levels, fatal_nonconvergence=False,
+        return release_targets
+
+    def clean_release(self, holes_m, release_targets, source_type_ids=None) -> None:
+        """Release once, never recover, and reject any episode that slips."""
+
+        holes = np.asarray(holes_m, dtype=np.float32).reshape(NUM_ENVS, 3)
+        targets = np.asarray(release_targets, dtype=np.float32).reshape(NUM_ENVS, 3)
+        # Open both fingers symmetrically and smoothly.  Unlike the old guarded
+        # release, this is one monotonic release: it never re-closes, re-seats,
+        # or turns a failed release into an accepted expert trajectory.
+        for step in range(1, CLEAN_RELEASE_STEPS + 1):
+            self.hold(
+                1,
+                step / CLEAN_RELEASE_STEPS,
+                "release",
+                targets,
+                source_type_ids,
             )
-            self.neutralize_grasp(recoverable, levels, "release_reseat", frames=6)
-            self.hold(10, levels, "release_reseat")
-        unfinished = (levels < 1.0 - 1.0e-6) & ~permanently_failed
-        for env_id in np.flatnonzero(unfinished):
-            self.failures[env_id].append("guarded release did not finish")
-        self.hold(12, np.where(permanently_failed, levels, 1.0), "release_settle")
+        self.hold(RELEASE_SETTLE_FRAMES, 1.0, "release_settle", targets, source_type_ids)
+
+        center_error, height_error, tilt_deg, _ = self.insertion_geometry(holes)
+        stable_after_release = self.pre_release_valid & (
+            (center_error <= PRE_RELEASE_XY_TOLERANCE_M)
+            & (np.abs(height_error) <= POST_RELEASE_HEIGHT_TOLERANCE_M)
+            & (tilt_deg <= PRE_RELEASE_TILT_TOLERANCE_DEG)
+        )
+        for env_id in np.flatnonzero(self.pre_release_valid & ~stable_after_release):
+            self.failures[env_id].append(
+                "clean release slipped; no recovery trajectory recorded: "
+                f"center={center_error[env_id]:.4f}m "
+                f"height={height_error[env_id]:.4f}m "
+                f"tilt={tilt_deg[env_id]:.2f}deg"
+            )
 
     def final_reports(self) -> list[dict[str, object]]:
         peg_position, peg_quaternion = self.env.entity_local_pose("peg")
@@ -499,20 +717,29 @@ class ParallelPegExpert:
         self.servo_peg_pose(
             holes, 0.038, "peg_centering", xy_tolerance_m=0.0006, z_tolerance_m=0.0012
         )
-        self.progressive_insert(holes)
+        # Peg collection is intentionally expert-only.  Continue directly from
+        # privileged centering into insertion with expert source labels.
+        insertion_sources = self.source_types()
+        self.progressive_insert(holes, insertion_sources)
         inserted = as_numpy(self.env.fingertip_midpoint_pos)
-        self.neutralize_grasp(
-            self.insertion_stopped_on_success_bounds,
-            np.zeros(NUM_ENVS, dtype=np.float32),
-            "insertion_settle",
-            frames=8,
+        self.hold(20, 0.0, "insertion_settle", inserted, insertion_sources)
+        release_targets = self.prepare_clean_release(holes, insertion_sources)
+        self.clean_release(holes, release_targets, insertion_sources)
+        retract = release_targets.copy(); retract[:, 2] += 0.10
+        self.move_pose(
+            retract,
+            1.0,
+            "final_retract",
+            max_frames=180,
+            source_type_ids=insertion_sources,
         )
-        inserted = as_numpy(self.env.fingertip_midpoint_pos)
-        self.hold(20, 0.0, "insertion_settle", inserted)
-        self.guarded_release(holes)
-        retract = inserted.copy(); retract[:, 2] += 0.10
-        self.move_pose(retract, 1.0, "final_retract", max_frames=180)
-        self.hold(args.final_settle_frames, 1.0, "final_settle", retract)
+        self.hold(
+            args.final_settle_frames,
+            1.0,
+            "final_settle",
+            retract,
+            insertion_sources,
+        )
         return self.final_reports()
 
     def details(self, env_id: int) -> dict[str, object]:
@@ -521,13 +748,22 @@ class ParallelPegExpert:
             "phase_ranges_control_frames": list(self.phase_ranges),
             "phase_force_peaks_n": dict(self.phase_force_peaks[env_id]),
             "trajectory_warnings": list(self.warnings[env_id]),
-            "release_recovery_count": int(self.release_recovery_count[env_id]),
+            "release_recovery_count": 0,
+            "pre_release_valid": bool(self.pre_release_valid[env_id]),
+            "pre_release_lateral_force_n": float(
+                self.pre_release_lateral_force_n[env_id]
+            ),
             "stable_contact_seat_clearance_m": float(self.seat_clearance_m[env_id]),
             "oracle_pose_feedback": True,
             "physics_intervention": False,
             "insertion_stopped_on_success_bounds": bool(
                 self.insertion_stopped_on_success_bounds[env_id]
             ),
+            "trajectory_type": "exploration" if self.exploration_mask[env_id] else "expert",
+            "exploration_sampler_version": None,
+            "exploration_probe_samples": list(self.exploration_probe_samples[env_id])
+            if self.exploration_mask[env_id]
+            else [],
         }
 
 
@@ -626,6 +862,7 @@ try:
             raise RuntimeError(
                 f"refusing to duplicate successful seed {seed}: {[str(path) for path in existing]}"
             )
+        trajectory_type = "expert"
         metadata = {
             "task": "peg_insert", "prompt": task.manifest.prompt, "success": True,
             "end_reason": "scripted_32env_complete_insert_release_retract",
@@ -639,7 +876,11 @@ try:
             "scene_profile": env.scene_profile_name,
             "state_semantics": "world_tcp_xyz_rpy_gripper_open_minus1_plus1",
             "action_semantics": "world_target_tcp_xyz_rpy_gripper_open_minus1_plus1",
-            "control_source": "scripted_32env_privileged_contact_pose_oracle",
+            "control_source": "scripted_32env_all_expert_smooth_position",
+            "trajectory_type": trajectory_type,
+            "control_source_type_schema": SOURCE_TYPE_SCHEMA,
+            "control_source_type_dataset": "control/source_type",
+            "control_source_type_semantics": "all frames use expert=0 scripted teacher",
             "wrench_profile": env.wrench_profile,
             "wrench_storage": "raw_and_ema",
             "primary_wrist_wrench_dataset": "forces/control/eef_wrench_joint_raw",
@@ -650,16 +891,36 @@ try:
                 "wrist": [args.wrist_image_size, args.wrist_image_size, 3],
             },
             "phase_schema": PHASE_SCHEMA,
-            "scripted_expert_generator_version": "peg_insert_32env_tiled_v3_1_stable_release",
-            "stable_contact_seat_command_clearance_m": 0.006,
-            "guarded_release_profile": {
-                "gripper_increment": RELEASE_OPEN_INCREMENT,
-                "inspection_rate_hz": float(CONTROL_RATE_HZ),
-                "maximum_recoveries_per_environment": MAXIMUM_RELEASE_RECOVERIES,
-                "max_center_error_m": 0.0015,
-                "max_height_error_m": 0.0055,
-                "max_tilt_deg": 8.0,
-                "recovery": "ramp_reclose_reseat_neutralize_preload",
+            "scripted_expert_generator_version": (
+                "peg_insert_32env_v2_all_expert_clean_release_physics60"
+            ),
+            "batch_trajectory_split": {
+                "rule": "all_seeds_expert",
+                "expert_count": NUM_ENVS,
+                "exploration_count": 0,
+            },
+            "controlled_exploration_profile": {
+                "enabled": False,
+                "probe_attempts": 0,
+                "reason": "peg_insert_all_expert_collection",
+            },
+            "stable_contact_seat_command_clearance_m": (
+                FINAL_SEAT_COMMAND_CLEARANCE_M
+            ),
+            "clean_release_profile": {
+                "command": "single_monotonic_symmetric_open_ramp",
+                "release_steps": CLEAN_RELEASE_STEPS,
+                "settle_frames": RELEASE_SETTLE_FRAMES,
+                "pre_release_settle_frames": PRE_RELEASE_SETTLE_FRAMES,
+                "pre_release_max_center_error_m": PRE_RELEASE_XY_TOLERANCE_M,
+                "pre_release_max_height_error_m": PRE_RELEASE_HEIGHT_TOLERANCE_M,
+                "post_release_max_height_error_m": POST_RELEASE_HEIGHT_TOLERANCE_M,
+                "pre_release_max_tilt_deg": PRE_RELEASE_TILT_TOLERANCE_DEG,
+                "pre_release_max_lateral_force_n": PRE_RELEASE_MAX_LATERAL_FORCE_N,
+                "recovery": "none; any slip rejects the episode",
+                "accepted_trajectory_constraint": (
+                    "no release_reclose or release_reseat phases"
+                ),
             },
             "translation_speed_limit_m_s": float(args.translation_speed_m_s),
             "scripted_expert_details": expert.details(env_id),
@@ -689,13 +950,16 @@ try:
         })
 
     summary = {
-        "schema": "forcebench_parallel_peg_insert_32env_v1", "task": "peg_insert",
+        "schema": "forcebench_parallel_peg_insert_32env_v3_all_expert",
+        "task": "peg_insert",
         "seeds": SEEDS, "write_seeds": sorted(WRITE_SEEDS), "num_envs": NUM_ENVS,
         "env_spacing_m": args.env_spacing, "frames_per_episode": len(expert.buffers[0]),
         "video": str(video_path.resolve()), "overview": str(overview_path.resolve()),
         "final_overview": str(final_overview_path.resolve()), "episodes": written,
         "failed_episodes": failed, "environment_reports": reports,
         "l20_migration_source": L20_MIGRATION_SOURCE,
+        "trajectory_type_counts": {"expert": NUM_ENVS, "exploration": 0},
+        "control_source_type_schema": SOURCE_TYPE_SCHEMA,
     }
     (args.artifact_dir / "summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"

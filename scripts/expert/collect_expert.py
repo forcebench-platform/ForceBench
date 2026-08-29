@@ -92,6 +92,12 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--backend-options", default="{}", help="task-plugin JSON options")
     result.add_argument("--env-spacing", type=float, default=6.0)
     result.add_argument("--video-tile-size", type=int, default=192)
+    result.add_argument(
+        "--trajectory-mode",
+        choices=("task_default", "half_split", "all_expert"),
+        default="task_default",
+        help="Trajectory distribution for nut_thread/gear_mesh clone collectors.",
+    )
     result.add_argument("--dry-run", action="store_true")
     return result
 
@@ -168,6 +174,7 @@ def main(argv: list[str] | None = None) -> int:
                 wrist_image_size=args.wrist_image_size,
                 env_spacing=args.env_spacing,
                 video_tile_size=args.video_tile_size,
+                trajectory_mode=args.trajectory_mode,
                 dry_run=args.dry_run,
             )
         )

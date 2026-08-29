@@ -25,13 +25,14 @@ PARALLEL_TASKS = (
     "faucet_turn",
 )
 DEFAULT_CLONE_COUNT = 32
-MEMORY_HEAVY_TASKS = frozenset(("nut_thread", "gear_mesh", "faucet_turn"))
 
 
 def clone_count_for_task(task: str) -> int:
-    """Use 16 clones for image-heavy assembly tasks and 32 for proven collectors."""
+    """All supported automatic experts use the canonical 32-clone topology."""
 
-    return 16 if task in MEMORY_HEAVY_TASKS else DEFAULT_CLONE_COUNT
+    if task not in PARALLEL_TASKS:
+        raise ValueError(f"unsupported parallel task: {task!r}")
+    return DEFAULT_CLONE_COUNT
 
 
 @dataclass(frozen=True)
@@ -73,13 +74,19 @@ def build_clone_batches(
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--task", choices=PARALLEL_TASKS, required=True)
+    result.add_argument(
+        "--trajectory-mode",
+        choices=("task_default", "half_split", "all_expert"),
+        default="task_default",
+        help="Trajectory distribution for nut_thread/gear_mesh collectors.",
+    )
     result.add_argument("--seeds", default="0-199")
     result.add_argument("--dataset-dir", type=Path)
     result.add_argument("--run-name")
     result.add_argument("--device", default="cuda:0")
     result.add_argument("--max-attempts", type=int, default=2)
-    # A full 32-clone 224 px batch needs roughly 10 minutes of simulation and
-    # another 35--40 minutes to serialize the per-seed HDF5 files on L20.
+    # A full 32-clone 224/224 batch can spend most of its wall time serializing
+    # HDF5 images, so keep a conservative per-process timeout.
     result.add_argument("--timeout-s", type=float, default=5400.0)
     result.add_argument("--main-image-size", type=int, default=224)
     result.add_argument("--wrist-image-size", type=int, default=224)
@@ -104,6 +111,18 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
         raise ValueError("env spacing must be at least 5.5 m")
     requested = parse_seed_spec(args.seeds)
     task_manifest = get_task_manifest(args.task)
+    if args.task == "gear_mesh":
+        trajectory_mode = (
+            "half_split" if args.trajectory_mode == "task_default" else args.trajectory_mode
+        )
+    elif args.task == "nut_thread":
+        trajectory_mode = (
+            "all_expert" if args.trajectory_mode == "task_default" else args.trajectory_mode
+        )
+    else:
+        if args.trajectory_mode != "task_default":
+            raise ValueError("--trajectory-mode is only valid for nut_thread and gear_mesh")
+        trajectory_mode = "task_default"
     clone_count = clone_count_for_task(args.task)
     formal_dir = (args.dataset_dir or dataset_dir(task_manifest.dataset_subdir)).resolve()
     run_name = safe_run_name(
@@ -125,6 +144,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     plan_payload = {
         "schema": "forcebench_parallel_sort_collection_32env_v1",
         "task": args.task,
+        "trajectory_mode": trajectory_mode,
         "clone_count": clone_count,
         "requested_seeds": list(requested),
         "existing_successful_seeds": sorted(initial_success),
@@ -181,6 +201,18 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
                 if next_filler not in launch_seeds:
                     launch_seeds.append(next_filler)
                 next_filler += 1
+            # Peg/Gear contact outcomes can be sensitive to the clone slot even
+            # though the seed and task geometry are unchanged.  Keeping a
+            # failed seed in env_0 on every retry simply reproduces the same
+            # deterministic contact state.  Rotate the complete launch order
+            # by a coprime stride so retries sample a different clone slot;
+            # write_seeds and per-seed randomization remain unchanged.
+            clone_rotation = 0
+            if args.task in ("peg_insert", "gear_mesh") and attempt > 1:
+                clone_rotation = ((attempt - 1) * 7) % clone_count
+                launch_seeds = (
+                    launch_seeds[clone_rotation:] + launch_seeds[:clone_rotation]
+                )
             artifact_dir = run_dir / f"batch_{batch.index:03d}" / f"attempt_{attempt:02d}"
             log_path = run_dir / "logs" / f"batch_{batch.index:03d}_attempt_{attempt:02d}.log"
             command = [
@@ -190,6 +222,8 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
             ]
             if args.task in ("weight_sort", "rattle_sort", "nut_thread", "gear_mesh"):
                 command.extend(("--task", args.task))
+            if args.task in ("nut_thread", "gear_mesh"):
+                command.extend(("--trajectory_mode", trajectory_mode))
             command.extend([
                 "--output_dir",
                 str(formal_dir),
@@ -230,6 +264,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
                 "launch_seeds": launch_seeds,
                 "requested_write_seeds": list(remaining),
                 "completed_seeds": completed,
+                "clone_rotation": clone_rotation,
                 "artifact_dir": str(artifact_dir),
                 "log": str(log_path),
             }
@@ -257,6 +292,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     summary = {
         "schema": "forcebench_parallel_sort_collection_32env_v1",
         "task": args.task,
+        "trajectory_mode": trajectory_mode,
         "clone_count": clone_count,
         "dataset_dir": str(formal_dir),
         "run_dir": str(run_dir),

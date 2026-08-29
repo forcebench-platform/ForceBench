@@ -547,6 +547,46 @@ _WHITEBOARD_SIMPLE_ROOM = SceneProfile(
     dome_light_color=(0.96, 0.96, 0.94),
 )
 
+# Lightweight classroom alternatives built from a small subset of the
+# official Isaac Sim Office asset.  Keeping each composition in a local USDA
+# wrapper avoids instantiating the complete 4k-prim office in every cloned
+# environment while preserving the official authored meshes and materials.
+_WHITEBOARD_CLASSROOM = replace(
+    _WHITEBOARD_SIMPLE_ROOM,
+    name="whiteboard_classroom",
+    description=(
+        "Lightweight classroom background composed from official Isaac Sim "
+        "Office wall, bookcase and clock assets."
+    ),
+    room_usd_path=(
+        "forcebench://assets/wipe_board_classroom/classroom_background.usda"
+    ),
+    room_translation_m=(0.0, 0.0, 0.0),
+    dome_light_intensity=1450.0,
+    dome_light_color=(0.98, 0.97, 0.93),
+)
+
+_WHITEBOARD_CLASSROOM_WALL = replace(
+    _WHITEBOARD_CLASSROOM,
+    name="whiteboard_classroom_wall",
+    description="Diagnostic classroom render containing only the official Office wall.",
+    room_usd_path="forcebench://assets/wipe_board_classroom/wall_only.usda",
+)
+
+_WHITEBOARD_CLASSROOM_BOOKCASE = replace(
+    _WHITEBOARD_CLASSROOM,
+    name="whiteboard_classroom_bookcase",
+    description="Diagnostic classroom render containing only the official Office bookcase.",
+    room_usd_path="forcebench://assets/wipe_board_classroom/bookcase_only.usda",
+)
+
+_WHITEBOARD_CLASSROOM_CLOCK = replace(
+    _WHITEBOARD_CLASSROOM,
+    name="whiteboard_classroom_clock",
+    description="Diagnostic classroom render containing only the official Office clock.",
+    room_usd_path="forcebench://assets/wipe_board_classroom/clock_only.usda",
+)
+
 _SCENE_PROFILES = {
     profile.name: profile
     for profile in (
@@ -561,6 +601,10 @@ _SCENE_PROFILES = {
         _SIMPLE_ROOM_DRAWER,
         _SIMPLE_ROOM_SORT_TABLE,
         _WHITEBOARD_SIMPLE_ROOM,
+        _WHITEBOARD_CLASSROOM,
+        _WHITEBOARD_CLASSROOM_WALL,
+        _WHITEBOARD_CLASSROOM_BOOKCASE,
+        _WHITEBOARD_CLASSROOM_CLOCK,
     )
 }
 for _profile in _SCENE_PROFILES.values():

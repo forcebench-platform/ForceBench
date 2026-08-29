@@ -7,7 +7,11 @@ from typing import Any
 import numpy as np
 
 
-WEIGHT_SORT_MAIN_BLUE_FRACTION_RANGE = (0.012, 0.035)
+# The current 224 px task-focused camera sees the complete blue destination
+# container at 5.95%--6.06% across seeds 0--31.  Keep a narrow envelope around
+# that measured 32-clone reset baseline so missing/oversized/stale geometry
+# still fails closed.
+WEIGHT_SORT_MAIN_BLUE_FRACTION_RANGE = (0.050, 0.070)
 WEIGHT_SORT_MAIN_MIN_MEAN_INTENSITY = 40.0
 WEIGHT_SORT_MAIN_MAX_DARK_FRACTION = 0.52
 # Seeded pickup positions legitimately move the box across a sizeable portion
