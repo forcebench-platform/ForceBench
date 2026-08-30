@@ -80,7 +80,7 @@ and running the contract tests needs nothing but Python.</div>
 
 <h2 id="overview">1. Overview</h2>
 <p>ForceBench is a benchmark of eight contact-rich Franka&nbsp;FR3 manipulation tasks in
-Isaac&nbsp;Lab, split into <b>five force-classification tasks</b> (the property that decides correct
+Isaac&nbsp;Lab&nbsp;6.1 (Isaac&nbsp;Sim&nbsp;6.0.1), split into <b>five force-classification tasks</b> (the property that decides correct
 behaviour is visually unobservable &mdash; only the interaction wrench carries it) and
 <b>three contact-dense tasks</b> (gear meshing, nut threading, peg insertion). All tasks share one
 frozen simulator contract; the runtime refuses to start under any other values:</p>
@@ -107,10 +107,12 @@ should print eight task names.</div>
 
 <h3>Tier B &mdash; running the simulator (collection, evaluation, replay)</h3>
 <ul>
-  <li><b>Isaac Lab 2.3.2 / Isaac Sim 5.1</b> &mdash; official data was generated on the container image
-      digest <code>sha256:388dbc806f48&hellip;</code>. Install Isaac Lab per
+  <li><b>Isaac Sim 6.0.1 / Isaac Lab 6.1.14</b> &mdash; the versions official data is collected on.
+      Install Isaac Lab per
       <a href="https://isaac-sim.github.io/IsaacLab/">its official instructions</a>; a conda environment
-      named <code>env_isaacsim6</code> is the default expected by <code>run_native.sh</code>.</li>
+      named <code>env_isaacsim6</code> is the default expected by <code>run_native.sh</code>.
+      (The FORGE factory assets for <code>gear_mesh</code>/<code>nut_thread</code> were historically
+      extracted from an Isaac&nbsp;Lab&nbsp;2.3.2 container deployment &mdash; see NOTICE.md.)</li>
   <li>An NVIDIA GPU supported by Isaac Sim.</li>
   <li>Third-party 3D assets in place (Section 4).</li>
 </ul>

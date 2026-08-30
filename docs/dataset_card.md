@@ -176,7 +176,7 @@ HDF5 里同时存了**两个版本的位置/姿态信息**，含义完全不同�
 
 ## 采集方式
 
-正式数据集在 Isaac Lab 2.3.2 / Isaac Sim 5.1 上生成，固定容器镜像摘要
+正式数据集在 Isaac Sim 6.0.1 / Isaac Lab 6.1.14 上生成（历史 FORGE 资产提取所用容器镜像摘要
 `sha256:388dbc806f48359a964cb9f807feb226da95d0a107f470fdcad9780ea10fe6f2`。
 物理频率 60 Hz，控制频率 15 Hz（decimation=4），机械臂用隐式关节位置 PD
 （stiffness 80 / damping 12）经 `smooth_position` 控制器（`SmoothPositionController`，

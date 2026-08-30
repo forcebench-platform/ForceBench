@@ -15,9 +15,8 @@
 
 ### B 档：真正跑仿真（采集、评测、回放）
 
-- **Isaac Lab 2.3.2 / Isaac Sim 5.1**
-  （正式数据在固定的容器镜像摘要
-  `sha256:388dbc806f48359a964cb9f807feb226da95d0a107f470fdcad9780ea10fe6f2` 上生成）
+- **Isaac Sim 6.0.1 / Isaac Lab 6.1.14**（当前采集所用版本；conda 环境名 `env_isaacsim6`。
+  `gear_mesh`/`nut_thread` 的 FORGE 工厂资产历史上提取自 Isaac Lab 2.3.2 容器部署，见 NOTICE.md）
 - 一块支持 Isaac Sim 的 NVIDIA GPU
 - 各任务依赖的第三方 3D 资产**已就位**（见第 4 节）
 

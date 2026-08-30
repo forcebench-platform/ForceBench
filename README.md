@@ -119,7 +119,7 @@ python -m pytest tests/
 # 预期：102 passed, 5 failed, 2 skipped（5 个失败是已知的，见 KNOWN_ISSUES.md）
 ```
 
-真正跑仿真需要 **Isaac Lab 2.3.2 / Isaac Sim 5.1** 以及就位的第三方资产
+真正跑仿真需要 **Isaac Sim 6.0.1 / Isaac Lab 6.1.14** 以及就位的第三方资产
 （**目前没有下载脚本**，需按 [`NOTICE.md`](./NOTICE.md) 手工获取）：
 
 ```bash

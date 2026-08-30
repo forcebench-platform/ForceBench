@@ -11,7 +11,7 @@
 
 | 项 | 值 |
 |---|---|
-| 仿真器 | **Isaac Lab 2.3.2 / Isaac Sim 5.1** |
+| 仿真器 | **Isaac Sim 6.0.1 / Isaac Lab 6.1.14** |
 | 容器镜像摘要 | `sha256:388dbc806f48359a964cb9f807feb226da95d0a107f470fdcad9780ea10fe6f2` |
 | 物理频率 | 60 Hz |
 | 求解器位置迭代 | 64 |
