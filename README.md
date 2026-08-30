@@ -1,7 +1,8 @@
 # ForceBench
 
-**[官网](https://pkuhanxuan.github.io/ForceBench/web/index.html)**（待开启）&nbsp;·&nbsp;
-**[Leaderboard](https://pkuhanxuan.github.io/ForceBench/web/leaderboard.html)**（待开启）&nbsp;·&nbsp;
+**[官网](https://forcebench-platform.github.io/)**&nbsp;·&nbsp;
+**[Leaderboard](https://forcebench-platform.github.io/leaderboard.html)**&nbsp;·&nbsp;
+**[使用文档](https://forcebench-platform.github.io/doc/index.html)**&nbsp;·&nbsp;
 **[文档](./docs/README.md)**&nbsp;·&nbsp;
 **[任务说明](./docs/tasks/README.md)**&nbsp;·&nbsp;
 **[评测协议](./docs/eval_protocol.md)**&nbsp;·&nbsp;
@@ -10,12 +11,10 @@
 
 > **上面这排链接的当前状态，请照字面理解：**
 >
-> - **GitHub Pages 尚未开启**，前两个链接现在打不开。需要仓库所有者在
->   *Settings → Pages* 手动开启，并且 **Source 必须设为 `main` 分支的 `/(root)`，
->   不能选 `/docs`** —— 站点是在运行时读取 `../results/leaderboard.json` 的，
->   以 `/docs` 为根会让它读不到数据文件。开启前可以本地预览：
->   在仓库根目录执行 `python -m http.server 8000`，然后访问
->   `http://localhost:8000/web/index.html`（同样必须从**仓库根目录**起服务）。
+> - **官网与 Leaderboard 已上线**，托管在
+>   [`forcebench-platform/forcebench-platform.github.io`](https://github.com/forcebench-platform/forcebench-platform.github.io)。
+>   站点页面在那个仓库维护；**榜单数据仍以本仓库的 `results/leaderboard.json`
+>   为唯一真相**，站点在页面加载时实时读取它。
 > - **数据集与 checkpoint 尚未发布**，没有上传到 HuggingFace 或任何其他公开托管，
 >   所以这里不放下载链接。计划在论文投稿之后再开放。
 > - **论文尚未投稿也尚未发表**，没有可引用的 arXiv 编号。
