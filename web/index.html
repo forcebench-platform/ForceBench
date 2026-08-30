@@ -1,176 +1,196 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ForceBench —— 力感知操作策略基准</title>
-<meta name="description" content="ForceBench：一个衡量 6 维力/力矩反馈是否真的能帮助 VLA 操作策略的仿真基准。v0.1 原型。">
-<link rel="stylesheet" href="./assets/style.css">
+<title>ForceBench: A Force-Aware Contact-Rich Manipulation Benchmark</title>
+<style>
+  :root{
+    --ink:#1c1e21; --muted:#5f6368; --accent:#0b7a5c; --accent2:#5b4b8a;
+    --card:#f6f7f9; --line:#e3e5e8; --warn:#9a6700;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:#fff;line-height:1.65}
+  .sans{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px}
+  header{padding:64px 0 8px;text-align:center}
+  h1{font-size:2.35rem;font-weight:600;line-height:1.3}
+  h1 .fb1{color:var(--accent)} h1 .fb2{color:var(--accent2)}
+  .subtitle{font-size:1.45rem;font-weight:500;margin-top:6px}
+  .authors{margin-top:26px;font-size:1.05rem;color:var(--ink)}
+  .affil{margin-top:10px;font-size:.95rem;color:var(--muted)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:30px 0 8px}
+  .btn{display:inline-block;padding:9px 22px;border-radius:22px;background:#eff1f4;border:1px solid var(--line);
+       color:var(--ink);text-decoration:none;font-size:.95rem}
+  .btn:hover{background:#e4e7ec}
+  .btn.dis{color:#a4a8ae;pointer-events:none}
+  .btn b{font-weight:600}
+  section{margin:44px 0}
+  h2{font-size:1.6rem;text-align:center;margin-bottom:18px}
+  h3{font-size:1.15rem;margin:20px 0 8px}
+  p.lead{font-size:1.02rem;text-align:justify}
+  .note{background:#fff8e6;border:1px solid #f0dfa8;border-radius:8px;padding:12px 16px;font-size:.92rem;margin:16px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+  .card h4{font-size:1.02rem;margin-bottom:6px}
+  .card .tag{display:inline-block;font-size:.72rem;padding:2px 9px;border-radius:10px;margin-bottom:8px;color:#fff}
+  .tag.force{background:var(--accent)} .tag.contact{background:var(--accent2)}
+  .card p{font-size:.88rem;color:var(--muted)}
+  .card code{font-family:Consolas,Menlo,monospace;font-size:.82rem;color:var(--ink)}
+  .statrow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:18px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 22px;text-align:center;min-width:130px}
+  .stat .n{font-size:1.5rem;font-weight:600;color:var(--accent)}
+  .stat .l{font-size:.8rem;color:var(--muted)}
+  .tablewrap{overflow-x:auto;margin-top:12px}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th,td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+  th{background:var(--card)}
+  pre{background:#14171a;color:#e8eaed;border-radius:10px;padding:16px 18px;overflow-x:auto;
+      font-family:Consolas,Menlo,monospace;font-size:.85rem;line-height:1.55;margin-top:12px}
+  .news li{margin:6px 0;font-size:.95rem}
+  footer{border-top:1px solid var(--line);margin-top:56px;padding:26px 0 40px;text-align:center;color:var(--muted);font-size:.85rem}
+  a{color:var(--accent)}
+</style>
 </head>
-<body data-page="home">
-<a class="skip-link" href="#main">跳到正文</a>
+<body>
+<header class="wrap">
+  <h1><span class="fb1">Force</span><span class="fb2">Bench</span>: A Contact-Rich Manipulation Benchmark<br>
+      That Actually Tests Force Perception</h1>
+  <div class="authors">ForceBench Team &mdash; author list to be finalized</div>
+  <div class="affil">Built on Isaac&nbsp;Lab&nbsp;2.3.2 / Isaac&nbsp;Sim&nbsp;5.1 &middot; Franka&nbsp;FR3 &middot; ICRA&nbsp;2027 submission in preparation</div>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="./index.html">ForceBench <span class="ver">v0.1 原型</span></a>
-    <nav class="site-nav" aria-label="主导航">
-      <ul>
-        <li><a href="./index.html" data-nav="home">首页</a></li>
-        <li><a href="./leaderboard.html" data-nav="leaderboard">Leaderboard</a></li>
-        <li><a href="./tasks.html" data-nav="tasks">任务说明</a></li>
-        <li><a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档<span class="ext-mark" aria-hidden="true">↗</span><span class="visually-hidden">（GitHub 上的 markdown 文档，外部链接）</span></a></li>
-        <li><span class="nav-pending">论文<span class="pending-mark">准备中</span><span class="visually-hidden">：论文尚未发表，因此没有链接</span></span></li>
-        <li><a href="./about.html" data-nav="about">关于与引用</a></li>
-      </ul>
-    </nav>
+  <div class="btnrow sans">
+    <a class="btn dis" title="not yet on arXiv">&#128196; arXiv (soon)</a>
+    <a class="btn dis" title="paper in preparation">&#128462; PDF (soon)</a>
+    <a class="btn" href="https://github.com/pkuhanxuan/ForceBench"><b>&#128736; Code</b></a>
+    <a class="btn" href="doc/index.html"><b>&#128214; Document</b></a>
+    <a class="btn" href="leaderboard.html">&#127942; Leaderboard</a>
+    <a class="btn" href="#citation">&#128172; Citation</a>
   </div>
 </header>
 
-<div class="prototype-banner" role="note">
-  <div class="wrap">
-    <span class="tag">原型</span>
-    <p><b>ForceBench v0.1 是原型，不是完成品。</b>评测覆盖并不完整（「任务 × 模型」的组合里只有一部分跑过），
-    数字会随着评测补齐和链路修复而变动，任务的成功判定本身也还在调整。
-    <b>请不要引用本站的任何数字</b>，也不要据此比较模型优劣。</p>
+<section class="wrap">
+  <h2>Abstract</h2>
+  <p class="lead">
+    Many manipulation benchmarks describe themselves as force-sensitive, yet their success
+    criteria can be satisfied by vision alone. ForceBench is a simulation benchmark of
+    <b>eight contact-rich tasks</b> on a Franka FR3 in Isaac&nbsp;Lab, designed around one
+    question: <i>does force feedback actually change what a policy can do?</i>
+    In <b>five force-classification tasks</b>, the property that determines correct behaviour
+    &mdash; payload mass, an off-centre load, a detent that has or has not clicked past, rising
+    drawer resistance &mdash; is <b>visually unobservable</b>: the interaction wrench is the only
+    channel that carries it. <b>Three contact-dense tasks</b> (gear meshing, nut threading, peg
+    insertion) complete the suite. Every task shares a single frozen simulator contract
+    (60&nbsp;Hz physics, 15&nbsp;Hz control, one canonical <code class="sans">smooth_position</code>
+    arm controller), ships with 200 expert episodes collected under that contract, and is
+    evaluated on a disjoint, class-balanced seed range with a fixed protocol &mdash; so numbers
+    from different labs are comparable by construction.
+  </p>
+  <div class="statrow sans">
+    <div class="stat"><div class="n">8</div><div class="l">tasks</div></div>
+    <div class="stat"><div class="n">5&nbsp;+&nbsp;3</div><div class="l">force-classification + contact-dense</div></div>
+    <div class="stat"><div class="n">200</div><div class="l">expert episodes / task</div></div>
+    <div class="stat"><div class="n">100</div><div class="l">eval rollouts / task</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">frozen sim contract</div></div>
   </div>
-</div>
+</section>
 
-<main id="main">
-  <div class="wrap">
-
-    <section class="hero">
-      <h1>力反馈到底有没有用？</h1>
-      <p class="question">ForceBench 想回答的问题是：6 维力/力矩感知究竟能不能提升 VLA 操作策略的表现，以及一个策略到底需要多少力信号。</p>
-      <p class="lede">ForceBench 是一个基于 Isaac Lab 的仿真基准。八个任务共用同一套机器人、控制器、观测和策略接口 ——
-      换策略，不换测试台。其中五个任务的关键在于：决定「怎样做才算对」的那个物体属性（重量、内部配重、机构阻力）
-      在视觉上根本看不出来，策略要么用力信号，要么只能靠猜。</p>
-      <div class="hero-actions">
-        <a class="btn" href="./leaderboard.html">查看 Leaderboard</a>
-        <a class="btn secondary" href="./tasks.html">八个任务</a>
-        <a class="btn secondary" href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档</a>
-        <a class="btn secondary" href="https://github.com/pkuhanxuan/ForceBench">GitHub 仓库</a>
-      </div>
-    </section>
-
-    <div id="sample-slot"></div>
-
-    <h2>评测进度</h2>
-    <div id="home-coverage">
-      <p class="loading">正在读取 <code>results/leaderboard.json</code> ……</p>
-    </div>
-
-    <h2>更新记录</h2>
-    <p class="muted">下面每一条都对应仓库里一次真实的提交，或数据文件里一次真实的评测运行 ——
-    没有为了让页面显得热闹而编出来的「版本发布」。</p>
-    <div id="home-news"></div>
-
-    <h2>当前能说什么、不能说什么</h2>
-    <div class="grid cols-2">
-      <div class="card">
-        <h3 style="margin-top:0">现在可以说的</h3>
-        <ul>
-          <li>八个任务的评测框架和数据格式已经跑通，结果以 <code>results/leaderboard.json</code> 的统一格式发布。</li>
-          <li>每个成功率都配有 Clopper-Pearson 95% 置信区间，而不是一个孤零零的百分数。</li>
-          <li>「没跑过」和「跑了但结果不可信」在数据和页面上都与「分数低」明确区分开。</li>
-          <li>逐任务做了 Fisher 精确检验，每个对比都带 p 值和多重比较校正后的显著性标记，
-          <b>而不是只并排放两个百分数</b>。见 <a href="./leaderboard.html">Leaderboard</a>。</li>
-          <li>逐任务看，接入力信号的模型与不接入力的基线<b>互有高低</b>：有的任务上更好，有的任务上更差。</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">现在<b>不能</b>说的</h3>
-        <ul>
-          <li><b>不能说「力有帮助」，也不能说「力没用」。</b>差异的方向<b>随任务而变</b>，
-          而且做完多重比较校正后，能站得住的差异非常少。</li>
-          <li>不能用跨任务的平均成功率来概括 —— 任务之间差异太大，平均值会直接掩盖真实信号。
-          本站因此<b>不提供</b>平均分和总排名。</li>
-          <li>不能拿这里的数字做模型排名或论文对比 —— 仍有缺格，且 n = 100 时置信区间很宽。</li>
-        </ul>
-        <p class="small muted" style="margin-bottom:0">本站只做中立的数字呈现，解释权留给读者。</p>
-      </div>
-    </div>
-
-    <h2>力信号阶梯上的模型</h2>
-    <p class="muted">这些模型构成一个「力信号进入策略的程度」阶梯：从完全不接收力信号，
-    到把 6 维力/力矩直接拼进 state，再到架构级融合。<code>force_input</code> 是这个基准的核心自变量。
-    尚未评测的模型仍保留在名单和榜单中，以便让缺口保持可见。</p>
-    <div class="grid cols-3" id="home-models">
-      <p class="loading">正在读取模型列表 ……</p>
-    </div>
-
-    <h2>八个任务</h2>
-    <p class="muted">两类任务的性质不同，页面上始终分开标注，理由见<a href="./tasks.html">任务说明</a>。</p>
-    <div class="grid cols-3" id="home-tasks"></div>
-
-    <h2>资源与当前状态</h2>
-    <p class="muted">已经能用的给链接，还没有的只写状态 ——
-    本站不放指向「将来会有」的东西的链接。</p>
-    <div class="grid cols-2">
-      <div class="card res-card">
-        <h3>代码与文档<span class="rs rs-ready">可用</span></h3>
-        <p class="small">八个任务的实现、策略适配层、评测脚本和中文文档都在仓库里。
-        任务的权威定义是 <code>forcebench/tasks/&lt;name&gt;/spec.py</code>，
-        文档与代码冲突时以代码为准。</p>
-        <p class="small">
-          <a href="https://github.com/pkuhanxuan/ForceBench">代码仓库</a> ·
-          <a href="https://github.com/pkuhanxuan/ForceBench/tree/main/docs">文档目录</a> ·
-          <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/eval_protocol.md">评测协议</a> ·
-          <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/policy_interface.md">接入自己的策略</a>
-        </p>
-      </div>
-      <div class="card res-card">
-        <h3>评测结果<span class="rs rs-partial">部分可用</span></h3>
-        <p class="small">机器可读的权威文件是 <code>results/leaderboard.json</code>，
-        本站所有数字都从它运行时读取。覆盖尚不完整，具体缺哪些格见
-        <a href="./leaderboard.html">Leaderboard</a> 上方的覆盖率面板。</p>
-        <p class="small"><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/results/leaderboard.json">leaderboard.json</a></p>
-      </div>
-      <div class="card res-card">
-        <h3>数据集与 checkpoint<span class="rs rs-pending">尚未发布</span></h3>
-        <p class="small">专家数据与训练好的 checkpoint 目前都还在项目内部的机器上，
-        <b>没有上传到任何公开托管</b>（包括 HuggingFace），因此这里没有下载链接 ——
-        指向一个还不存在的仓库只会浪费你的时间。计划在论文投稿之后再开放。</p>
-        <p class="small">数据格式与 wrench 语义已经写好：
-        <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/dataset.md">数据说明</a> ·
-        <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/reproduce.md">从零复现</a>；
-        推迟发布的原因、体积与许可证约束见<a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/release_plan.md">开源发布计划</a>。</p>
-        <p class="small muted">另需注意：<code>gear_mesh</code> 任务当前<b>没有可用的专家数据</b>，
-        源机器上的正式数据集已不存在。</p>
-      </div>
-      <div class="card res-card">
-        <h3>论文<span class="rs rs-pending">准备中</span></h3>
-        <p class="small">论文尚未投稿也尚未发表，所以本站没有论文入口，
-        也没有可以引用的 arXiv 编号。要引用这个项目本身，
-        请用<a href="./about.html">关于与引用</a>页面上的仓库条目。</p>
-        <p class="small muted">这里指的是 ForceBench 自己的论文。
-        ForceVLA 架构的原论文已发表，链接在<a href="./about.html">关于</a>页。</p>
-      </div>
-    </div>
-
-    <div class="note info" style="margin-top:32px">
-      <span class="note-title">与 ForceVLA 论文的关系</span>
-      <p>ForceBench 不是又一个力融合架构。ForceVLA（NeurIPS 2025）提出的是架构和一套真机数据；
-      ForceBench 提供的是做「方法无关」对比时需要的测试台：固定的仿真契约、一条从纯本体感受到架构级融合的力信号阶梯、
-      以及统一的评测协议。详见<a href="./about.html">关于与引用</a>。</p>
-    </div>
-
+<section class="wrap">
+  <h2>The Eight Tasks</h2>
+  <p class="lead">The five <span style="color:var(--accent);font-weight:600">force-classification</span>
+  tasks are the evidentiary core of the benchmark: in each, a policy without force sensing is reduced
+  to guessing. The three <span style="color:var(--accent2);font-weight:600">contact-dense</span> tasks
+  stress precise interaction but are currently judged on final pose only.</p>
+  <div class="grid sans">
+    <div class="card"><span class="tag force">force-classification</span>
+      <h4>weight_sort</h4>
+      <p>Sort visually identical boxes by payload mass (<code>0.06</code> vs <code>0.18&nbsp;kg</code>). Appearance carries zero information.</p></div>
+    <div class="card"><span class="tag force">force-classification</span>
+      <h4>rattle_sort</h4>
+      <p>Sort parcels by whether the internal load is off-centre. Total mass is constant; the tell is a <code>&asymp;0.035&nbsp;N&middot;m</code> torque signature.</p></div>
+    <div class="card"><span class="tag force">force-classification</span>
+      <h4>stove_turn_on</h4>
+      <p>Rotate a stove knob past its ignition detent (peak <code>0.12&nbsp;N&middot;m</code>). Whether the detent has clicked is felt, not seen.</p></div>
+    <div class="card"><span class="tag force">force-classification</span>
+      <h4>faucet_turn</h4>
+      <p>Turn a faucet handle past a detent with a fixed <code>0.20&nbsp;N&middot;m</code> peak resistance.</p></div>
+    <div class="card"><span class="tag force">force-classification</span>
+      <h4>radmanso_drawer_sort_table</h4>
+      <p>Pull a drawer open and stop where resistance rises; the initial resistance is randomized in <code>5.5&ndash;9.0&nbsp;N</code>.</p></div>
+    <div class="card"><span class="tag contact">contact-dense</span>
+      <h4>gear_mesh</h4>
+      <p>Mesh a gear onto a fixed base (NVIDIA FORGE assets). Success judged on final alignment.</p></div>
+    <div class="card"><span class="tag contact">contact-dense</span>
+      <h4>nut_thread</h4>
+      <p>Thread an M16 nut onto its bolt. Millimetre-scale tolerance under sustained contact.</p></div>
+    <div class="card"><span class="tag contact">contact-dense</span>
+      <h4>peg_insert</h4>
+      <p>Insert an 8&nbsp;mm peg into its hole, release, and retreat cleanly.</p></div>
   </div>
-</main>
+  <div class="note sans"><b>Honesty note.</b> The three contact-dense tasks are described as force-sensitive
+  in their manifests, but their current success predicates check final pose only &mdash; they neither prove
+  nor disprove that force helps. Force-dependent success checks for them are a v1.0 work item.
+  ForceBench documents this instead of hiding it.</div>
+</section>
 
-<footer class="site-footer">
-  <div class="wrap">
-    <div>
-      <p><b>ForceBench</b> v0.1 原型 · 代码采用 MIT 许可</p>
-      <p>部分任务依赖第三方 3D 资产，整仓库在资产链路完全澄清前按<b>非商业研究用途</b>对待，详见仓库 <code>NOTICE.md</code>。</p>
-    </div>
-    <div>
-      <p><a href="https://github.com/pkuhanxuan/ForceBench">github.com/pkuhanxuan/ForceBench</a></p>
-      <p class="small">本站为纯静态页面，数据实时读取自仓库内的 <code>results/leaderboard.json</code>。</p>
-    </div>
+<section class="wrap">
+  <h2>One Frozen Contract</h2>
+  <div class="tablewrap sans">
+  <table>
+    <tr><th>Physics / control</th><td>60&nbsp;Hz physics, 64 solver position iterations, 15&nbsp;Hz policy rate (<code>decimation=4</code>)</td></tr>
+    <tr><th>Arm controller</th><td>One canonical <code>smooth_position</code> controller (bounded TCP commands &rarr; DLS-IK &rarr; quintic joint trajectories). No TSI, no controller selection interface.</td></tr>
+    <tr><th>Observation</th><td>7-D TCP state + gripper, continuous RPY, two camera views, raw 6-D interaction wrench</td></tr>
+    <tr><th>Expert data</th><td>200 episodes per task, seeds <code>0&ndash;199</code>, 32 cloned environments per Isaac process</td></tr>
+    <tr><th>Evaluation</th><td>Seeds <code>200&ndash;299</code> (disjoint, class-balanced), 100 rollouts, env spacing <b>6&nbsp;m</b> (prevents visual crosstalk), 50-frame action chunks</td></tr>
+    <tr><th>Export</th><td>HDF5 episodes + LeRobot conversion for VLA training (&pi;0.5, ForceVLA, ForceFlow baselines)</td></tr>
+  </table>
   </div>
+  <p class="lead" style="margin-top:12px">The runtime rejects any deviation from these values, and the
+  contract version is recorded with the data &mdash; results collected under a different contract are
+  mechanically distinguishable, not silently mixed.</p>
+</section>
+
+<section class="wrap">
+  <h2>Getting Started</h2>
+  <pre>git clone https://github.com/pkuhanxuan/ForceBench
+cd ForceBench
+pip install -r requirements-dev.txt
+python -m pytest tests/          # contract tests, no Isaac Sim needed
+
+# with an Isaac Lab 2.3.2 environment + assets in place:
+./run_native.sh expert --task weight_sort --seeds 0-199   # generate data
+./scripts/evaluation/evaluate_vectorized_seed_range.sh \
+    weight_sort 200 299 auto out/weight_sort/my_model_spacing6   # evaluate</pre>
+  <p class="lead" style="margin-top:10px">Full installation, asset preparation, data generation and
+  evaluation instructions live in the <a href="doc/index.html"><b>Document</b></a> page.</p>
+</section>
+
+<section class="wrap sans">
+  <h2>News</h2>
+  <ul class="news" style="list-style:none">
+    <li><b>2026-08-29</b> &mdash; Code synchronized with the internal collection master; sort-expert pipeline fixed.</li>
+    <li><b>2026-08-28</b> &mdash; Documentation restructure; release plan published.</li>
+    <li><b>2026-08-26</b> &mdash; Initial public scaffold: 8 task definitions, frozen contract, tests, provenance audit.</li>
+  </ul>
+</section>
+
+<section class="wrap" id="citation">
+  <h2>Citation</h2>
+  <p class="lead sans">The paper is in preparation; a BibTeX entry will appear here with the arXiv release.</p>
+  <pre>@misc{forcebench2026,
+  title  = {ForceBench: A Contact-Rich Manipulation Benchmark
+            That Actually Tests Force Perception},
+  author = {ForceBench Team},
+  year   = {2026},
+  note   = {https://github.com/pkuhanxuan/ForceBench}
+}</pre>
+</section>
+
+<footer class="sans">
+  ForceBench &middot; <a href="https://github.com/pkuhanxuan/ForceBench">GitHub</a> &middot;
+  <a href="doc/index.html">Documentation</a> &middot; <a href="leaderboard.html">Leaderboard</a><br>
+  Dataset &amp; checkpoints: to be released after paper submission (see
+  <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/release_plan.md">release plan</a>).
 </footer>
-
-<script src="./assets/data.js"></script>
-<script src="./assets/render.js"></script>
 </body>
 </html>

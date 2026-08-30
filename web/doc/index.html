@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ForceBench Documentation</title>
+<style>
+  :root{--ink:#1c1e21;--muted:#5f6368;--accent:#0b7a5c;--accent2:#5b4b8a;
+        --bar:#3d4d8a;--card:#f6f7f9;--line:#e3e5e8}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.65;background:#fff}
+  nav{background:var(--bar);color:#fff;position:sticky;top:0;z-index:5}
+  nav .inner{max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:22px;height:54px;flex-wrap:wrap}
+  nav a{color:#e8eaf6;text-decoration:none;font-size:.93rem}
+  nav a:hover{color:#fff}
+  nav .brand{font-weight:700;font-size:1.02rem;color:#fff}
+  .layout{max-width:1180px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:36px}
+  aside{position:sticky;top:70px;align-self:start;font-size:.9rem}
+  aside a{display:block;color:var(--muted);text-decoration:none;padding:4px 0}
+  aside a:hover{color:var(--accent)}
+  aside .h{font-weight:700;color:var(--ink);margin:12px 0 4px}
+  main h1{font-size:1.9rem;margin-bottom:10px}
+  main h2{font-size:1.4rem;margin:36px 0 10px;padding-top:10px;border-top:1px solid var(--line)}
+  main h3{font-size:1.08rem;margin:20px 0 6px}
+  main p,main li{font-size:.96rem}
+  main ul,main ol{padding-left:22px;margin:8px 0}
+  .tablewrap{overflow-x:auto;margin:10px 0}
+  table{border-collapse:collapse;width:100%;font-size:.9rem}
+  th,td{border:1px solid var(--line);padding:7px 11px;text-align:left;vertical-align:top}
+  th{background:var(--card)}
+  code{font-family:Consolas,Menlo,monospace;font-size:.86em;background:#eef0f3;padding:1px 5px;border-radius:4px}
+  pre{background:#14171a;color:#e8eaed;border-radius:10px;padding:14px 16px;overflow-x:auto;
+      font-family:Consolas,Menlo,monospace;font-size:.84rem;line-height:1.55;margin:10px 0}
+  pre code{background:none;padding:0;color:inherit}
+  .note{background:#fff8e6;border:1px solid #f0dfa8;border-radius:8px;padding:10px 14px;font-size:.9rem;margin:12px 0}
+  .ok{background:#eaf6f0;border:1px solid #bfe3d2;border-radius:8px;padding:10px 14px;font-size:.9rem;margin:12px 0}
+  a{color:var(--accent)}
+  footer{border-top:1px solid var(--line);margin-top:48px;padding:22px 0;text-align:center;color:var(--muted);font-size:.85rem}
+  @media(max-width:820px){.layout{grid-template-columns:1fr}aside{position:static}}
+</style>
+</head>
+<body>
+<nav><div class="inner">
+  <a class="brand" href="../index.html">&#128214; ForceBench Documentation</a>
+  <a href="../index.html">Home</a>
+  <a href="#install">Installation</a>
+  <a href="#generate">Generate Data</a>
+  <a href="#evaluate">Evaluate</a>
+  <a href="#protocol">Protocol</a>
+  <a href="../leaderboard.html">Leaderboard</a>
+  <a href="https://github.com/pkuhanxuan/ForceBench">GitHub</a>
+</div></nav>
+
+<div class="layout">
+<aside>
+  <div class="h">Contents</div>
+  <a href="#overview">1. Overview</a>
+  <a href="#install">2. Installation</a>
+  <a href="#env">3. Environment variables</a>
+  <a href="#assets">4. Third-party assets</a>
+  <a href="#generate">5. Generating expert data</a>
+  <a href="#evaluate">6. Evaluating a policy</a>
+  <a href="#protocol">7. Evaluation protocol</a>
+  <a href="#lerobot">8. Export to LeRobot</a>
+  <a href="#issues">9. Known issues</a>
+  <a href="#deeper">10. Going deeper</a>
+</aside>
+
+<main>
+<h1>ForceBench 2.0 Official Document</h1>
+<p><a href="../index.html">Webpage</a> | PDF <i>(soon)</i> | arXiv <i>(soon)</i> |
+<a href="https://github.com/pkuhanxuan/ForceBench">Repo</a> |
+<a href="../leaderboard.html">Leaderboard</a> |
+<a href="../index.html#citation">Citations</a></p>
+
+<div class="note"><b>Status: v0.1 prototype.</b> Dataset and checkpoint hosting are not yet live, and
+the asset download script is a v1.0 work item &mdash; running the simulator today requires you to
+prepare Isaac&nbsp;Lab and third-party assets yourself, following this page. Reading task definitions
+and running the contract tests needs nothing but Python.</div>
+
+<h2 id="overview">1. Overview</h2>
+<p>ForceBench is a benchmark of eight contact-rich Franka&nbsp;FR3 manipulation tasks in
+Isaac&nbsp;Lab, split into <b>five force-classification tasks</b> (the property that decides correct
+behaviour is visually unobservable &mdash; only the interaction wrench carries it) and
+<b>three contact-dense tasks</b> (gear meshing, nut threading, peg insertion). All tasks share one
+frozen simulator contract; the runtime refuses to start under any other values:</p>
+<div class="tablewrap"><table>
+<tr><th>Physics</th><td>60&nbsp;Hz, 64 solver position iterations</td></tr>
+<tr><th>Control / policy rate</th><td>15&nbsp;Hz (<code>decimation=4</code>)</td></tr>
+<tr><th>Arm controller</th><td><code>smooth_position</code>: bounded absolute TCP pose &rarr; DLS-IK &rarr; rate-limited quintic joint trajectories at 60&nbsp;Hz</td></tr>
+<tr><th>State (7-D)</th><td><code>[tcp_x, tcp_y, tcp_z, roll, pitch, yaw, gripper]</code>, continuous RPY, gripper &minus;1 closed / +1 open</td></tr>
+<tr><th>Action (7-D)</th><td>absolute target TCP pose + gripper, executed in 50-frame chunks</td></tr>
+<tr><th>Force signal</th><td>raw 6-D wrench <code>[Fx,Fy,Fz,Mx,My,Mz]</code>, recorded every frame</td></tr>
+</table></div>
+
+<h2 id="install">2. Installation</h2>
+<h3>Tier A &mdash; code reading and contract tests (no GPU, no Isaac Sim)</h3>
+<pre><code>git clone https://github.com/pkuhanxuan/ForceBench
+cd ForceBench
+pip install -r requirements-dev.txt        # pytest numpy h5py msgpack websockets opencv-python
+python -m pytest tests/</code></pre>
+<div class="ok">Expected: <b>102 passed, 5 failed, 2 skipped</b>. The 5 failures are known and
+documented in <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/KNOWN_ISSUES.md">KNOWN_ISSUES.md</a>;
+the 2 skips need a real Isaac Lab environment. Then confirm the task registry:
+<code>python -c "from forcebench.registry import task_names; print(sorted(task_names()))"</code>
+should print eight task names.</div>
+
+<h3>Tier B &mdash; running the simulator (collection, evaluation, replay)</h3>
+<ul>
+  <li><b>Isaac Lab 2.3.2 / Isaac Sim 5.1</b> &mdash; official data was generated on the container image
+      digest <code>sha256:388dbc806f48&hellip;</code>. Install Isaac Lab per
+      <a href="https://isaac-sim.github.io/IsaacLab/">its official instructions</a>; a conda environment
+      named <code>env_isaacsim6</code> is the default expected by <code>run_native.sh</code>.</li>
+  <li>An NVIDIA GPU supported by Isaac Sim.</li>
+  <li>Third-party 3D assets in place (Section 4).</li>
+</ul>
+<p>All simulator entry points go through <code>run_native.sh</code>, which activates the conda
+environment, exports the asset directory, and dispatches into Isaac Lab.</p>
+
+<h2 id="env">3. Environment variables</h2>
+<p>Defaults point at the original development machine and <b>must</b> be overridden elsewhere,
+otherwise you get confusing <i>path not found</i> failures. The four roots must be pairwise distinct
+and outside the code directory (<code>forcebench/paths.py</code> enforces this):</p>
+<pre><code>export FORCEBENCH_DATA_ROOT=/your/path/forcebench_data        # formal datasets / eval results
+export FORCEBENCH_SCRATCH_ROOT=/your/path/forcebench_scratch  # disposable output
+export FORCEBENCH_ARCHIVE_ROOT=/your/path/forcebench_archive  # archives
+export FORCEBENCH_ASSET_DIR=/your/path/ForceBench/assets      # assets
+
+export FORCEBENCH_ISAACLAB_ROOT=/your/path/IsaacLab           # used by run_native.sh
+export FORCEBENCH_CONDA_SH=/your/path/miniforge/etc/profile.d/conda.sh
+export FORCEBENCH_CONDA_ENV=env_isaacsim6</code></pre>
+
+<h2 id="assets">4. Third-party assets</h2>
+<p>Seven of the eight tasks depend on third-party 3D assets that ForceBench does <b>not</b>
+redistribute &mdash; the repository ships only its own wrapper files, checksums, and instructions.
+Licences permit our use but not our re-hosting; see
+<a href="https://github.com/pkuhanxuan/ForceBench/blob/main/NOTICE.md">NOTICE.md</a> for the
+authoritative per-task table. In short:</p>
+<div class="tablewrap"><table>
+<tr><th>Source</th><th>Tasks</th><th>How to obtain</th></tr>
+<tr><td>NVIDIA Omniverse SimReady</td><td><code>weight_sort</code>, <code>rattle_sort</code></td><td>Download from the SimReady catalogue</td></tr>
+<tr><td>Lightwheel Kitchen (CC&nbsp;BY-NC&nbsp;4.0)</td><td><code>stove_turn_on</code>, <code>faucet_turn</code></td><td>Official Lightwheel release; <b>non-commercial use only</b></td></tr>
+<tr><td>NVIDIA Isaac Lab FORGE</td><td><code>gear_mesh</code>, <code>nut_thread</code></td><td>Run the FORGE deployment of Isaac Lab 2.3.2 and copy its factory assets</td></tr>
+<tr><td>ArtVIP</td><td><code>radmanso_drawer_sort_table</code></td><td>Licence under review &mdash; see NOTICE.md</td></tr>
+</table></div>
+<p>After collecting the files, verify them against our build:</p>
+<pre><code>cd assets &amp;&amp; sha256sum -c SHA256SUMS</code></pre>
+<div class="note">The robot asset <code>franka_mimic.usd</code> and the <code>peg_insert</code>
+geometry are provenance-unconfirmed and not distributed; resolving their chain of custody (or
+switching to the official Isaac Lab Franka asset) is the top v1.0 work item. Until then, Tier B
+requires obtaining these files from the maintainers. An automated
+<code>scripts/download_assets.sh</code> is likewise planned but not yet implemented.</div>
+
+<h2 id="generate">5. Generating expert data</h2>
+<p>Expert collection is dispatched through one entry point; each task runs 32 cloned environments
+in a single Isaac process and writes one HDF5 file per episode plus a QC report:</p>
+<pre><code># the five parallel-collection tasks
+./run_native.sh expert --task weight_sort                --seeds 0-199
+./run_native.sh expert --task rattle_sort                --seeds 0-199
+./run_native.sh expert --task stove_turn_on              --seeds 0-199
+./run_native.sh expert --task radmanso_drawer_sort_table --seeds 0-199
+./run_native.sh expert --task peg_insert                 --seeds 0-199
+./run_native.sh expert --task faucet_turn                --seeds 0-199
+
+# gear_mesh / nut_thread use privileged FORGE experts; fewer seeds, more workers
+./run_native.sh expert --task gear_mesh  --seeds 0-19 --workers 2
+./run_native.sh expert --task nut_thread --seeds 0-19 --workers 2
+
+./run_native.sh expert --list      # list registered expert plugins</code></pre>
+<p>Episodes land under <code>$FORCEBENCH_DATA_ROOT/datasets/&lt;task&gt;/</code>. Replay any episode to
+verify determinism:</p>
+<pre><code>./run_native.sh replay $FORCEBENCH_DATA_ROOT/datasets/weight_sort/seed_000_episode_01.hdf5</code></pre>
+<p><b>Seed semantics matter:</b> several tasks encode class balance in the seed (e.g. even seeds =
+light box in <code>weight_sort</code>; each seed pair contains one of each class in
+<code>rattle_sort</code>). Always collect contiguous ranges, never cherry-pick. Seeds
+<code>0&ndash;199</code> are the training range; <code>200&ndash;299</code> are reserved for evaluation.</p>
+
+<h2 id="evaluate">6. Evaluating a policy</h2>
+<p>Policies run as a separate inference server; the benchmark connects over websocket through a
+policy adapter (<code>openpi_ws</code>, <code>forcevla_ws</code>, <code>forcebench_ws</code> ship with
+the repo &mdash; see
+<a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/policy_interface.md">policy_interface.md</a>
+to write your own):</p>
+<pre><code>export FORCEBENCH_POLICY_HOST=127.0.0.1
+export FORCEBENCH_POLICY_PORT=8002
+export FORCEBENCH_POLICY_ADAPTER=openpi_ws
+export FORCEBENCH_ENV_SPACING=6.0    # mandatory, see protocol
+
+./scripts/evaluation/evaluate_vectorized_seed_range.sh \
+    weight_sort 200 299 auto \
+    $FORCEBENCH_DATA_ROOT/evaluations/weight_sort/my_model_spacing6</code></pre>
+<p><code>scripts/evaluation/audit_expert_replay.py</code> audits replay consistency;
+<code>scripts/evaluation/render_policy_rollout.py</code> renders individual rollouts to video.</p>
+
+<h2 id="protocol">7. Evaluation protocol</h2>
+<p>The machine-readable source of truth is the <code>eval_protocol</code> field of
+<code>results/leaderboard.json</code>; the human-readable specification is
+<a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/eval_protocol.md">eval_protocol.md</a>.
+The rules a leaderboard entry must satisfy:</p>
+<div class="tablewrap"><table>
+<tr><th>Seeds</th><td>fixed range <b>200&ndash;299</b>, contiguous, no cherry-picking (seed parity encodes class balance; the seed must never be a model input)</td></tr>
+<tr><th>Rollouts</th><td>100 per task</td></tr>
+<tr><th>Env spacing</th><td><b>6&nbsp;m, mandatory.</b> Smaller spacing lets cloned environments appear in each other's cameras (visual crosstalk); results collected without <code>spacing6</code> are invalid</td></tr>
+<tr><th>Action chunk</th><td>50 frames per inference (<code>FORCEBENCH_EXECUTE_CHUNK</code>)</td></tr>
+<tr><th>Step limits</th><td>per-task, resolved by <code>scripts/evaluation/resolve_task_max_steps.py</code></td></tr>
+</table></div>
+
+<h2 id="lerobot">8. Export to LeRobot</h2>
+<p>Collected HDF5 episodes convert to the LeRobot format for VLA training
+(&pi;0.5 / ForceVLA / ForceFlow baselines were trained this way):</p>
+<pre><code>python convert_hdf5_to_lerobot.py --task weight_sort \
+    --src $FORCEBENCH_DATA_ROOT/datasets/weight_sort \
+    --repo-id yourname/forcebench_weight_sort</code></pre>
+
+<h2 id="issues">9. Known issues</h2>
+<ul>
+  <li>5 contract tests fail in a bare environment by design &mdash; see
+      <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/KNOWN_ISSUES.md">KNOWN_ISSUES.md</a>.
+      PRs should not increase the failure count.</li>
+  <li>Some <code>run_native.sh</code> entries (<code>collect</code> teleoperation, smoke checks)
+      reference internal tooling not included in this repository.</li>
+  <li>The contact-dense tasks' success predicates do not yet read force signals (v1.0 item).</li>
+  <li>Datasets and baseline checkpoints are unreleased pending paper submission &mdash; see the
+      <a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/release_plan.md">release plan</a>.</li>
+</ul>
+
+<h2 id="deeper">10. Going deeper</h2>
+<ul>
+  <li><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/tasks/README.md">Per-task cards</a> &mdash; physics constants, success predicates, expert strategies</li>
+  <li><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/developer/project_guide.md">Project guide</a> &mdash; the full simulator contract</li>
+  <li><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/developer/benchmark_standardization.md">Benchmark standardization record</a></li>
+  <li><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/docs/reproduce.md">Reproduction guide</a></li>
+  <li><a href="https://github.com/pkuhanxuan/ForceBench/blob/main/NOTICE.md">Asset provenance &amp; licences</a></li>
+</ul>
+
+<footer>ForceBench Documentation &middot; <a href="../index.html">Home</a> &middot;
+<a href="https://github.com/pkuhanxuan/ForceBench">GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>
