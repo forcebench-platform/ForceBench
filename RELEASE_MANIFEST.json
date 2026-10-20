@@ -4,10 +4,10 @@
   "release_checks_passed": true,
   "paper_reproduction_verified": false,
   "public_validation_report": "validation/public_report.json",
-  "public_validation_sha256": "c56055633da818b89d23291d2d8671fd16ee5955dad1b0e96a21160accb945bd",
+  "public_validation_sha256": "6eec99a8cd5c5bd650e633277e36b6e51c7515ed3dc05b33638931b62b1a134d",
   "coverage": {
     "cpu": {
-      "passed": 197,
+      "passed": 220,
       "failed": 0,
       "errors": 0,
       "skipped": 0
@@ -61,11 +61,6 @@
       "path": "baselines/forceflow/train_coribench.sh",
       "change": "CRLF to LF for POSIX shell",
       "source_sha256": "9cba96d7dd4a9ecfc098145343b294ad487241a0ba1ce228b67e17409bcb6810"
-    },
-    {
-      "path": "run_native.sh",
-      "change": "CRLF to LF for POSIX shell",
-      "source_sha256": "b1e69e22403952e4510014428dbffd0b406cdb141939f69ff43ba918e9380b55"
     }
   ],
   "files": [
@@ -102,7 +97,7 @@
     {
       "path": "VALIDATION.md",
       "bytes": 998,
-      "sha256": "4f3aab1205d1c2e5e5b8d08c14c3384b3d960e40efbe6838ded7ac1bf44e3964"
+      "sha256": "a00abd6bdfa04df48443a82ad9b5fd4de2050a8b7d08ce64361df5374d3d52c2"
     },
     {
       "path": "assets/.gitattributes",
@@ -5636,8 +5631,8 @@
     },
     {
       "path": "docs/getting_started_main.md",
-      "bytes": 9804,
-      "sha256": "93e382b9202634c3f5eae3c62b881b033686c7f155c27f9af9c91c3edbdef5be"
+      "bytes": 10919,
+      "sha256": "7c01ac7cffc9c46d5730feee5ad47ea19ba5530204254ae7a24de73cdb417d43"
     },
     {
       "path": "docs/nut_assets.md",
@@ -5646,8 +5641,8 @@
     },
     {
       "path": "docs/validation_scope.md",
-      "bytes": 8882,
-      "sha256": "e88a8103ffb6facc8c5f489cecbb6bbced8dadd530ff786748020cb1880b0cf3"
+      "bytes": 9208,
+      "sha256": "e42d9047eb188c4e04b36376d5a473d3a6aa6562b656a5f373995c0142e7a16f"
     },
     {
       "path": "forcebench/.gitattributes",
@@ -6151,8 +6146,8 @@
     },
     {
       "path": "run_native.sh",
-      "bytes": 10607,
-      "sha256": "768e07064d3c1cf18deba0282ecce4a61934ee64b6bccc12486b7b5b92812f34"
+      "bytes": 11350,
+      "sha256": "563a7007be3aeacdf4469c316d0f0ffeffde01db1f812ea8cb25109c4e5d558b"
     },
     {
       "path": "scripts/evaluation/audit_expert_replay.py",
@@ -6256,8 +6251,8 @@
     },
     {
       "path": "scripts/expert/parallel_sort_collection.py",
-      "bytes": 14248,
-      "sha256": "d4ccdca2b3c77ec60f94e06f1a95774282f30c2b41e3e27dd28c164cd776cc0e"
+      "bytes": 14894,
+      "sha256": "794488c81d65b3c5b3d2ddf63bae2b866ffcd147098c5d623d9379d0c920ea8d"
     },
     {
       "path": "tests/fixtures/stove_burner_geometry.json",
@@ -6385,6 +6380,11 @@
       "sha256": "229e96b610daecf23ba6eab5ee9501327c3c79c7e4a80215627e89a99cda2b2c"
     },
     {
+      "path": "tests/test_wheel_launcher.py",
+      "bytes": 10280,
+      "sha256": "e24070a8367bc8bec79e67d4d4de30f31535c68e58eb939d3f137602fce8d6c7"
+    },
+    {
       "path": "tools/asset_builders/.gitattributes",
       "bytes": 12,
       "sha256": "8effd2d7276a2fa241f1325de3259a9154d1ad5d59c442e763803c826571a008"
@@ -6451,8 +6451,8 @@
     },
     {
       "path": "validation/public_report.json",
-      "bytes": 63206,
-      "sha256": "c56055633da818b89d23291d2d8671fd16ee5955dad1b0e96a21160accb945bd"
+      "bytes": 77951,
+      "sha256": "6eec99a8cd5c5bd650e633277e36b6e51c7515ed3dc05b33638931b62b1a134d"
     }
   ]
 }

@@ -144,12 +144,16 @@ is a claim of complete paper reproduction. Final historical model-to-data and
 scorer bindings require their own evidence. Real-world reference results do
 not establish a validated real-robot deployment in this simulation release.
 
-## Environment identity limitation
+## Simulator package identity
 
-The observed simulator package versions are listed in
-[the installation guide](getting_started_main.md). The copied Isaac Lab tree
-has `VERSION=3.0.0` and extension metadata `isaaclab=6.1.14`, but lacks Git
-metadata. Its upstream source commit remains unverified because it could not
-be recovered for this release. Package-version
-matching alone cannot prove an identical source checkout or a clean simulator
-installation.
+The supported public installation target is the official Isaac Lab
+`3.0.0b2.post1` wheel, paired with Isaac Sim 6.0.1.0. Core source, extension
+configuration and application-file comparisons are recorded in the public
+report. Wheel-specific extension initializers relocate package directories;
+the inherited Factory camera patches and task environment implementations
+are not loaded. Kit may load the corresponding agent metadata packages.
+
+The copied reference tree has no Git metadata, so its historical upstream
+commit remains unverified. A wheel source comparison and isolated package
+execution check do not claim a complete clean simulator installation or
+reproduction of the paper scores. See [the installation guide](getting_started_main.md).

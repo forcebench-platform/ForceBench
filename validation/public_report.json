@@ -11,14 +11,14 @@
     "driver": "560.35.05"
   },
   "cpu": {
-    "passed": 197,
+    "passed": 220,
     "failed": 0,
     "errors": 0,
     "skipped": 0,
     "platform": "Linux x86_64",
     "python": "3.12.13",
     "command": "python -m pytest tests -q",
-    "receipt_sha256": "1c56b6d2bd16ab2ed8511d554c2bc655fcf8a67b6de3659c3b2064a62c0039ad",
+    "receipt_sha256": "699cc3cfe48875589e38cb6943bcb8179c1dcad91e8609d486df47ace83f8c89",
     "test_source_sha256": {
       "tests/test_architecture.py": "c59b9483dba2c60874affc76f8e6da4dc359b2e84c5317f1104d001bcb509c8a",
       "tests/test_asset_preparation.py": "7f8f40c2d061bef585aa0d184de2a84701035b46968cf86cac35d9edd9bf1617",
@@ -43,10 +43,11 @@
       "tests/test_stats16_policy.py": "81b6dc503c3218bfaa9fe21daf084ec669a91876cd087cb00740a5ba04d821c2",
       "tests/test_stove_turn_on.py": "bf300ef98b763f64c19f650259f3ea288bdf514af9f257f6405f2ab138a3cc69",
       "tests/test_task_specs.py": "d16de65011db8add10268216816e0b75db73985e67053650ff52c67f9ab93b40",
-      "tests/test_visual_scene.py": "229e96b610daecf23ba6eab5ee9501327c3c79c7e4a80215627e89a99cda2b2c"
+      "tests/test_visual_scene.py": "229e96b610daecf23ba6eab5ee9501327c3c79c7e4a80215627e89a99cda2b2c",
+      "tests/test_wheel_launcher.py": "e24070a8367bc8bec79e67d4d4de30f31535c68e58eb939d3f137602fce8d6c7"
     },
     "windows_cross_check": {
-      "passed": 193,
+      "passed": 216,
       "failed": 0,
       "errors": 0,
       "skipped": 4,
@@ -818,7 +819,6 @@
     "environment": {
       "python": "3.12.13",
       "isaacsim": "6.0.1.0",
-      "isaaclab": "6.1.14",
       "isaaclab_physx": "1.1.3",
       "isaaclab_assets": "0.3.4",
       "isaaclab_tasks": "1.10.9",
@@ -837,9 +837,325 @@
         "source_hash_recipe": "SHA256(JSON of sorted POSIX relative path and file SHA256 pairs; .py/.toml/VERSION, excluding caches and venvs)",
         "selected_source_sha256": "0b0327a2f1bb4fa15144b98da40a7d7f838e7f70ba5e989170ee42d8ac917a61"
       },
-      "native_environment_repair": "Matching environment libstdc++.so.6 selected by LD_PRELOAD; libXt/libSM/libICE supplied by an isolated native-library directory. No global system libraries were replaced."
+      "native_environment_repair": "Matching environment libstdc++.so.6 selected by LD_PRELOAD; libXt/libSM/libICE supplied by an isolated native-library directory. No global system libraries were replaced.",
+      "isaaclab_distribution": "3.0.0b2.post1",
+      "isaaclab_extension_metadata": "6.1.14"
     },
-    "raw_report_sha256": "c7d2b3ec7a8d4e8515f73e64ba64015463a2150c59ddd20ecf11aa894655aeb4"
+    "raw_report_sha256": "c7d2b3ec7a8d4e8515f73e64ba64015463a2150c59ddd20ecf11aa894655aeb4",
+    "official_wheel_validation": {
+      "schema": "forcebench_official_isaaclab_wheel_execution_v1",
+      "status": "passed",
+      "date": "2026-10-21",
+      "official_package": {
+        "distribution": "isaaclab",
+        "version": "3.0.0b2.post1",
+        "index": "https://pypi.nvidia.com",
+        "observed_download_url": "https://pypi.nvidia.cn/isaaclab/isaaclab-3.0.0b2.post1-py3-none-any.whl",
+        "wheel_bytes": 6070415,
+        "wheel_sha256": "dd32886588479ffd70f7348019aeac1582eb9ad16c40244f41d9f458f96f73c3",
+        "wheel_entries_verified_before_and_after": 2353,
+        "exact_version_6_1_14_is_a_public_pip_release": false,
+        "explanation": "6.1.14 is the original editable core extension metadata, not the public isaaclab distribution version. The wheel bundles the sub-packages."
+      },
+      "source_comparison_to_original_editable": {
+        "modules": {
+          "isaaclab": {
+            "installed_python_files": 429,
+            "wheel_python_files": 429,
+            "identical_files": 429,
+            "different_files": 0,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [],
+            "exact_module_match": true
+          },
+          "isaaclab_physx": {
+            "installed_python_files": 87,
+            "wheel_python_files": 87,
+            "identical_files": 86,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_assets": {
+            "installed_python_files": 31,
+            "wheel_python_files": 31,
+            "identical_files": 30,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_tasks": {
+            "installed_python_files": 451,
+            "wheel_python_files": 451,
+            "identical_files": 448,
+            "different_files": 3,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py",
+              "direct/factory/factory_env.py",
+              "direct/factory/factory_env_cfg.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_contrib": {
+            "installed_python_files": 44,
+            "wheel_python_files": 44,
+            "identical_files": 43,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_rl": {
+            "installed_python_files": 20,
+            "wheel_python_files": 20,
+            "identical_files": 20,
+            "different_files": 0,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [],
+            "exact_module_match": true
+          }
+        },
+        "extension_toml_files_identical": 6,
+        "app_kit_files_identical": 9,
+        "difference_interpretation": [
+          "All 429 core isaaclab Python files and all 20 isaaclab_rl Python files match byte-for-byte.",
+          "Four sub-package __init__.py files adjust metadata directory lookup for the wheel layout; numerical definitions are unchanged in those files.",
+          "The original editable Factory environment has two additional optional pi05 camera patches. Those environment modules were not imported in these ten ForceBench checks.",
+          "The official wheel adds its distribution bootstrap and nested core-module layout; module-origin checks and actual GPU execution test that packaged layout."
+        ]
+      },
+      "gpu_validation": {
+        "gpu": "NVIDIA H200",
+        "physical_device": 0,
+        "cuda_visible_devices_unset": true,
+        "environment_installation": "Official wheel extracted into a new directory and selected by PYTHONPATH; all other simulator dependencies inherited from the existing environment.",
+        "fresh_simulator_installation_verified": false,
+        "cases": [
+          {
+            "task": "faucet_force_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "2a5a52a7a6274b7b9d7a8f784babd1bef3f8589eb72b1d102e02a6b91daf1fa6",
+            "process_log_sha256": "983ec3e73885513c5083e690bcb65e5edacecc4d6629b1e751f1130f404a6313"
+          },
+          {
+            "task": "faucet_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "4c665eb3e91cfe7820a01ddd48d493d4d0cf7cd1da0ebe3d95168981d0c077af",
+            "process_log_sha256": "2cd1e423d0b4d472cdf1e9ae2c9882c7e29a4d16cf711d358011bc4a90072fc9"
+          },
+          {
+            "task": "nut_thread",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "71c49a51edc8442b9cee7493444995c17ae334e3e91a83e1f7fa2f9802538b5b",
+            "process_log_sha256": "96e6dd99c0cd77b92b9e4d31db02f4e1215478e7e2c0b082591f12d93dfca80b"
+          },
+          {
+            "task": "radmanso_drawer_sort_table",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "cf53c51aa79868bdc0c430bebeb40e231ba7bfa5961e7fc91a3bc05c7724fc9a",
+            "process_log_sha256": "ee1e2a75ac38f0c29acc9e1c7f491b0560b29434b6ec5c5f18db8c9f68a7f605"
+          },
+          {
+            "task": "rattle_sort",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "4d7ab5d1f143ca986301a5a07b9fd97cdd608e656f25ad236f023b03a035e028",
+            "process_log_sha256": "b3c3a6f9566e5abc9e2def82ac70fd069bb3d60a3b1df3fe299c13115d810f6f"
+          },
+          {
+            "task": "stove_press_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "61da812994f2cc8c8e99ebb28efaa9390b729c58c260c588a050a35fab19811c",
+            "process_log_sha256": "fc4af36587ddf870fe4d756346b147825d019e05c0de935dfe9577abb90aa019"
+          },
+          {
+            "task": "stove_turn_on",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "a49900a5ec243a4e868fd83b3dcb5eb21029b0857751a1d191eed341fe159854",
+            "process_log_sha256": "f54a79613ab4a2a468ac8bc2bb5a8802548a053f989e194680344ac15d4ec6b9"
+          },
+          {
+            "task": "weight_sort",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "653e803f11f62839ce58eea58cb0e5d6e5c5ca02afc05691caa8ec073c4caa5a",
+            "process_log_sha256": "286c846af3544b79ddcd41893e00d2836617f09f8c9f8d65c0f0d083da0133de"
+          },
+          {
+            "task": "weight_sort",
+            "num_envs": 1,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "962c0ca6a559ab5cb32da4e312b0833ef9e49db8b7b0a39ac30da3460a1a5999",
+            "process_log_sha256": "1ed43bf3979937a5d91bb4614cacbee7f52f1991d0cbf7593e6c7ee462562a09"
+          },
+          {
+            "task": "nut_thread",
+            "num_envs": 1,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "911df7f5a5c6ef5d418865be0e38158cc25108dd52e43f2e4112b7b5113db968",
+            "process_log_sha256": "2514ac3a5d2530a7c91068d2d3012a60284e03d3dcc9a78f030e01265774fec7"
+          }
+        ],
+        "all_ten_cases_passed": true,
+        "first_party_source_files_unchanged": 1276,
+        "read_only_origin_guard_sha256": "671e888886d48bbbdd5892114e8d4e15412af3d4cfed0d03ea28585fdab4aa94",
+        "raw_suite_report_sha256": "2489f8ddfb54abdcdf15226aa5b132779044dfd9c0e70d8461fce8278291fb40",
+        "factory_forge_environment_implementations_loaded": false,
+        "agent_metadata_namespace_packages_loaded": [
+          "isaaclab_tasks.direct.factory.agents",
+          "isaaclab_tasks.direct.forge.agents"
+        ]
+      },
+      "limitations": [
+        "Bounded hold-action simulator checks, not task-success scores, full model training or paper-result reproduction.",
+        "This is not a fresh dependency installation; it validates the official wheel over existing compatible simulator dependencies.",
+        "The original editable Git revision remains unknown. The public wheel hash is a separate reproducible artifact identity.",
+        "Factory/FORGE agent metadata namespaces may be registered by startup; their environment implementations and optional camera patch modules were not loaded.",
+        "An earlier GPU4 remapped diagnostic was aborted and excluded because its CUDA/Kit device mapping was not accepted as reliable."
+      ]
+    },
+    "official_wheel_validation_receipt_sha256": "c312c3fe3058f854b44eafb0aea3bb19b253dd91a710a05a88fb8f9928eb817b",
+    "subsequent_launcher_checks": {
+      "source_files": [
+        "run_native.sh",
+        "scripts/expert/parallel_sort_collection.py"
+      ],
+      "tests": "tests/test_wheel_launcher.py",
+      "source_and_wheel_modes_passed": true,
+      "numerical_runtime_or_scoring_changed": false,
+      "scope": "CPU routing tests; simulator execution above uses the same direct-Python numerical scripts."
+    }
   },
   "models": {
     "cases": [
@@ -1266,9 +1582,18 @@
   "limitations": [
     "This is not reproduction of the 80 simulation task-method scores, convergence or statistical repeatability.",
     "Original paper checkpoint-to-data-to-normalizer bindings remain incomplete; frozen table values are not overwritten by new runs.",
-    "The simulator environment was inherited; its copied Isaac Lab tree has no .git and its exact upstream commit is unverified.",
+    "The historical Isaac Lab Git commit remains unknown. The official 3.0.0b2.post1 wheel is source-compared and GPU-executed as a public installation target; its remaining dependencies were inherited, so a complete fresh simulator installation is unverified.",
     "Exact external meshes, textures, datasets and weights must be obtained separately under their applicable terms; current asset import pins identity rather than granting rights or providing public downloads.",
     "The recovered expert collectors were initialized/rendered, not run to complete the 1600 demonstrations.",
     "Real-world reference values do not constitute a validated real-robot deployment."
-  ]
+  ],
+  "ci": {
+    "status": "passed",
+    "passed": 196,
+    "skipped": 1,
+    "skip_reason": "pxr not installed in lightweight CPU runner; covered by H200 CPU suite",
+    "source_head": "c365a465a80e7fcf863dbce3d45147a96d9295f2",
+    "run_url": "https://github.com/forcebench-platform/ForceBench/actions/runs/39484491866",
+    "scope": "Clean CPU install before the final launcher-only additions; the current commit is checked again by CI."
+  }
 }

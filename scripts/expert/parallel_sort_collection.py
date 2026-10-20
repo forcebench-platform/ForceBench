@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -183,11 +184,27 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
         "stove_press_turn": "generate_parallel_stove_press_turn.py",
     }
     generator = CODE_ROOT / "scripts/expert" / generators[args.task]
-    if not launcher.is_file() or not generator.is_file():
-        raise FileNotFoundError("Isaac Lab launcher or 32-env task generator is missing")
+    if not generator.is_file():
+        raise FileNotFoundError("32-env task generator is missing")
+    python_override = os.environ.get("FORCEBENCH_SIM_PYTHON")
+    source_selected = not python_override and (
+        bool(os.environ.get("FORCEBENCH_ISAACLAB_ROOT")) or launcher.is_file()
+    )
+    if source_selected:
+        if not launcher.is_file():
+            raise FileNotFoundError(f"Isaac Lab launcher is missing: {launcher}")
+        launch_prefix = [str(launcher), "-p"]
+        launch_cwd = isaaclab_root
+    else:
+        # The active wheel environment has no source checkout or isaaclab.sh.
+        launch_prefix = [python_override or sys.executable]
+        launch_cwd = CODE_ROOT
     environment = os.environ.copy()
     environment["FORCEBENCH_TASK"] = args.task
     environment["FORCEBENCH_EXPERT_COLLECTION_CONTRACT"] = "forcebench_expert_collection"
+    environment["PYTHONPATH"] = str(CODE_ROOT) + (
+        os.pathsep + environment["PYTHONPATH"] if environment.get("PYTHONPATH") else ""
+    )
     batch_results: list[dict[str, object]] = []
     failed_seeds: list[int] = []
 
@@ -221,11 +238,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
                 )
             artifact_dir = run_dir / f"batch_{batch.index:03d}" / f"attempt_{attempt:02d}"
             log_path = run_dir / "logs" / f"batch_{batch.index:03d}_attempt_{attempt:02d}.log"
-            command = [
-                str(launcher),
-                "-p",
-                str(generator),
-            ]
+            command = [*launch_prefix, str(generator)]
             if args.task in ("weight_sort", "rattle_sort", "nut_thread", "gear_mesh"):
                 command.extend(("--task", args.task))
             if args.task in ("nut_thread", "gear_mesh"):
@@ -255,7 +268,7 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
             ])
             return_code, timed_out, elapsed_s = _run_process(
                 command,
-                cwd=isaaclab_root,
+                cwd=launch_cwd,
                 environment=environment,
                 log_path=log_path,
                 timeout_s=args.timeout_s,
