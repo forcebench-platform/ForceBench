@@ -15,7 +15,7 @@ from .registry import task_names
 def all_expert_backend_manifests() -> dict[tuple[str, str], ExpertBackendManifest]:
     from . import expert_adapters as adapter_namespace
 
-    registered_tasks = set(task_names())
+    registered_tasks = set(task_names(include_legacy=True))
     discovered: dict[tuple[str, str], ExpertBackendManifest] = {}
     for module_info in pkgutil.iter_modules(adapter_namespace.__path__):
         if module_info.name.startswith("_"):

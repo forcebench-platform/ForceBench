@@ -1,0 +1,266 @@
+{
+  "scope": "Source hashes before portable packaging changes; no datasets or checkpoints included.",
+  "snapshot_date": "2026-09-24",
+  "files": {
+    "baselines/temporal/runtime/src/openpi/conftest.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/conftest.py",
+      "source_sha256": "626672e385fb276396c119e2220421065c58f8ec602401e8bf2ae509f9fffaf3"
+    },
+    "baselines/temporal/runtime/src/openpi/py.typed": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/py.typed",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baselines/temporal/runtime/src/openpi/transforms.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/transforms.py",
+      "source_sha256": "a1b94e9e72849a18834778f229c6bb389a495eb7fbe0aa800edea728b9424ff4"
+    },
+    "baselines/temporal/runtime/src/openpi/__init__.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baselines/temporal/runtime/src/openpi/models/gemma.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/gemma.py",
+      "source_sha256": "7e42ada4ae7e9995f0ef3e33a0c224758323c2015e2d9d72ec15726a8a001d2a"
+    },
+    "baselines/temporal/runtime/src/openpi/models/gemma_fast.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/gemma_fast.py",
+      "source_sha256": "563c6e1ffd8afa31c406bcb8894a605e87df88f6c075d398d97a57af6bc3aefa"
+    },
+    "baselines/temporal/runtime/src/openpi/models/lora.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/lora.py",
+      "source_sha256": "ced28716950c34d84a1a6d0b03b1d9550000732721df884818080b6e78cb3289"
+    },
+    "baselines/temporal/runtime/src/openpi/models/model.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/model.py",
+      "source_sha256": "8a7a621d069d3a16bcd8f74cb40b564efa73384fb4b4fc06f687766eb7ff4139"
+    },
+    "baselines/temporal/runtime/src/openpi/models/pi0.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/pi0.py",
+      "source_sha256": "22f7f7312200ee2e455d1ad481a796d61a9182d1770559b72809bbc60b568005"
+    },
+    "baselines/temporal/runtime/src/openpi/models/pi0_config.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/pi0_config.py",
+      "source_sha256": "fe254e67b1d526eade25588910e3f3966d222927b6dfd68f0ac8de80872d0cde"
+    },
+    "baselines/temporal/runtime/src/openpi/models/pi0_fast.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/pi0_fast.py",
+      "source_sha256": "627332a555046f2744ef144c45f8bd3361a9820cf68854a4528d0fdbba7e9aa3"
+    },
+    "baselines/temporal/runtime/src/openpi/models/siglip.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/siglip.py",
+      "source_sha256": "14b4df0be280d5769fb0dc31a40cde27525dbb1980cc998c28475d62fa3cad32"
+    },
+    "baselines/temporal/runtime/src/openpi/models/tokenizer.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/tokenizer.py",
+      "source_sha256": "965be8b3c393a6811875bbc32da9e01a5d01cc2f87802de801cf7293e049748c"
+    },
+    "baselines/temporal/runtime/src/openpi/models/vit.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/vit.py",
+      "source_sha256": "d285d057636c3cba2d1fd3b37693b18075ad4b9c3b47bbde807c34c6c376ac93"
+    },
+    "baselines/temporal/runtime/src/openpi/models/__init__.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/gemma_pytorch.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/gemma_pytorch.py",
+      "source_sha256": "225092e06509da0ae37bb9dca55c00d2804255bb1496f7c8700304b4c52a95eb"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/pi0_pytorch.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/pi0_pytorch.py",
+      "source_sha256": "dcd7b6f508808ce4b7170a1720a4c62c6da04edae3652d16c94a469dca924e16"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/preprocessing_pytorch.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/preprocessing_pytorch.py",
+      "source_sha256": "6a44e91be2d7a724c6140d2cc98ed0a631b8d38bbb29f63b380a0a19f903bbf6"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/aloha_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/aloha_policy.py",
+      "source_sha256": "50d7ad972d80142ecb0f03b0780dacfd3af212946f4c9aac31a204b02db4543d"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/autobio_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/autobio_policy.py",
+      "source_sha256": "7fef0d258fe6bbcd681cf7753066ac032a834879028a2b908738f8f59f2b17f0"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/droid_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/droid_policy.py",
+      "source_sha256": "99ebf8b252bde5e33dba7af10552137c421589ec88887bb0ee6507366d24da68"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/libero_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/libero_policy.py",
+      "source_sha256": "d8679d99facc3fef48da07406081b20709ed872fcefdf7de67ede99422d623fa"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/policy.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/policy.py",
+      "source_sha256": "a2ac5236e23b11d0f5a840d4a8fef148d89dba921d5452ec5dfcd5a6ffa46f20"
+    },
+    "baselines/temporal/runtime/src/openpi/policies/policy_config.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/policies/policy_config.py",
+      "source_sha256": "5ab2e5e0681e95dd258d82ee0e325204ff84d536066850a97912c34a8e2e37fa"
+    },
+    "baselines/temporal/runtime/src/openpi/serving/websocket_policy_server.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/serving/websocket_policy_server.py",
+      "source_sha256": "1370d345e6c3c5b8f15573050e485e60a5b423d1df33e24b237805e6b442b026"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/array_typing.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/array_typing.py",
+      "source_sha256": "6524945566eab3eb97b75a6280ba4724617b4d028c55f05172b283c3de68a026"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/download.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/download.py",
+      "source_sha256": "a12054a6ddaab4efa833c4ff49a1aba00c63759e4e88d6be21c1e0b3307fd9b2"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/image_tools.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/image_tools.py",
+      "source_sha256": "0f8fcb355288119e56acb56d550c1cc1f3a9edddceb0dc5b319f955943ef7767"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/nnx_utils.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/nnx_utils.py",
+      "source_sha256": "4da7111ba3011c4d1c381c9ed17257771df6a50ed89182647c3fb6f79208005e"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/normalize.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/normalize.py",
+      "source_sha256": "6c2cea4946fb07e51801530400d2b2fd94730e195cd290d6b6960114eca9739d"
+    },
+    "baselines/temporal/runtime/src/openpi/shared/__init__.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/shared/__init__.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baselines/temporal/runtime/src/openpi/training/checkpoints.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/checkpoints.py",
+      "source_sha256": "3cc32682ec3609e9075dabd991488edb9d7f6c045443f58963d733f99c468dbd"
+    },
+    "baselines/temporal/runtime/src/openpi/training/config.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/config.py",
+      "source_sha256": "3bed802c1eda05826cd9e8ecf26cf82f0cd4354d32f6ea09c62ab44a2e08af0a"
+    },
+    "baselines/temporal/runtime/src/openpi/training/data_loader.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/data_loader.py",
+      "source_sha256": "74735774a178116ed485e1630e440623bd56c78d54230f75a6461c042e6f03a7"
+    },
+    "baselines/temporal/runtime/src/openpi/training/droid_rlds_dataset.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/droid_rlds_dataset.py",
+      "source_sha256": "1d3a057a040240218234d7dbc6680ee4fe8256f2058531a0f9fefd3f7ee995a4"
+    },
+    "baselines/temporal/runtime/src/openpi/training/optimizer.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/optimizer.py",
+      "source_sha256": "cfb5d6f6aec61fbe961287b4015c652260628a0ed4682a0dbdc271b8e65431fa"
+    },
+    "baselines/temporal/runtime/src/openpi/training/sharding.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/sharding.py",
+      "source_sha256": "c67c4112a126ab097571c8a882fd1ee3f106b15b6e608e7205ac7f29b44ca985"
+    },
+    "baselines/temporal/runtime/src/openpi/training/utils.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/utils.py",
+      "source_sha256": "b684e674343f86ef5e976f279a586d3fe2f885e901f396ac899ed136abc7eca6"
+    },
+    "baselines/temporal/runtime/src/openpi/training/weight_loaders.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/weight_loaders.py",
+      "source_sha256": "4fe7c32d9bc0cb1d918c9e9da9ebadbdf7f940f43e83eedfc714447f68efc4ac"
+    },
+    "baselines/temporal/runtime/src/openpi/models/utils/fsq_tokenizer.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models/utils/fsq_tokenizer.py",
+      "source_sha256": "88866638ee4775f46a222561a957bd35e20600fe38c5888b587016ad77b1065f"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/transformers_replace/models/gemma/configuration_gemma.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/transformers_replace/models/gemma/configuration_gemma.py",
+      "source_sha256": "26fd0d0f52730ab32b6f337eb73ae9a26cb71ae0915bc49eced1d0e2ed8d0ec6"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/transformers_replace/models/gemma/modeling_gemma.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/transformers_replace/models/gemma/modeling_gemma.py",
+      "source_sha256": "17eeb54e277939e58cd6f8a92719a275e36baf0c9f463b2754227d42f87aedde"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/transformers_replace/models/paligemma/modeling_paligemma.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/transformers_replace/models/paligemma/modeling_paligemma.py",
+      "source_sha256": "c945d330b829264f927f3ee5339f977238631772de07a28e855e265bb85fd53c"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/transformers_replace/models/siglip/check.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/transformers_replace/models/siglip/check.py",
+      "source_sha256": "466e8eb7887ac5ccc98118a3169298d6ab65a284d834bae74751e3854dbc4245"
+    },
+    "baselines/temporal/runtime/src/openpi/models_pytorch/transformers_replace/models/siglip/modeling_siglip.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/models_pytorch/transformers_replace/models/siglip/modeling_siglip.py",
+      "source_sha256": "ef2e99500f263fdd78db9d4d9a255e29d844eb92f53c25ad640f8056700ef84b"
+    },
+    "baselines/temporal/runtime/src/openpi/training/misc/polaris_config.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/misc/polaris_config.py",
+      "source_sha256": "c2ab92efb5e0d675118ad812113fd1c3cb3a62cdab5d79066014266e82df12d8"
+    },
+    "baselines/temporal/runtime/src/openpi/training/misc/roboarena_config.py": {
+      "snapshot_path": "temporal_dual/runtime/src/openpi/training/misc/roboarena_config.py",
+      "source_sha256": "914acdd74ccf90e6779c13a5093140595c7e4f687e9e0b167439446a81d74c01"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/pyproject.toml": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/pyproject.toml",
+      "source_sha256": "cacd55394787338bef9d6e7c2e4ecaefd0bc90b3362ac48fe20d9a7f201147d6"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/action_chunk_broker.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/action_chunk_broker.py",
+      "source_sha256": "019b9d69cb26cc681331a2f95dbe60a2cc7b02d6d309c5d15b6457ab39798234"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/base_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/base_policy.py",
+      "source_sha256": "88e98e0f06293f3c4767db675061664c4bba12f87242ba1e64377d1b8de8069e"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/image_tools.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/image_tools.py",
+      "source_sha256": "d48b4bd7f44e79fe6db8a8e07c9161144fa250be686e1245014a8b47e6171977"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/msgpack_numpy.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/msgpack_numpy.py",
+      "source_sha256": "c04568948fcee52b691e3be4b6cffb759f7e79ad67530fcd5d23095a0d13c057"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/websocket_client_policy.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/websocket_client_policy.py",
+      "source_sha256": "36557cb0b91ccf31cd4fb4b508306850d76ed0feb4028dac5182d0f5a5d88005"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/__init__.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/__init__.py",
+      "source_sha256": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/runtime/agent.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/runtime/agent.py",
+      "source_sha256": "b559885afd9645a91b9b6ee12a28513295474f987d11b16610fc0479dbe6de5b"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/runtime/environment.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/runtime/environment.py",
+      "source_sha256": "1c12e5054b3401dec5f1f8b71eef0f625cb60e2b50784dcf19afa32c77107a7e"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/runtime/runtime.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/runtime/runtime.py",
+      "source_sha256": "3daa242a9ce61ffb210789ef3ba6b1e3cade9de757fcd36af7b174c530345ea8"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/runtime/subscriber.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/runtime/subscriber.py",
+      "source_sha256": "d269a2af8ec4056beb310e5c3c97d4468af01549c7ef80dd905652d8ac64f85b"
+    },
+    "baselines/temporal/runtime/packages/openpi-client/src/openpi_client/runtime/agents/policy_agent.py": {
+      "snapshot_path": "temporal_dual/runtime/packages/openpi-client/src/openpi_client/runtime/agents/policy_agent.py",
+      "source_sha256": "c4d63952d1954bd4b72a3122223df36794812fea74cf1c7023433b5a90473c1c"
+    },
+    "baselines/temporal/runtime/scripts/train.py": {
+      "snapshot_path": "temporal_dual/runtime/scripts/train.py",
+      "source_sha256": "291affac0fe127c78c037b23a2ac3bafbd8546955f34faffd299d2689a7618b7"
+    },
+    "baselines/temporal/runtime/scripts/compute_norm_stats.py": {
+      "snapshot_path": "temporal_dual/runtime/scripts/compute_norm_stats.py",
+      "source_sha256": "0682c5591844529e86950e1ceab52888959f742cd923959593f2c13be148c390"
+    },
+    "baselines/temporal/runtime/pyproject.toml": {
+      "snapshot_path": "temporal_dual/runtime/pyproject.toml",
+      "source_sha256": "e1f457bd81622a47a4c4de17b92815977ac5fcd40116bec92398eb400bf76483"
+    },
+    "baselines/temporal/runtime/LICENSE": {
+      "snapshot_path": "pi0/openpi/LICENSE",
+      "source_sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+    },
+    "baselines/temporal/runtime/LICENSE_GEMMA.txt": {
+      "snapshot_path": "pi0/openpi/LICENSE_GEMMA.txt",
+      "source_sha256": "3e2c24001f9ef57bf7ec959a3658fbb49cdad113cdf394c264da9d16f9bdd132"
+    },
+    "baselines/temporal/runtime/README.md": {
+      "snapshot_path": "pi0/openpi/README.md",
+      "source_sha256": "567fc57766bd736664f50126cab8145af4071ca16cc5e238f2b11e369169c3b5"
+    }
+  }
+}

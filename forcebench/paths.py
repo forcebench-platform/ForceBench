@@ -8,13 +8,15 @@ from pathlib import Path
 
 
 CODE_ROOT = Path(__file__).resolve().parents[1]
-DATA_ROOT = Path(os.environ.get("FORCEBENCH_DATA_ROOT", "/home/pc/ForceBench_data")).resolve()
+# Imports only resolve paths: they do not create or move user data.
+STORAGE_ROOT = Path(os.environ.get("FORCEBENCH_HOME", str(Path.home() / "ForceBench"))).expanduser().resolve()
+DATA_ROOT = Path(os.environ.get("FORCEBENCH_DATA_ROOT", str(STORAGE_ROOT / "data"))).expanduser().resolve()
 SCRATCH_ROOT = Path(
-    os.environ.get("FORCEBENCH_SCRATCH_ROOT", "/home/pc/ForceBench_scratch")
-).resolve()
+    os.environ.get("FORCEBENCH_SCRATCH_ROOT", str(STORAGE_ROOT / "scratch"))
+).expanduser().resolve()
 ARCHIVE_ROOT = Path(
-    os.environ.get("FORCEBENCH_ARCHIVE_ROOT", "/home/pc/ForceBench_archive")
-).resolve()
+    os.environ.get("FORCEBENCH_ARCHIVE_ROOT", str(STORAGE_ROOT / "archive"))
+).expanduser().resolve()
 
 _SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
 

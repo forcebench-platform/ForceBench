@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "scope": "Direct paths referenced by task specifications, runtime constants and selected scene profiles. Transitive USD/texture dependencies require separate validation.",
+  "tasks": {
+    "faucet_force_turn": [
+      "lightwheel_kitchen/FullKitchen/KitchenRoom_background.usda",
+      "lightwheel_kitchen/Sink054/Sink054.usd",
+      "lightwheel_kitchen/Sink054/Sink054_environment.usda",
+      "lightwheel_kitchen/Sink054/faucet_force_turn_valve.usda",
+      "lightwheel_kitchen/Sink054/robot_base_counter_extension.usda",
+      "lightwheel_kitchen/Sink054/texutre/T_Sink054_BC001.png",
+      "simready/cup09/cup09.usd"
+    ],
+    "faucet_turn": [
+      "lightwheel_kitchen/FullKitchen/KitchenRoom_background.usda",
+      "lightwheel_kitchen/Sink054/Sink054.usd",
+      "lightwheel_kitchen/Sink054/Sink054_environment.usda",
+      "lightwheel_kitchen/Sink054/faucet_detent_valve.usda",
+      "lightwheel_kitchen/Sink054/robot_base_counter_extension.usda",
+      "lightwheel_kitchen/Sink054/texutre/T_Sink054_BC001.png",
+      "simready/cup09/cup09.usd"
+    ],
+    "nut_thread": [
+      "normalized/nut_thread/bolt.usda",
+      "normalized/nut_thread/nut.usda",
+      "residential/east_rural/EastRural_Table_ash_veneer_precision.usda"
+    ],
+    "radmanso_drawer_sort_table": [
+      "external/artvip_drawers/radmanso_3_drawers/model_forcebench.usda",
+      "residential/east_rural/EastRural_Table_weight_sort.usda"
+    ],
+    "rattle_sort": [
+      "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Props/Conveyors/ConveyorBelt_A04.usd",
+      "normalized/rattle_sort/box_shell.usda",
+      "simready/container_f27/container_f27.usd",
+      "simready/conveyor_a04/conveyor_a04.usd",
+      "simready/flatbox_a07/flatbox_a07.usd",
+      "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_base.usd",
+      "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_base.usd",
+      "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_base.usd",
+      "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_base.usd",
+      "simready/small_warehouse_digital_twin/rack.usd"
+    ],
+    "stove_press_turn": [
+      "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/Pot057.usd",
+      "lightwheel_kitchen/FullKitchen/KitchenRoom_background.usda",
+      "lightwheel_kitchen/Stovetop012/Stovetop012.usd",
+      "lightwheel_kitchen/Stovetop012/Stovetop012_environment.usda",
+      "lightwheel_kitchen/Stovetop012/stove_press_turn_knob.usda",
+      "lightwheel_kitchen/Stovetop012/texture/T_Stovetop012_BC001.png"
+    ],
+    "stove_turn_on": [
+      "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/Pot057.usd",
+      "lightwheel_kitchen/FullKitchen/KitchenRoom_background.usda",
+      "lightwheel_kitchen/Stovetop012/Stovetop012.usd",
+      "lightwheel_kitchen/Stovetop012/Stovetop012_environment.usda",
+      "lightwheel_kitchen/Stovetop012/stove_detent_knob.usda",
+      "lightwheel_kitchen/Stovetop012/texture/T_Stovetop012_BC001.png"
+    ],
+    "weight_sort": [
+      "normalized/weight_sort/box.usda",
+      "residential/east_rural/EastRural_Table_weight_sort.usda",
+      "simready/container_f27/container_f27.usd",
+      "simready/flatbox_a02/flatbox_a02.usd"
+    ]
+  }
+}

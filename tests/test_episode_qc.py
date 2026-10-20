@@ -10,7 +10,9 @@ from forcebench.episode_qc import (
 
 def valid_main_image(size=100):
     image = np.full((size, size, 3), 55, dtype=np.uint8)
-    image[:20, :12] = (20, 40, 150)
+    # The retained 224 px camera's reset probe has ~6% blue container pixels.
+    # This synthetic fixture exercises QC only, not simulator appearance.
+    image[:20, :30] = (20, 40, 150)
     return image
 
 
@@ -18,7 +20,7 @@ def test_weight_sort_visual_gate_accepts_expected_reset_probe():
     main = valid_main_image()
     wrist = np.full((50, 50, 3), 60, dtype=np.uint8)
     metrics = weight_sort_visual_metrics(main, wrist)
-    assert metrics["main_blue_fraction"] == pytest.approx(0.024)
+    assert metrics["main_blue_fraction"] == pytest.approx(0.060)
     assert weight_sort_visual_errors(metrics) == ()
 
 

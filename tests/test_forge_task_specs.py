@@ -17,7 +17,7 @@ from forcebench.tasks.nut_thread.spec import (
 
 
 def test_forge_asset_tasks_are_discovered_without_simulator_imports():
-    assert {"gear_mesh", "nut_thread"}.issubset(task_names())
+    assert {"gear_mesh", "nut_thread"}.issubset(task_names(include_legacy=True))
     assert get_task_manifest("gear_mesh").runtime_class.endswith(":GearMeshTask")
     assert get_task_manifest("nut_thread").runtime_class.endswith(":NutThreadTask")
 

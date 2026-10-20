@@ -1,0 +1,438 @@
+{
+  "scope": "Source hashes before portable packaging changes; no datasets or checkpoints included.",
+  "snapshot_date": "2026-09-24",
+  "files": {
+    "baselines/forceflow/coribench_forceflow/data.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/data.py",
+      "source_sha256": "f88d3fadb4991daf30529a0a950ccf728104781538437ad8b677e3ac4b238b22"
+    },
+    "baselines/forceflow/coribench_forceflow/model.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/model.py",
+      "source_sha256": "bd884ec47354d00fc5ae418d902fe47d1a187b71d8d26edce291e1f692a294fb"
+    },
+    "baselines/forceflow/coribench_forceflow/prepare_config.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/prepare_config.py",
+      "source_sha256": "7002aecdef2cb490c5d965481e085faa3263b40f844b102258fc33afcfcdc514"
+    },
+    "baselines/forceflow/coribench_forceflow/run_output.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/run_output.py",
+      "source_sha256": "7260b18ca9271fb6425458ea903c625ed45dd17460422284eff2d1475dd2a571"
+    },
+    "baselines/forceflow/coribench_forceflow/server.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/server.py",
+      "source_sha256": "bcb8931ce5da073aaedff1429de3967bdf345f316f19ed24dc3f01081c20f143"
+    },
+    "baselines/forceflow/coribench_forceflow/train.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/train.py",
+      "source_sha256": "dd5d1a09145f4cb947b1019b24de625cb54ede7ecbc3bab9bbcb351a0fc21413"
+    },
+    "baselines/forceflow/coribench_forceflow/video_decode.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/video_decode.py",
+      "source_sha256": "2671cb8cb2456ae37b72bf55a7751e6f28f7c30e33397a3e84e38bf3a7a32b05"
+    },
+    "baselines/forceflow/coribench_forceflow/__init__.py": {
+      "snapshot_path": "forceflow/coribench_forceflow/__init__.py",
+      "source_sha256": "5f2eccfd0e5479efde55f254fd1167422e33d8ee3d4898e2472f535b7a705cfd"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/__init__.py",
+      "source_sha256": "91447944015cec709e8aa7655f7e9d64e1e4508e7023a57fe3746911c0fc6fed"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/classifier/base.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/classifier/base.py",
+      "source_sha256": "aa87524d7a687c27746bb245c5197bd1f5909ffc976a33e4b947ff7b93ce112a"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/classifier/mse_classifier.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/classifier/mse_classifier.py",
+      "source_sha256": "c30a41a73951dc868bf289feb2c2ce401b2813dca77f2d2def2a6380443a8514"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/classifier/qgpo_classifier.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/classifier/qgpo_classifier.py",
+      "source_sha256": "37d35d91c90a5d7bea563c9f29b0f31ebd88e677d3c5f458094a13218de41d27"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/classifier/rew_classifiers.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/classifier/rew_classifiers.py",
+      "source_sha256": "2c2560dda3aecb11fbe4e6e7f6143b4645d41c871a365411f14b0f0bf41d5f46"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/classifier/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/classifier/__init__.py",
+      "source_sha256": "4039abe52a6b5c4d30f44201fdcc952c317f07592c3b7e1c141d0e0fd16bb66b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/base_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/base_dataset.py",
+      "source_sha256": "bbcbd132cfe60e1b47ac8586733ac35752e7c2e2d6777d0a12e0cb17dd3d8e00"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/block_push_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/block_push_dataset.py",
+      "source_sha256": "735ebc393c6064bffc9a9368030b73f7d279af2933f761c7e48aeddd630d1e1c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_antmaze_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_antmaze_dataset.py",
+      "source_sha256": "83071c17247a93e22ca9d3a4b6d0565cf44db25ee3fa78f9b9544fc77d5cd560"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_kitchen_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_kitchen_dataset.py",
+      "source_sha256": "349d219e770065b54ab1aa2ce020468f3e3aedc47c0df73e01ccfa488b7419c7"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_mujoco_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/d4rl_mujoco_dataset.py",
+      "source_sha256": "1b3c74824c90f410f96543a65b7f4a4f2d812fda46c4b6e7f89af3683e2d4462"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/dataset_utils.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/dataset_utils.py",
+      "source_sha256": "d700caa83e71d22da809c72b1403270e327c8bcf89ca9d08a1ae1c1174a98bc5"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/imagecodecs.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/imagecodecs.py",
+      "source_sha256": "32a4836a7c029e7ad815c660ccefaeb6682c55aeadc7103a95afd4e1f5509208"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/kitchen_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/kitchen_dataset.py",
+      "source_sha256": "bdb1eafc25e4982bf350ba1b48bd212c350788d3b07e4d80c8c55ccaa959df6b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/libero_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/libero_dataset.py",
+      "source_sha256": "89a74c3699578725f5457ebe71bf9f3d741cdaac949502afd7aa63f4aad8d44b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/pusht_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/pusht_dataset.py",
+      "source_sha256": "d5595d79ea3a7a09ee0f56a4685414f047533e30502534c190eba9c76483469a"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/replay_buffer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/replay_buffer.py",
+      "source_sha256": "2b3ac3c9607c0b9ce025c43a1de99bdb19c3c288d958f61e74540726639d5647"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/robomimic_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/robomimic_dataset.py",
+      "source_sha256": "20b0e33b74a661f6c1763139922c43af9f6b18a785233e67c5f872b1b10fc00d"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/robomimic_rl_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/robomimic_rl_dataset.py",
+      "source_sha256": "879c3f1c06986c3d18c31e429f32c940c49d849b47b6b6f4b9f2786d4cde3821"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/rotation_conversions.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/rotation_conversions.py",
+      "source_sha256": "9080f5633eaa7e99dffb68ca67a92e1a50b9757e33ca4051c00bb08ad99d0e01"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/toy2d_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/toy2d_dataset.py",
+      "source_sha256": "e188127437ad69ee400692ad4a6f05894bdf5d8dca2e84f6ce9093876072062e"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset.py",
+      "source_sha256": "f51af81b2c5f076c965e91e35681eba71e731b00e57d8108dbccf191301cf791"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset_force_seq.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset_force_seq.py",
+      "source_sha256": "580cf45d00052ada3c9665b5859b3729d18a6ef700823426079fc350a9fff3fc"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset_force_seq_ext.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/xarm_dataset_force_seq_ext.py",
+      "source_sha256": "c66ed71248bb492cf2e342ea01797dd3e0a8fb432fe18e92eedcdf96d7741a23"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/basic.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/basic.py",
+      "source_sha256": "8af1cdf71e7d653937fa2c3271655601d85af1c26f963e11dfd36275df07aa42"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/consistency_model.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/consistency_model.py",
+      "source_sha256": "f1c0d30b402830e358fa87b23307f157f130412da02a32e7afb15d921f6d9d18"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/diffusionsde.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/diffusionsde.py",
+      "source_sha256": "2a34b8700e894add70310934dc3b39aa139d9378061ab6ea2579c81c599c8d0b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/edm.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/edm.py",
+      "source_sha256": "b0fe8d9305529400ef8937f42c3b22704a84d8cc29b9fe5b376f5a15eeb7f8ba"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/rectifiedflow.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/rectifiedflow.py",
+      "source_sha256": "39a4694573a61b167b2983bf282cff19379bab531b10ef8dfb038c1eb371a988"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/diffusion/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/diffusion/__init__.py",
+      "source_sha256": "a68c2ca258641ed3e387731968c58b3ffa3cc8e5058126b88f7c45c093874037"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/invdynamic/common.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/invdynamic/common.py",
+      "source_sha256": "3cfaf6cee390ef68a560b9f5820c6782dd0df643747c2fbcf6c7932d69613e13"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/invdynamic/mlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/invdynamic/mlp.py",
+      "source_sha256": "bb668be4751bce0f2261105b90337169f4779582142a5efdf88ace15a6a80224"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/invdynamic/pretrain_on_d4rl.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/invdynamic/pretrain_on_d4rl.py",
+      "source_sha256": "0a3310d6f2d49902e35c80defeadbc8abbb6534fb8591c987aee911d0151fdb0"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/invdynamic/README.md": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/invdynamic/README.md",
+      "source_sha256": "4a9e15b93a74bc954349f742efb237250c0e05b2a386969a430af97ade1440fc"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/invdynamic/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/invdynamic/__init__.py",
+      "source_sha256": "7015838b6c8a5d3276fe76c9dfb23e5b293fb632714ce14a3e4abc540217f0c3"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/base_nn_classifier.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/base_nn_classifier.py",
+      "source_sha256": "ee1715294e6e6fa6ddb7ad33a7a92cdd90552e1e0e1e2429e7e309abaa4c4e7f"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_dit.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_dit.py",
+      "source_sha256": "0e189d72ed71dee2a34b5ec6070869a2d42da73a059f8ed9bcca8adb356f6b0d"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_jannerunet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_jannerunet.py",
+      "source_sha256": "6b9a8f69a03f346765595507c3aed1e4ee66c6e25bad94e75110e0d17da85a9a"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_unet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/half_unet.py",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/mlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/mlp.py",
+      "source_sha256": "28b8bca33ad4eec101b0565735c6968517c81e159316948a4939980f170723ec"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_classifier/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_classifier/__init__.py",
+      "source_sha256": "43b3d698970da5e9e12c122c21f6a7ef7164b5172dfa21ed4f450f5488bfc1da"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/base_nn_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/base_nn_condition.py",
+      "source_sha256": "ba088360010b9851490320299c89dff86be1e4730b5b52df79c2f4cbf3b0d463"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/dinov2_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/dinov2_condition.py",
+      "source_sha256": "fa9a10c0fe868f9787cfc817b715e3cd212f1537b6a66e969a6d57a5466ab933"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/dinov2_embodied.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/dinov2_embodied.py",
+      "source_sha256": "48c5a9e3d023f372771c4f6900a5edf1bbf442d1484f1ba8a2d20e0fbfe5e07c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/dp3_pointcloud_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/dp3_pointcloud_condition.py",
+      "source_sha256": "60616a115e888a7dd8413ec9e020251232c11da1cbeb5256a9dae48a09ee617c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/early_conv_vit.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/early_conv_vit.py",
+      "source_sha256": "6b2726720ec3f597182f04755c2e6960cd35884367444afb1b5f8d243494800e"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/mlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/mlp.py",
+      "source_sha256": "14397fe4aa7decad0fdad787ae1bd85689de04dd2818a04c7f7e7915e62f3ab3"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/multi_image_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/multi_image_condition.py",
+      "source_sha256": "87d18569478bd41e1ebba5d09667f90b1771c21b2183cc18f8f400d04661328c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/pearce_obs_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/pearce_obs_condition.py",
+      "source_sha256": "70f770fec17bc1475e72207f7f1f60ba47ecf138766fb159d59c3116f0be1dc2"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/pointnet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/pointnet.py",
+      "source_sha256": "3da9dfd7eda3a7e202d540384a3a618c47c9b3a90532e6134a30af0e9b508432"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/pointnetpp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/pointnetpp.py",
+      "source_sha256": "0bb4d4f21678347abad0bed087a9263dce30ca427cd6562eac5bea6dc9326eb6"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/positional.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/positional.py",
+      "source_sha256": "044142a2b51ef80dd2a484cd2839ccf9b436c543e53d227defadc87cd49550b9"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/r3m_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/r3m_condition.py",
+      "source_sha256": "80c3ef52dd16bd438af7a8571116995ee3ad65a72ed23558b38d7c4695b27632"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/resnets.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/resnets.py",
+      "source_sha256": "58900f2ae9031af27a66e957a63e466a958d880515ad8c6d5fad9660c42e191a"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/siglip_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/siglip_condition.py",
+      "source_sha256": "1be9cae740dc9b4f6fc9d39108240e93b22f675f166390a14ed78337ef3719b9"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/vip_condition.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/vip_condition.py",
+      "source_sha256": "a79f2e1811011c0d62cf82e77f9a1de6ba6de687e3eb46c68a73d73632c9a123"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/vision_transformer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/vision_transformer.py",
+      "source_sha256": "b3081036125eea150b19c130fa32509e542a4e40c5da00698735ef6d1aea697e"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_condition/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_condition/__init__.py",
+      "source_sha256": "2a7442894a032199b25e11f727bb6a4d925ec0d278122e41e862820d542bc49c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/base_nn_diffusion.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/base_nn_diffusion.py",
+      "source_sha256": "a4d31d8c85005435a2f7d35167d7ff82785c080d2e44a82ff764bc86285db142"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/chitransformer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/chitransformer.py",
+      "source_sha256": "0d248de4579a576b33667184b44059db4cc2ef58a0838e68404332708e8e38b8"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/chiunet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/chiunet.py",
+      "source_sha256": "00f817c132b853dd03f34e887ab6f5d942e67b69fb92a530e41682659b15c82e"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/dit.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/dit.py",
+      "source_sha256": "9993eeafb14c5d9b29f5fa7988b565171e21489872b80d22eafcd2c6caf0fecf"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/dqlmlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/dqlmlp.py",
+      "source_sha256": "d090197864449cb47db3b3458ad6ec8e58f87e307f3a852d8f42f863e230229b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/idqlmlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/idqlmlp.py",
+      "source_sha256": "c4aa0603ab5d78c124561868e19877d414b086b11cae0eb8413ab764007bf1a5"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/jannerunet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/jannerunet.py",
+      "source_sha256": "9a229b093db3260fc7f02f84ec8d8cc3b21e9529db1dd817b3f471d392db39fe"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/mlps.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/mlps.py",
+      "source_sha256": "a430658bc46d1dc2a842570620208364eafcb6189408a024f75a0efeda5ca1f4"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/pearcemlp.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/pearcemlp.py",
+      "source_sha256": "ad0ec82f6ffc77b15666f288dc2c033832f8a289a0fb2a0f820dae851fb0adf5"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/pearcetransformer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/pearcetransformer.py",
+      "source_sha256": "52c0a7016394271e8067e90cc81bdb539a6f75a2036459728bc47cd6f0a3d0fa"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/sfbc_unet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/sfbc_unet.py",
+      "source_sha256": "d997dd0ddec3770e47815e11c008e50ccc5ba3397b141b785ef0745c2035c8ff"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/transition_transformer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/transition_transformer.py",
+      "source_sha256": "cad957896c77f15d2e481fd4db8ccd04a7bfa2a5b7d85bf21755095f10071261"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/unet.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/unet.py",
+      "source_sha256": "2c967c3a1944a74809578cda3eb418d70fd1946eda272c84ab5b985480f19a8d"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/unet2d.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/unet2d.py",
+      "source_sha256": "83d93d1d03d6d88bc40b783a702df0549ddb74fe692888e9c9d8ada43a9f2e6f"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/nn_diffusion/__init__.py",
+      "source_sha256": "ddc2f9f20ac3f419fbdf9a917cfc503a1d4af08c72e6015a3d92442daafb4945"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/building_blocks.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/building_blocks.py",
+      "source_sha256": "d2db54ddf014437d87d9224c6ca4106cf0c6aa883820ea079d15f75adb21b74f"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/codecs.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/codecs.py",
+      "source_sha256": "b163d4c603b0841d763c908a9a152c5f2bf1347e3f79adb0badc0f508997de38"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/crop_randomizer.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/crop_randomizer.py",
+      "source_sha256": "47ed3c0e204c20da228152ed541cff756b873f0f87b14535ec76191aafc9fb5c"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/dataset_wrapper.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/dataset_wrapper.py",
+      "source_sha256": "384db4b3787ba59cf65f9dd51e4f1e4bef458259fe1896a667acd87cb586a9e9"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/noise_schedulers.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/noise_schedulers.py",
+      "source_sha256": "ee3790d016233cb9ed29fa29a7edb3534a38a126964895d5b5956d7edd33343e"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/normalizers.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/normalizers.py",
+      "source_sha256": "8684655a7287b1a2cacac6bef766f970e3a2d8a51e5b5b8569f67065dd1c8859"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/process_3d.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/process_3d.py",
+      "source_sha256": "c7c50b5198d4fdb1262260622bfeb9ff3e37526f202c4d03a9bea53369ca0cab"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/sampling_schedulers.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/sampling_schedulers.py",
+      "source_sha256": "d7712ae2061a8d227faa0cdacbce8c4d4376d6af631528300633b66c80a768ef"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/t5.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/t5.py",
+      "source_sha256": "199cb3411bffa93728ff14c3a1cbcac17d0a5df333ce1dcc0d3a55d785bc3c72"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/tensor_utils.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/tensor_utils.py",
+      "source_sha256": "a278fc7eb672542f8e6a2ee07cbcee23f89e2010c67cf78b9356a3246dd42412"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/typings.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/typings.py",
+      "source_sha256": "74b5cfb8a7f6c3cb9b3f81963b137bc275ed8b1e450cfcfe14b8013a701aeed9"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/utils.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/utils.py",
+      "source_sha256": "ec56c01e418508e12444c48fd1fb718f60728b8d18b8d68c854bea1350920133"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/__init__.py",
+      "source_sha256": "8fb3a2ea2e842544b5d8cf6c44703efd375a72242569e56716dbd16dfc69d9b7"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset.py",
+      "source_sha256": "b1fa37c5870ad83abfad9492ebc5ce5178da99d520f76c787da8b5317b19c04f"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_force.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_force.py",
+      "source_sha256": "27ecd4d04305421996b68875ac79899c528bfdf559db0b2af84621dd755c1644"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_force_with_gripper.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_force_with_gripper.py",
+      "source_sha256": "87ff7aacbf11794f8f95c1384501c196bcd296bf1be24606cf2006e9ec2be140"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_no_force.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/dataset/old/xarm_dataset_no_force.py",
+      "source_sha256": "eaa3718e6e73439f5f03f677b8ab560fd52c27af3c7b0ec7ec3053a96e01f4e0"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/offlinerl/td3bc.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/offlinerl/td3bc.py",
+      "source_sha256": "31c7c2a2f958e804077516383dce5ca58951761eb21c3a3a278454ea07eb511d"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/iql.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/iql.py",
+      "source_sha256": "e722715d1ade2390dbd4aed8238c2dddb2e88a427f7843db4087327e5d0740f8"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/README.md": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/README.md",
+      "source_sha256": "49cb4875c8dffdc2572179d203666f418976bc774a99668eb656f0a6875d047b"
+    },
+    "baselines/forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/__init__.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/cleandiffuser/utils/valuefuncs/__init__.py",
+      "source_sha256": "c64921cbfa605c6d19ec56710029f820fd95891681cbf1d6b0feb06fb13fa8b6"
+    },
+    "baselines/forceflow/CleanDiffuser/LICENCE.txt": {
+      "snapshot_path": "forceflow/CleanDiffuser/LICENCE.txt",
+      "source_sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+    },
+    "baselines/forceflow/CleanDiffuser/README.md": {
+      "snapshot_path": "forceflow/CleanDiffuser/README.md",
+      "source_sha256": "b4761cc60c7247e5f795a2ee89077b7ed1c1097410b7e391544d3476d6c24067"
+    },
+    "baselines/forceflow/CleanDiffuser/setup.py": {
+      "snapshot_path": "forceflow/CleanDiffuser/setup.py",
+      "source_sha256": "cd61afb278fd341fb8094f477d76bcd59d85c7b6a1b2888ce0781c79559e6950"
+    },
+    "baselines/forceflow/CleanDiffuser/pyproject.toml": {
+      "snapshot_path": "forceflow/CleanDiffuser/pyproject.toml",
+      "source_sha256": "c3f453761e05f8c9db56002d53c992d863bc78713915e0f50419ec631c6ff8ea"
+    },
+    "baselines/forceflow/LICENSE": {
+      "snapshot_path": "forceflow/LICENSE",
+      "source_sha256": "c53c94fd7ce534856c55aa50f50ee287a881e5c204bedd1a6547c6bf398cab47"
+    },
+    "baselines/forceflow/train_coribench.sh": {
+      "snapshot_path": "forceflow/train_coribench.sh",
+      "source_sha256": "7d9b5e9ef43745c74cfb8091a109f416cf2d2568dffe1c78abf2d58b3c912952"
+    }
+  }
+}

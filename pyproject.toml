@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "forcebench"
+version = "0.1.0a1"
+description = "ForceBench task specifications and policy interfaces (source preview)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "numpy>=1.26", "h5py>=3.10", "msgpack>=1", "websockets>=12", "opencv-python>=4.9"]
+
+[project.scripts]
+forcebench = "forcebench.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["forcebench*"]
+exclude = ["tests*", "baselines*", "scripts*"]
+
+[tool.setuptools.package-data]
+forcebench = ["asset_requirements.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

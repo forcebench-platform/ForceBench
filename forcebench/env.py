@@ -26,12 +26,37 @@ from .control import (
 )
 from .physics import add_diagonal_body_inertia, set_asset_friction
 from .scene_profiles import get_scene_profile
-from .task_api import SceneEntitySpec, TaskRuntime
+from .task_api import SceneEntitySpec, TaskManifest, TaskRuntime
 
 
 def _change_wrench_frame(source_force, source_torque, source_position, target_position):
     displacement = target_position - source_position
     return source_force, source_torque + torch.cross(displacement, source_force, dim=-1)
+
+
+def _configure_task_robot_drive(cfg, manifest: TaskManifest) -> None:
+    """Apply explicit recovered task gains before creating the robot.
+
+    Tasks without declared overrides retain their existing environment values.
+    This ports the historical per-task drive hook without changing legacy tasks.
+    """
+    manifest.validate()
+    for manifest_field, cfg_field, actuator_field in (
+        ("arm_actuator_stiffness", "servo_arm_stiffness", "stiffness"),
+        ("arm_actuator_damping", "servo_arm_damping", "damping"),
+    ):
+        value = getattr(manifest, manifest_field)
+        if value is not None:
+            setattr(cfg, cfg_field, float(value))
+            for actuator_name in ("arm_shoulder", "arm_forearm"):
+                setattr(cfg.robot.actuators[actuator_name], actuator_field, float(value))
+    for manifest_field, actuator_field in (
+        ("gripper_actuator_stiffness", "stiffness"),
+        ("gripper_actuator_damping", "damping"),
+    ):
+        value = getattr(manifest, manifest_field)
+        if value is not None:
+            setattr(cfg.robot.actuators["hand"], actuator_field, float(value))
 
 
 class ForceBenchEnv(DirectRLEnv):
@@ -67,6 +92,7 @@ class ForceBenchEnv(DirectRLEnv):
         # The manifest is the one authoritative visual contract for a demo.
         # Launchers and environment variables cannot silently change it.
         cfg.scene_profile = self.task.manifest.scene_profile
+        _configure_task_robot_drive(cfg, self.task.manifest)
         self._arm_control_mode = ARM_CONTROL_MODE
         self._arm_trajectory: SynchronizedQuinticTrajectory | None = None
         self._joint_target = None

@@ -1,0 +1,97 @@
+{
+  "schema": "forcebench_historical_task_migration_v1",
+  "migration_date": "2026-10-14",
+  "source_anchor": {
+    "protocol_tag": "franka2_h200_four_tasks_exec50_200_20260911_02",
+    "protocol_sha256": "daa54f33087b0da2f62728ef90cb2a8280953e30824d5cab35685b2ef809ee1e",
+    "field": "franka_source_sha256",
+    "all_task_modules_match_anchor": true
+  },
+  "files": [
+    {
+      "source_path": "coribench/tasks/faucet_force_turn/__init__.py",
+      "source_sha256": "424808ed3b10f1143f8c7d2a962dfa10a29466f6ab811e557fd6a5747bcf1be7",
+      "release_path": "forcebench/tasks/faucet_force_turn/__init__.py",
+      "release_sha256": "66cb19904bc7353d2648bea80a753536968c4e32544cff101cafd6a855e807de",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench",
+        "Make historical TaskManifest default evaluation_max_steps=1500 explicit; no numerical change"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/faucet_force_turn/runtime.py",
+      "source_sha256": "673126fe56ac555b1e9f24752e7f3f175e256a3637a93afcccdb5e2438f3a705",
+      "release_path": "forcebench/tasks/faucet_force_turn/runtime.py",
+      "release_sha256": "645e436d35a6840877682e2a9e73a45e75d83db72eaa065cb6813f5971adb514",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/faucet_force_turn/spec.py",
+      "source_sha256": "82f7316b9ee05e027cec5f87e136d0d234c03b4f1f02b6f1fb4cbca5febcf5a5",
+      "release_path": "forcebench/tasks/faucet_force_turn/spec.py",
+      "release_sha256": "f32244df08ec96a39e38480e40efff5d85e3e90b738e99153129ff651b2c920f",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/faucet_force_turn/outcome.py",
+      "source_sha256": "591998c95b569c184367a0e68ad200e23870ea70246bb1a64b1644c3868a6082",
+      "release_path": "forcebench/tasks/faucet_force_turn/outcome.py",
+      "release_sha256": "e2ebe6c1a9a5558a165a975e3d3a6c9dee699273291d613ddab51060b297792a",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/seed_balance.py",
+      "source_sha256": "e16e5f6deb6cdaff7b4c0b28d567258722b1f10fd1d81086a91b1c140d138fce",
+      "release_path": "forcebench/seed_balance.py",
+      "release_sha256": "e16e5f6deb6cdaff7b4c0b28d567258722b1f10fd1d81086a91b1c140d138fce",
+      "adaptations": []
+    }
+  ],
+  "shared_support": [
+    {
+      "release_path": "forcebench/task_api.py",
+      "baseline_sha256": "e798b3f1c9709b15be36b594865088fcd47d9393a4324872ce7888f0a5c935f2",
+      "release_sha256": "2223c4f2ae6627297e866aceb98e0499d4c2cdcf3d6364d64b0bdea04a722eda",
+      "historical_source_sha256": "a52ed4485c70787479dd9c2454a27476fd6e06f1ea2e8771749bffa73db8af69",
+      "adaptation": "Optional drive gains default to None to preserve existing task configs; explicit new-task gains are applied before robot construction. Shared default physics/controller values remain unchanged."
+    },
+    {
+      "release_path": "forcebench/env.py",
+      "baseline_sha256": "2d213a1e46d53ce42202b2e7f33d00632ebe793f744a90701c9300201e816bc3",
+      "release_sha256": "844ecdd393868a9e8f12a9853804b47e21ab6e7cd3e030565562682e849e6a92",
+      "historical_source_sha256": "a08bb3aaff64f810fde4bba0ce48c379e12d167faff873701a9f53ea9702929b",
+      "adaptation": "Optional drive gains default to None to preserve existing task configs; explicit new-task gains are applied before robot construction. Shared default physics/controller values remain unchanged."
+    }
+  ],
+  "scoring_status": "historical_runtime_preserved_final_paper_overlay_pending",
+  "simulation_assets_included": false,
+  "gpu_validation": "not_run",
+  "paper_reproduction_claim": false,
+  "inherited_parent_method_differences": [],
+  "shared_controller_status": {
+    "new_task_arm_gains": [
+      80,
+      12
+    ],
+    "new_task_gripper_gains": [
+      20000,
+      600
+    ],
+    "existing_other_tasks_default_gripper_gains_preserved": [
+      4000,
+      120
+    ],
+    "historical_september_11_default_gripper_gains": [
+      20000,
+      600
+    ],
+    "all_eight_task_controller_alignment_verified": false
+  },
+  "early_stop_status": "Current runner defaults to stopping on historical runtime success. This is not equivalent to final-state offline lower-bound paper rescoring; changing online judge would also change trajectory termination."
+}

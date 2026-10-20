@@ -1,0 +1,80 @@
+{
+  "status": "original_snapshots_verified_portable_gpu_unvalidated",
+  "verified_source_files": 137,
+  "paper_tasks": [
+    "weight_sort",
+    "rattle_sort",
+    "faucet_turn",
+    "faucet_force_turn",
+    "stove_turn_on",
+    "stove_press_turn",
+    "radmanso_drawer_sort_table",
+    "nut_thread"
+  ],
+  "method_mapping": {
+    "F0": "pi05_no_force",
+    "F1": "token_fusion",
+    "F2": "prompt_fusion",
+    "F3": "cross_attention",
+    "F4": "token_fusion_pred"
+  },
+  "training_or_serving_started": false,
+  "remaining_inputs": [
+    "Final task-to-dataset/norm/checkpoint/source mapping",
+    "Verified method-specific norm generation for every selected final dataset",
+    "Clean dependency installation and GPU train/serve validation"
+  ],
+  "recovered_companions": [
+    "LICENSE",
+    "LICENSE_GEMMA.txt",
+    "pyproject.toml",
+    "uv.lock",
+    "packages/openpi-client",
+    "active interpreter package metadata",
+    "legacy norm builder scripts and formal assets-copy provenance"
+  ],
+  "historical_source_identities": {
+    "pi05_formal_10k": {
+      "hashed_files": 68,
+      "sha256": "579615374324915aae2d5c8e598d8d651c7902e4c1f3dda14334a350065afedb"
+    },
+    "pi05_nut_sep14": {
+      "hashed_files": 68,
+      "sha256": "c0bd8593190bed9fd4a7a1f0950b6e80b2f3d186af413d9983774a826c46a25d"
+    }
+  },
+  "isolated_cpu_transform_checks": {
+    "numpy_version": "2.2.3",
+    "passed_checks": [
+      "F0_input_camera_and_train_infer_contract",
+      "F0_reject_future_wrench",
+      "F0_reject_wrench_window",
+      "F1_input_camera_and_train_infer_contract",
+      "F1_reject_future_wrench",
+      "F1_reject_wrench_window",
+      "F2_input_camera_and_train_infer_contract",
+      "F2_reject_future_wrench",
+      "F2_reject_wrench_window",
+      "F3_input_camera_and_train_infer_contract",
+      "F3_reject_future_wrench",
+      "F3_reject_wrench_window",
+      "F4_input_camera_and_train_infer_contract",
+      "F4_reject_future_wrench",
+      "F4_reject_wrench_window",
+      "reject_invalid_current_force",
+      "reject_nan_force",
+      "reject_nan_state",
+      "reject_third_camera",
+      "hwc_float_image_scaling",
+      "reject_wrong_action_horizon",
+      "absolute_action_output_shape",
+      "angle_wrap",
+      "wrench_only_clipping"
+    ],
+    "limitations": [
+      "No tokenizer, JAX model, optimizer, dataset loader, checkpoint, or GPU was exercised.",
+      "Definitions were AST-isolated from the verified snapshot; this is not a full runtime import.",
+      "Image checks cover HWC only; CHW/einops handling was not executed."
+    ]
+  }
+}

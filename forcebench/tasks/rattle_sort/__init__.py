@@ -11,6 +11,7 @@ MANIFEST = TaskManifest(
     ),
     runtime_class="forcebench.tasks.rattle_sort.runtime:RattleSortTask",
     dataset_subdir="rattle_sort",
+    evaluation_max_steps=1500,
     scene_profile="parcel_sort_station",
     description=(
         "Sort visually identical equal-total-mass parcels by sensing centered versus "

@@ -2,9 +2,25 @@
 set -euo pipefail
 
 root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+mode="${1:-help}"
+case "${mode}" in
+  help|--help|-h)
+    echo "Usage: $0 {expert|policy-vector|replay|policy-replay} ..."
+    echo "Inspect tasks without Isaac Sim: python -m forcebench list-tasks"
+    echo "See docs/source_preview.md for required runtime and assets."
+    exit 0
+    ;;
+  expert|policy-vector|replay|policy-replay) ;;
+  *)
+    echo "Mode '${mode}' is not a supported entry point in this source preview." >&2
+    echo "Use '$0 --help' for available entry points." >&2
+    exit 2
+    ;;
+esac
 runtime_root="${FORCEBENCH_RUNTIME_ROOT:-${root}/runtime}"
-data_root="${FORCEBENCH_DATA_ROOT:-/home/pc/ForceBench_data}"
-scratch_root="${FORCEBENCH_SCRATCH_ROOT:-/home/pc/ForceBench_scratch}"
+storage_root="${FORCEBENCH_HOME:-${HOME}/ForceBench}"
+data_root="${FORCEBENCH_DATA_ROOT:-${storage_root}/data}"
+scratch_root="${FORCEBENCH_SCRATCH_ROOT:-${storage_root}/scratch}"
 isaaclab_root="${FORCEBENCH_ISAACLAB_ROOT:-${runtime_root}/IsaacLab}"
 conda_sh="${FORCEBENCH_CONDA_SH:-${runtime_root}/miniforge/etc/profile.d/conda.sh}"
 conda_env="${FORCEBENCH_CONDA_ENV:-env_isaacsim6}"
@@ -17,12 +33,12 @@ source "${conda_sh}"
 conda activate "${conda_env}"
 export PYTHONPATH="${root}:${isaaclab_root}/source/isaaclab_visualizers${PYTHONPATH:+:${PYTHONPATH}}"
 export FORCEBENCH_ASSET_DIR="${FORCEBENCH_ASSET_DIR:-${root}/assets}"
+export FORCEBENCH_ISAACLAB_ROOT="${isaaclab_root}"
 export ACCEPT_EULA="${ACCEPT_EULA:-Y}"
 export OMNI_KIT_ACCEPT_EULA="${OMNI_KIT_ACCEPT_EULA:-YES}"
 cd "${isaaclab_root}"
 
-mode="${1:-collect}"
-task="${FORCEBENCH_TASK:-peg_insert}"
+task="${FORCEBENCH_TASK:-weight_sort}"
 policy_adapter_options="${FORCEBENCH_POLICY_ADAPTER_OPTIONS:-}"
 if [[ -z "${policy_adapter_options}" ]]; then
   policy_adapter_options='{}'
@@ -31,8 +47,10 @@ if [[ -z "${FORCEBENCH_SCENE_PROFILE:-}" ]]; then
   case "${task}" in
     rattle_sort) export FORCEBENCH_SCENE_PROFILE="parcel_sort_station" ;;
     weight_sort) export FORCEBENCH_SCENE_PROFILE="weight_sort_residential" ;;
-    faucet_turn) export FORCEBENCH_SCENE_PROFILE="kitchen_sink" ;;
-    stove_turn_on) export FORCEBENCH_SCENE_PROFILE="kitchen_stove" ;;
+    faucet_turn|faucet_force_turn) export FORCEBENCH_SCENE_PROFILE="kitchen_sink" ;;
+    stove_turn_on|stove_press_turn) export FORCEBENCH_SCENE_PROFILE="kitchen_stove" ;;
+    nut_thread) export FORCEBENCH_SCENE_PROFILE="precision_ash_veneer" ;;
+    radmanso_drawer_sort_table) export FORCEBENCH_SCENE_PROFILE="simple_room_sort_table" ;;
     *) export FORCEBENCH_SCENE_PROFILE="contact_lab" ;;
   esac
 fi
@@ -141,7 +159,7 @@ case "${mode}" in
     exit 2
     ;;
   policy-vector)
-    seed_start="${2:-${FORCEBENCH_SEED_START:-0}}"
+    seed_start="${2:-${FORCEBENCH_SEED_START:-300}}"
     num_envs="${3:-${FORCEBENCH_NUM_ENVS:-10}}"
     max_steps="${4:-auto}"
     if [[ "${max_steps}" == "auto" ]]; then

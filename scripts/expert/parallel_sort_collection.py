@@ -164,7 +164,9 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
     if args.dry_run:
         return {**plan_payload, "dry_run": True, "run_dir": str(run_dir)}
 
-    isaaclab_root = (CODE_ROOT / "runtime/IsaacLab").resolve()
+    isaaclab_root = Path(
+        os.environ.get("FORCEBENCH_ISAACLAB_ROOT", str(CODE_ROOT / "runtime/IsaacLab"))
+    ).expanduser().resolve()
     launcher = isaaclab_root / "isaaclab.sh"
     generators = {
         "stove_turn_on": "generate_parallel_stove.py",

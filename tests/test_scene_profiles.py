@@ -1,11 +1,12 @@
 import pytest
 
 from forcebench.scene_profiles import DEFAULT_SCENE_PROFILE, get_scene_profile, scene_profile_names
+from forcebench.registry import task_manifests
 
 
-def test_contact_lab_is_the_default_and_only_standard_profiles_are_registered():
+def test_default_and_paper_task_profiles_are_registered():
     assert DEFAULT_SCENE_PROFILE == "contact_lab"
-    assert set(scene_profile_names()) == {
+    required = {
         "contact_lab",
         "weight_sort_residential",
         "parcel_sort_station",
@@ -14,7 +15,11 @@ def test_contact_lab_is_the_default_and_only_standard_profiles_are_registered():
         "kitchen_stove",
         "simple_room_drawer",
         "simple_room_sort_table",
+        "precision_ash_veneer",
     }
+    assert required <= set(scene_profile_names())
+    assert {item.scene_profile for item in task_manifests().values()} <= required
+    assert not any(item.scene_profile.startswith("whiteboard") for item in task_manifests().values())
 
 
 def test_contact_lab_uses_an_exact_height_native_table():
@@ -147,12 +152,7 @@ def test_simple_room_sort_table_reuses_the_box_sort_table():
 
 
 def test_unknown_scene_profile_has_an_actionable_error():
-    with pytest.raises(
-        ValueError,
-        match=(
-                "contact_lab, weight_sort_residential, parcel_sort_station, "
-                "gear_assembly_cell, kitchen_sink, kitchen_stove, "
-                "simple_room_drawer, simple_room_sort_table"
-        ),
-    ):
+    with pytest.raises(ValueError, match="unknown scene profile 'warehouse_everything'") as error:
         get_scene_profile("warehouse_everything")
+    for name in scene_profile_names():
+        assert name in str(error.value)

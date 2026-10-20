@@ -24,6 +24,5 @@ SOFTWARE.
 
 This license covers ForceBench's own code only. Several tasks depend on
 third-party 3D assets under their own, separate license terms -- see
-NOTICE.md. Until every task's asset chain is independently cleared (tracked
-in NOTICE.md's open items), treat this repository as a whole as restricted to
-non-commercial research use.
+NOTICE.md. Bundled third-party code retains its own license notices.
+This MIT grant does not cover third-party assets, datasets or model weights.

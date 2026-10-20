@@ -1,669 +1,441 @@
 {
-  "schema_version": "forcebench-results-v1",
-  "benchmark_version": "v0.1-prototype",
-  "generated_at": "2026-08-27T17:30:49+08:00",
-  "eval_protocol": {
-    "seed_start": 200,
-    "seed_end": 299,
-    "num_rollouts": 100,
-    "execute_chunk": 50,
-    "physics_rate_hz": 60,
-    "control_rate_hz": 15,
-    "notes_zh": "每个任务固定使用 seed 200-299 共 100 次 rollout。成功判定由各任务 spec.py 的 evaluate_final_state 给出。所有正式结果均在克隆环境间距 6 m（env_spacing=6）下取得——更小的间距会导致相机拍到相邻克隆环境（视觉串扰），此前的结果因此作废。评测步数上限按任务而定：装配类任务（gear_mesh / nut_thread / peg_insert）为 1500 帧，其余为 600 帧；nut_thread 在 600 帧上限下两个模型均为 0%，放宽到 1500 帧后才出现有效差异，说明该上限本身会影响结论。"
+  "schema_version": "forcebench-paper-results-v1",
+  "record_type": "paper_results",
+  "is_sample": false,
+  "source": {
+    "paper_title": "ForceBench: Benchmarking Force Integration for Robotic Manipulation",
+    "publication_status": "submitted",
+    "submitted_date": "2026-09-15",
+    "tables": {
+      "simulation": "Table I",
+      "real_world": "Table II"
+    },
+    "description": "Reference values transcribed from the submitted manuscript, not reproduced by tests in this repository."
   },
-  "models": [
+  "metric": {
+    "name": "task_success_rate",
+    "unit": "percent",
+    "mean": "Unweighted arithmetic mean over the tasks in each study, displayed as reported to two decimal places.",
+    "uncertainty": "No confidence intervals, significance tests, or per-training-seed estimates are reported in these tables."
+  },
+  "methods": [
     {
-      "id": "pi05",
-      "display_name_zh": "π0.5",
-      "short_name": "pi0.5",
-      "family": "pi0.5",
-      "force_input": "none",
-      "description_zh": "仅视觉 + 本体感受的基线，不接收任何力/力矩信号。"
+      "id": "pi05_no_force",
+      "name": "π₀.₅ (No Force)",
+      "comparison_group": "controlled_pi05"
     },
     {
-      "id": "pi05_force6",
-      "display_name_zh": "π0.5 + 力6D",
-      "short_name": "pi0.5+force6",
-      "family": "pi0.5",
-      "force_input": "wrench6_concat",
-      "description_zh": "在 π0.5 的 state 向量后直接拼接 6 维腕部力/力矩。"
+      "id": "token_fusion",
+      "name": "Token Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "prompt_fusion",
+      "name": "Prompt Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "cross_attention",
+      "name": "Cross-Attention",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "token_fusion_pred",
+      "name": "Token Fusion + Pred",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "temporal_prompt",
+      "name": "Temporal Prompt",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "dual_path_fusion",
+      "name": "Dual-Path Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "pi0",
+      "name": "π₀",
+      "comparison_group": "additional_reference"
     },
     {
       "id": "forcevla",
-      "display_name_zh": "ForceVLA",
-      "short_name": "ForceVLA",
-      "family": "ForceVLA",
-      "force_input": "moe_fusion",
-      "description_zh": "架构级力融合，通过 FVLMoE 混合专家模块注入力信号。"
+      "name": "ForceVLA",
+      "comparison_group": "additional_reference"
     },
     {
       "id": "forceflow",
-      "display_name_zh": "ForceFlow",
-      "short_name": "ForceFlow",
-      "family": "ForceFlow",
-      "force_input": "moe_fusion",
-      "description_zh": "第四个力感知基线，尚未评测。"
+      "name": "ForceFlow",
+      "comparison_group": "additional_reference"
     }
   ],
-  "tasks": [
-    {
-      "id": "weight_sort",
-      "display_name_zh": "重量分拣",
-      "force_category": "force_classification",
-      "summary_zh": "拿起外观完全相同的箱子，靠重量判断轻重，分别放进对应容器。",
-      "varies_zh": "箱子质量 0.06 kg / 0.18 kg",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "rattle_sort",
-      "display_name_zh": "偏心包裹分拣",
-      "force_category": "force_classification",
-      "summary_zh": "分辨包裹内部配重是居中还是偏置（总质量固定 0.18 kg），据此分拣。",
-      "varies_zh": "内部配重质心偏移",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "stove_turn_on",
-      "display_name_zh": "灶台旋钮开启",
-      "force_category": "force_classification",
-      "summary_zh": "旋转灶台旋钮，靠力矩变化判断是否已越过卡位（detent）。",
-      "varies_zh": "非线性卡扣力矩，峰值 0.12 N·m",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "faucet_turn",
-      "display_name_zh": "水龙头扳动",
-      "force_category": "force_classification",
-      "summary_zh": "扳动龙头把手越过卡位，靠力矩变化判断是否到位。",
-      "varies_zh": "非线性卡扣力矩，峰值固定 0.20 N·m",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "radmanso_drawer_sort_table",
-      "display_name_zh": "抽屉分拣整理",
-      "force_category": "force_classification",
-      "summary_zh": "拉开抽屉，在阻力明显上升处停手并保持，不要拉脱。",
-      "varies_zh": "起步阻力随机 5.5–9.0 N",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "peg_insert",
-      "display_name_zh": "轴孔插装",
-      "force_category": "contact_rich",
-      "summary_zh": "抓取销轴并插入目标孔位，释放后退回。",
-      "varies_zh": "接触密集，当前判分不读力",
-      "dataset_episodes": 200
-    },
-    {
-      "id": "gear_mesh",
-      "display_name_zh": "齿轮啮合",
-      "force_category": "contact_rich",
-      "summary_zh": "抓取中间齿轮放上中心轴，与两侧齿轮啮合后释放退回。",
-      "varies_zh": "接触密集，当前判分不读力",
-      "dataset_episodes": 0
-    },
-    {
-      "id": "nut_thread",
-      "display_name_zh": "螺母旋合",
-      "force_category": "contact_rich",
-      "summary_zh": "抓取 M16 螺母旋合到螺栓上，释放后退回。",
-      "varies_zh": "接触密集，当前判分不读力",
-      "dataset_episodes": 200
-    }
-  ],
-  "results": [
-    {
-      "task": "weight_sort",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 91,
-      "success_rate": 0.91,
-      "ci95_low": 0.836,
-      "ci95_high": 0.958,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_weight_sort_two_models_100_spacing6_20260825_02/pi05_seed_200_299",
-      "notes_zh": "successes 由 success_rate=0.91 × n=100 反推（该版 aggregate.json 未记录原始计数）。"
-    },
-    {
-      "task": "weight_sort",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "weight_sort",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 72,
-      "success_rate": 0.72,
-      "ci95_low": 0.6213,
-      "ci95_high": 0.8052,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_weight_sort_two_models_100_spacing6_20260825_02/forcevla_seed_200_299",
-      "notes_zh": "successes 由 success_rate=0.72 × n=100 反推。"
-    },
-    {
-      "task": "weight_sort",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "rattle_sort",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 48,
-      "success_rate": 0.48,
-      "ci95_low": 0.379,
-      "ci95_high": 0.5822,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_rattle_sort_new_models_fixed_seed_200_299_20260825_04/pi05_seed_200_299",
-      "notes_zh": "固定 seed 可复现对照。同期随机初始位置变体为 49/100，见 provenance。successes 由 rate 反推。"
-    },
-    {
-      "task": "rattle_sort",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "rattle_sort",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 49,
-      "success_rate": 0.49,
-      "ci95_low": 0.3886,
-      "ci95_high": 0.592,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_rattle_sort_new_models_fixed_seed_200_299_20260825_04/forcevla_seed_200_299",
-      "notes_zh": "固定 seed 可复现对照。同期随机初始位置变体为 56/100，见 provenance。successes 由 rate 反推。"
-    },
-    {
-      "task": "rattle_sort",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "stove_turn_on",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 2,
-      "success_rate": 0.02,
-      "ci95_low": 0.0024,
-      "ci95_high": 0.0704,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_faucet_stove_pi05_100_spacing6_20260825_03_10clones/stove_turn_on_seed_200_299",
-      "notes_zh": "successes 由 rate 反推。"
-    },
-    {
-      "task": "stove_turn_on",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "stove_turn_on",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 6,
-      "success_rate": 0.06,
-      "ci95_low": 0.0223,
-      "ci95_high": 0.126,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_stove_forcevla_latest_100_spacing6_auto_20260825_01/forcevla_seed_200_299",
-      "notes_zh": "successes 由 rate 反推。"
-    },
-    {
-      "task": "stove_turn_on",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "faucet_turn",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 38,
-      "success_rate": 0.38,
-      "ci95_low": 0.2848,
-      "ci95_high": 0.4825,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_faucet_stove_pi05_100_spacing6_20260825_03_10clones/faucet_turn_seed_200_299",
-      "notes_zh": "同批次前两次尝试因 Isaac 启动死锁 / 100 克隆内存压力中止，取 _03_10clones。successes 由 rate 反推。"
-    },
-    {
-      "task": "faucet_turn",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "faucet_turn",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 22,
-      "success_rate": 0.22,
-      "ci95_low": 0.1433,
-      "ci95_high": 0.3139,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_faucet_forcevla_100_spacing6_auto_20260825_01/forcevla_seed_200_299",
-      "notes_zh": "successes 由 rate 反推。"
-    },
-    {
-      "task": "faucet_turn",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "radmanso_drawer_sort_table",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 16,
-      "success_rate": 0.16,
-      "ci95_low": 0.0943,
-      "ci95_high": 0.2468,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_radmanso_drawer_sort_table_two_models_100_spacing6_20260825_02_fixed_arming/pi05_seed_200_299",
-      "notes_zh": "取 _02_fixed_arming；同任务 _01 因评测 arming 缺陷得到 0/100，已作废。successes 由 rate 反推。"
-    },
-    {
-      "task": "radmanso_drawer_sort_table",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "radmanso_drawer_sort_table",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 28,
-      "success_rate": 0.28,
-      "ci95_low": 0.1948,
-      "ci95_high": 0.3787,
-      "evaluated_at": "2026-08-25",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_radmanso_drawer_sort_table_two_models_100_spacing6_20260825_02_fixed_arming/forcevla_seed_200_299",
-      "notes_zh": "取 _02_fixed_arming；_01 为 0/100 已作废。successes 由 rate 反推。"
-    },
-    {
-      "task": "radmanso_drawer_sort_table",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "peg_insert",
-      "model": "pi05",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该任务尚未评测。"
-    },
-    {
-      "task": "peg_insert",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "peg_insert",
-      "model": "forcevla",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该任务尚未评测。"
-    },
-    {
-      "task": "peg_insert",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "gear_mesh",
-      "model": "pi05",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该任务尚未评测。"
-    },
-    {
-      "task": "gear_mesh",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "gear_mesh",
-      "model": "forcevla",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该任务尚未评测。"
-    },
-    {
-      "task": "gear_mesh",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    },
-    {
-      "task": "nut_thread",
-      "model": "pi05",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 21,
-      "success_rate": 0.21,
-      "ci95_low": 0.1349,
-      "ci95_high": 0.3029,
-      "evaluated_at": "2026-08-26",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_nut_thread_new_models_100_spacing6_max1500_auto_20260826_02/pi05_seed_200_299",
-      "notes_zh": "评测步数上限 1500 帧。同任务 600 帧上限的 _01 两模型均为 0/100，该协议已淘汰。successes 由 rate 反推。"
-    },
-    {
-      "task": "nut_thread",
-      "model": "pi05_force6",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线仅有 2026-08-24 修复前的评测；因克隆环境视觉串扰与评测 arming 缺陷判为无效，尚未重跑。"
-    },
-    {
-      "task": "nut_thread",
-      "model": "forcevla",
-      "status": "complete",
-      "seed_start": 200,
-      "seed_end": 299,
-      "num_rollouts": 100,
-      "successes": 36,
-      "success_rate": 0.36,
-      "ci95_low": 0.2664,
-      "ci95_high": 0.4621,
-      "evaluated_at": "2026-08-26",
-      "source_path": "L20:/home/pc/CoRiBench_scratch/formal_nut_thread_new_models_100_spacing6_max1500_auto_20260826_02/forcevla_seed_200_299",
-      "notes_zh": "评测步数上限 1500 帧；600 帧上限的 _01 为 0/100，协议已淘汰。successes 由 rate 反推。"
-    },
-    {
-      "task": "nut_thread",
-      "model": "forceflow",
-      "status": "missing",
-      "seed_start": null,
-      "seed_end": null,
-      "num_rollouts": null,
-      "successes": null,
-      "success_rate": null,
-      "ci95_low": null,
-      "ci95_high": null,
-      "evaluated_at": null,
-      "source_path": null,
-      "notes_zh": "该基线尚未训练/评测。"
-    }
-  ],
-  "head_to_head": {
-    "method": "Fisher exact test (two-sided), per task, pi05 vs forcevla",
-    "family_size": 6,
-    "bonferroni_alpha": 0.00833,
-    "notes_zh": "共 6 组对比。仅看成功率点估计会高估差异：n=100 时 12–15 个百分点的差距仍可能与「无真实差异」相容，因此表中同时给出 Fisher 精确检验 p 值。若按 Bonferroni 校正多重比较（α=0.0083），能站住的结论更少。本 benchmark 不建议仅凭单任务成功率排名下结论。",
-    "comparisons": [
+  "simulation": {
+    "source_table": "Table I",
+    "tasks": [
       {
-        "task": "weight_sort",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.91,
-        "challenger_rate": 0.72,
-        "diff_pp": -19.0,
-        "p_value": 0.0009,
-        "significant_at_005": true,
-        "significant_after_bonferroni": true
+        "id": "weight_sort",
+        "name": "Weight Sort",
+        "category": "Physical-property inference"
       },
       {
-        "task": "rattle_sort",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.48,
-        "challenger_rate": 0.49,
-        "diff_pp": 1.0,
-        "p_value": 1.0,
-        "significant_at_005": false,
-        "significant_after_bonferroni": false
+        "id": "com_sort",
+        "name": "CoM Sort",
+        "category": "Physical-property inference"
       },
       {
-        "task": "stove_turn_on",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.02,
-        "challenger_rate": 0.06,
-        "diff_pp": 4.0,
-        "p_value": 0.279,
-        "significant_at_005": false,
-        "significant_after_bonferroni": false
+        "id": "faucet_turn",
+        "name": "Faucet Turn",
+        "category": "Resistance-dependent interaction"
       },
       {
-        "task": "faucet_turn",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.38,
-        "challenger_rate": 0.22,
-        "diff_pp": -16.0,
-        "p_value": 0.0202,
-        "significant_at_005": true,
-        "significant_after_bonferroni": false
+        "id": "faucet_direction",
+        "name": "Faucet Direction",
+        "category": "Resistance-dependent interaction"
       },
       {
-        "task": "radmanso_drawer_sort_table",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.16,
-        "challenger_rate": 0.28,
-        "diff_pp": 12.0,
-        "p_value": 0.0597,
-        "significant_at_005": false,
-        "significant_after_bonferroni": false
+        "id": "stove_turn",
+        "name": "Stove Turn",
+        "category": "Resistance-dependent interaction"
       },
       {
-        "task": "nut_thread",
-        "baseline": "pi05",
-        "challenger": "forcevla",
-        "baseline_rate": 0.21,
-        "challenger_rate": 0.36,
-        "diff_pp": 15.0,
-        "p_value": 0.0278,
-        "significant_at_005": true,
-        "significant_after_bonferroni": false
+        "id": "stove_press",
+        "name": "Stove Press",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "drawer_pull",
+        "name": "Drawer Pull",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "nut_thread",
+        "name": "Nut Thread",
+        "category": "Contact-rich assembly"
+      }
+    ],
+    "episodes_per_task_method": 200,
+    "total_evaluation_episodes": 16000,
+    "protocol": {
+      "training_instance_seeds": {
+        "start": 0,
+        "end": 199,
+        "inclusive": true
+      },
+      "evaluation_seeds": {
+        "start": 300,
+        "end": 499,
+        "inclusive": true
+      },
+      "physics_rate_hz": 60,
+      "control_rate_hz": 15,
+      "max_control_steps": 1500,
+      "max_simulated_seconds": 100,
+      "separate_policy_per_task": true,
+      "controlled_pi05_training_steps": 10000,
+      "controlled_pi05_batch_size": 32,
+      "action_chunks": [
+        {
+          "method_ids": [
+            "pi05_no_force",
+            "token_fusion",
+            "prompt_fusion",
+            "cross_attention",
+            "token_fusion_pred",
+            "temporal_prompt",
+            "dual_path_fusion",
+            "pi0",
+            "forcevla"
+          ],
+          "predicted_steps": 50,
+          "executed_steps": 50
+        },
+        {
+          "method_ids": [
+            "forceflow"
+          ],
+          "predicted_steps": 64,
+          "executed_steps": 32
+        }
+      ],
+      "notes": [
+        "The seven pi0.5 configurations share the backbone and task demonstrations.",
+        "The shared-backbone comparison includes changes in representation, normalization, capacity, and insertion location. Temporal designs serve as separate reference points; the predictive variant retains the Token Fusion input pathway.",
+        "Additional reference systems are shown separately; their training and execution settings are not identical to the shared-backbone pi0.5 comparison.",
+        "Faucet Direction uses the same lower-bound-only angle criterion for all ten systems.",
+        "The control rate is not the policy-query rate."
+      ]
+    },
+    "results": [
+      {
+        "method_id": "pi05_no_force",
+        "success_rates_percent": [
+          54.0,
+          45.5,
+          9.5,
+          31.5,
+          8.5,
+          1.0,
+          4.5,
+          31.5
+        ],
+        "mean_success_percent": 23.25
+      },
+      {
+        "method_id": "token_fusion",
+        "success_rates_percent": [
+          50.5,
+          50.0,
+          12.0,
+          28.5,
+          6.0,
+          2.5,
+          13.0,
+          26.0
+        ],
+        "mean_success_percent": 23.56
+      },
+      {
+        "method_id": "prompt_fusion",
+        "success_rates_percent": [
+          88.0,
+          56.5,
+          21.0,
+          41.5,
+          16.0,
+          2.5,
+          23.0,
+          34.0
+        ],
+        "mean_success_percent": 35.31
+      },
+      {
+        "method_id": "cross_attention",
+        "success_rates_percent": [
+          54.5,
+          51.0,
+          6.5,
+          33.0,
+          5.5,
+          2.5,
+          6.5,
+          17.5
+        ],
+        "mean_success_percent": 22.13
+      },
+      {
+        "method_id": "token_fusion_pred",
+        "success_rates_percent": [
+          78.0,
+          48.5,
+          13.5,
+          32.5,
+          6.0,
+          1.0,
+          4.0,
+          26.5
+        ],
+        "mean_success_percent": 26.25
+      },
+      {
+        "method_id": "temporal_prompt",
+        "success_rates_percent": [
+          90.0,
+          69.5,
+          17.5,
+          31.0,
+          7.0,
+          21.5,
+          2.5,
+          22.0
+        ],
+        "mean_success_percent": 32.63
+      },
+      {
+        "method_id": "dual_path_fusion",
+        "success_rates_percent": [
+          99.5,
+          72.0,
+          22.0,
+          30.0,
+          17.5,
+          19.0,
+          4.5,
+          16.5
+        ],
+        "mean_success_percent": 35.13
+      },
+      {
+        "method_id": "pi0",
+        "success_rates_percent": [
+          61.5,
+          39.0,
+          3.5,
+          27.0,
+          7.0,
+          5.0,
+          7.5,
+          36.0
+        ],
+        "mean_success_percent": 23.31
+      },
+      {
+        "method_id": "forcevla",
+        "success_rates_percent": [
+          35.5,
+          45.5,
+          12.5,
+          14.0,
+          10.0,
+          12.0,
+          20.0,
+          26.0
+        ],
+        "mean_success_percent": 21.94
+      },
+      {
+        "method_id": "forceflow",
+        "success_rates_percent": [
+          51.5,
+          3.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_success_percent": 6.88
+      }
+    ]
+  },
+  "real_world": {
+    "source_table": "Table II",
+    "tasks": [
+      {
+        "id": "weight_sort",
+        "name": "Weight Sort",
+        "category": "Physical-property inference"
+      },
+      {
+        "id": "plate_retrieve",
+        "name": "Plate Retrieve",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "stamp_press",
+        "name": "Stamp Press",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "plug_insert",
+        "name": "Plug Insert",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "block_insert",
+        "name": "Block Insert",
+        "category": "Contact-rich assembly"
+      }
+    ],
+    "trials_per_task_method": 20,
+    "total_evaluation_trials": 800,
+    "protocol": {
+      "demonstrations_per_task_method": 200,
+      "training_steps": 10000,
+      "batch_size": 64,
+      "same_initial_conditions_across_methods": true,
+      "robot": "Franka Research 3",
+      "sensor": "Six-axis wrist force/torque sensor"
+    },
+    "results": [
+      {
+        "method_id": "pi05_no_force",
+        "success_rates_percent": [
+          30.0,
+          20.0,
+          40.0,
+          60.0,
+          50.0
+        ],
+        "mean_success_percent": 40.0
+      },
+      {
+        "method_id": "token_fusion",
+        "success_rates_percent": [
+          45.0,
+          40.0,
+          50.0,
+          60.0,
+          10.0
+        ],
+        "mean_success_percent": 41.0
+      },
+      {
+        "method_id": "prompt_fusion",
+        "success_rates_percent": [
+          70.0,
+          40.0,
+          65.0,
+          80.0,
+          60.0
+        ],
+        "mean_success_percent": 63.0
+      },
+      {
+        "method_id": "cross_attention",
+        "success_rates_percent": [
+          60.0,
+          30.0,
+          40.0,
+          50.0,
+          55.0
+        ],
+        "mean_success_percent": 47.0
+      },
+      {
+        "method_id": "token_fusion_pred",
+        "success_rates_percent": [
+          45.0,
+          60.0,
+          60.0,
+          45.0,
+          35.0
+        ],
+        "mean_success_percent": 49.0
+      },
+      {
+        "method_id": "temporal_prompt",
+        "success_rates_percent": [
+          80.0,
+          45.0,
+          65.0,
+          75.0,
+          35.0
+        ],
+        "mean_success_percent": 60.0
+      },
+      {
+        "method_id": "dual_path_fusion",
+        "success_rates_percent": [
+          95.0,
+          45.0,
+          70.0,
+          85.0,
+          20.0
+        ],
+        "mean_success_percent": 63.0
+      },
+      {
+        "method_id": "forcevla",
+        "success_rates_percent": [
+          50.0,
+          0.0,
+          40.0,
+          70.0,
+          5.0
+        ],
+        "mean_success_percent": 33.0
       }
     ]
   }

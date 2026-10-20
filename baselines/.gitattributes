@@ -1,0 +1,3 @@
+# Historical SHA256 manifests and checkpoint source guards require exact bytes.
+# Preserve captured LF/CRLF content on every platform.
+* -text whitespace=cr-at-eol

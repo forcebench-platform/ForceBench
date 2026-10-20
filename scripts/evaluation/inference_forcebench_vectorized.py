@@ -19,8 +19,8 @@ from forcebench.registry import get_task_manifest, task_names
 
 
 parser = argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--task", default="peg_insert", choices=task_names())
-parser.add_argument("--seed_start", type=int, default=0)
+parser.add_argument("--task", required=True, choices=task_names())
+parser.add_argument("--seed_start", type=int, default=300)
 parser.add_argument("--num_envs", type=int, default=10)
 parser.add_argument("--env_spacing", type=float, default=6.0)
 parser.add_argument("--policy_host", default="127.0.0.1")
@@ -31,7 +31,7 @@ parser.add_argument(
     help="Optional comma-separated H200 policy ports assigned round-robin to clones.",
 )
 parser.add_argument("--prompt", default=None)
-parser.add_argument("--max_steps", type=int, default=600)
+parser.add_argument("--max_steps", type=int, default=1500)
 parser.add_argument("--execute_chunk", type=int, default=50)
 parser.add_argument(
     "--policy_adapter",
@@ -64,10 +64,12 @@ AppLauncher.add_app_launcher_args(parser)
 args = parser.parse_args()
 
 FORCEFLOW_ACTION_HORIZON = 64
-FORCEFLOW_EXECUTE_CHUNK = 16
+# The formal ForceFlow server predicts 64 actions and returns the first 32.
+# Keep this strict: silently accepting an old 16-step service changes evaluation.
+FORCEFLOW_EXECUTE_CHUNK = 32
 FORCEFLOW_OBSERVATION_HORIZON = 2
 FORCEFLOW_FORCE_HISTORY = 10
-forceflow_interface = args.policy_adapter == "forcebench_ws"
+forceflow_interface = args.policy_adapter == "forceflow_ws"
 effective_execute_chunk = FORCEFLOW_EXECUTE_CHUNK if forceflow_interface else args.execute_chunk
 
 try:
@@ -268,6 +270,14 @@ try:
         wrench_batch = as_numpy(env.force_sensor_joint_raw)
         if wrench_batch.shape != (args.num_envs, 6) or not np.isfinite(wrench_batch).all():
             raise ValueError(f"invalid batched wrench: {wrench_batch.shape}")
+
+        if not args.smoke_hold:
+            for env_id in np.flatnonzero(active):
+                policies[env_id].observe_control_tick(
+                    step=step,
+                    rollout_id=f"{args.task}:seed={seeds[env_id]}",
+                    eef_wrench=wrench_batch[env_id],
+                )
 
         if forceflow_interface and step:
             env.update_cameras()
