@@ -203,6 +203,15 @@ class PolicyAdapter(ABC):
             "control_rate_hz": POLICY_CONTROL_RATE_HZ,
         }
 
+    def observe_control_tick(self, *, step: int, rollout_id: str, eef_wrench: np.ndarray) -> None:
+        """Observe the pre-action wrench on every control tick of one rollout.
+
+        Stateless adapters need no work here. History-dependent adapters must
+        receive this callback even while queued actions are being executed;
+        calling it only before inference would sample chunks instead of ticks.
+        Step zero marks an episode reset, including a repeated rollout ID.
+        """
+
     @abstractmethod
     def infer(self, observation: PolicyObservation) -> PolicyActionChunk:
         """Return canonical absolute TCP targets for one observation."""

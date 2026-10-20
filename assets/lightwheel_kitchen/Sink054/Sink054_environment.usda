@@ -1,0 +1,84 @@
+#usda 1.0
+(
+    defaultPrim = "Sink054Environment"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Sink054Environment" (
+    prepend references = @./Sink054.usd@
+)
+{
+    over "PaintTool" (
+        active = false
+    )
+    {
+    }
+
+    over "Sink054_Body001"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+    }
+
+    over "Sink054_Funnel001"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+
+        over "PrismaticJoint" (
+            active = false
+        )
+        {
+        }
+    }
+
+    over "Sink054_Shelf001"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+
+        over "PrismaticJoint" (
+            active = false
+        )
+        {
+        }
+    }
+
+    over "Sink054_Shelf002"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+
+        over "PrismaticJoint" (
+            active = false
+        )
+        {
+        }
+    }
+
+    over "Sink054_spout"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+
+        over "RevoluteJoint" (
+            active = false
+        )
+        {
+        }
+    }
+
+    over "Sink054_handle"
+    {
+        bool physics:collisionEnabled = false
+        bool physics:rigidBodyEnabled = false
+        token visibility = "invisible"
+
+        over "D6Joint" (
+            active = false
+        )
+        {
+        }
+    }
+}

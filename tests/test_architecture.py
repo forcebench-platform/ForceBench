@@ -1,11 +1,12 @@
 import ast
+import json
 from pathlib import Path
 
 from forcebench.registry import get_task_manifest, task_names
 
 
 def test_task_plugins_are_auto_discovered_without_simulator_imports():
-    discovered = set(task_names())
+    discovered = set(task_names(include_legacy=True))
     assert {
         "faucet_turn",
         "gear_mesh",
@@ -28,6 +29,7 @@ def test_task_plugins_are_auto_discovered_without_simulator_imports():
         "seatbelt_buckle",
         "tension_stop_drawer",
     } & discovered
+    assert not {"gear_mesh", "peg_insert"} & set(task_names())
     manifest = get_task_manifest("peg_insert")
     assert manifest.runtime_class.endswith(":PegInsertTask")
     assert manifest.dataset_subdir == "peg_insert"
@@ -58,15 +60,17 @@ def test_task_manifests_own_scene_selection_and_dataset_names():
 
 
 def test_task_manifests_own_formal_evaluation_step_limits():
+    # Validate the packaged paper tasks against the frozen reference, rather
+    # than the superseded prototype's 600-step / assembly-only split.
+    root = Path(__file__).resolve().parents[1]
+    protocol = json.loads((root / "configs/paper_protocol.json").read_text(encoding="utf-8"))
+    paper_tasks = {task["runtime_id"] for task in protocol["tasks"]}
+    assert set(task_names()) == paper_tasks
     assert {
         get_task_manifest(name).evaluation_max_steps
-        for name in ("gear_mesh", "nut_thread", "peg_insert")
-    } == {1500}
-    assert {
-        get_task_manifest(name).evaluation_max_steps
-        for name in task_names()
-        if name not in {"gear_mesh", "nut_thread", "peg_insert"}
-    } == {600}
+        for name in paper_tasks
+    } == {protocol["max_control_steps"]}
+    # Registration and timeout checks do not establish physics/scorer identity.
 
 
 def test_core_runtime_has_no_factory_or_peg_plugin_imports():

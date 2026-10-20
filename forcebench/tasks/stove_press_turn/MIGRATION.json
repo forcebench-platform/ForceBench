@@ -1,0 +1,106 @@
+{
+  "schema": "forcebench_historical_task_migration_v1",
+  "migration_date": "2026-10-14",
+  "source_anchor": {
+    "protocol_tag": "franka2_h200_four_tasks_exec50_200_20260911_02",
+    "protocol_sha256": "daa54f33087b0da2f62728ef90cb2a8280953e30824d5cab35685b2ef809ee1e",
+    "field": "franka_source_sha256",
+    "all_task_modules_match_anchor": true
+  },
+  "files": [
+    {
+      "source_path": "coribench/tasks/stove_press_turn/__init__.py",
+      "source_sha256": "72073a2822644a885a98491880c1e86d9691ae0a12087f29d09b3b8eaf8b9ba2",
+      "release_path": "forcebench/tasks/stove_press_turn/__init__.py",
+      "release_sha256": "d79183b827e958ee6e48c22e08d6ef5ec090cde20140f7c8a6beccee2b337c9f",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/stove_press_turn/runtime.py",
+      "source_sha256": "5d82e74b0c7406a0f6601e23e2408f7b8969e7d363111825b44245e5e38b0674",
+      "release_path": "forcebench/tasks/stove_press_turn/runtime.py",
+      "release_sha256": "8794897251d85aff7d0feb5548c2aa6bd25d067e6c229464d53b9d57e5e2039a",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/stove_press_turn/spec.py",
+      "source_sha256": "36a769486f17b67bf950a4bbebc2c6562251f262f17d6a05a1eb80ca9e217fe8",
+      "release_path": "forcebench/tasks/stove_press_turn/spec.py",
+      "release_sha256": "55ce64db60ca9b1d4f974a6cd921adbfc1ae4e32e268364e9aec3f829c1e50d7",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/tasks/stove_press_turn/outcome.py",
+      "source_sha256": "e0ea10303a8ae5e139906740963dbd175091c5121461930997f402f4e967992f",
+      "release_path": "forcebench/tasks/stove_press_turn/outcome.py",
+      "release_sha256": "082ca656a429c12c722feae1d08b831a90d4f83445914e764ba33214506fe0f7",
+      "adaptations": [
+        "Python package namespace: coribench -> forcebench"
+      ]
+    },
+    {
+      "source_path": "coribench/seed_balance.py",
+      "source_sha256": "e16e5f6deb6cdaff7b4c0b28d567258722b1f10fd1d81086a91b1c140d138fce",
+      "release_path": "forcebench/seed_balance.py",
+      "release_sha256": "e16e5f6deb6cdaff7b4c0b28d567258722b1f10fd1d81086a91b1c140d138fce",
+      "adaptations": []
+    }
+  ],
+  "shared_support": [
+    {
+      "release_path": "forcebench/task_api.py",
+      "baseline_sha256": "e798b3f1c9709b15be36b594865088fcd47d9393a4324872ce7888f0a5c935f2",
+      "release_sha256": "2223c4f2ae6627297e866aceb98e0499d4c2cdcf3d6364d64b0bdea04a722eda",
+      "historical_source_sha256": "a52ed4485c70787479dd9c2454a27476fd6e06f1ea2e8771749bffa73db8af69",
+      "adaptation": "Optional drive gains default to None to preserve existing task configs; explicit new-task gains are applied before robot construction. Shared default physics/controller values remain unchanged."
+    },
+    {
+      "release_path": "forcebench/env.py",
+      "baseline_sha256": "2d213a1e46d53ce42202b2e7f33d00632ebe793f744a90701c9300201e816bc3",
+      "release_sha256": "844ecdd393868a9e8f12a9853804b47e21ab6e7cd3e030565562682e849e6a92",
+      "historical_source_sha256": "a08bb3aaff64f810fde4bba0ce48c379e12d167faff873701a9f53ea9702929b",
+      "adaptation": "Optional drive gains default to None to preserve existing task configs; explicit new-task gains are applied before robot construction. Shared default physics/controller values remain unchanged."
+    }
+  ],
+  "scoring_status": "historical_latched_press_crossing_preserved",
+  "simulation_assets_included": false,
+  "gpu_validation": "not_run",
+  "paper_reproduction_claim": false,
+  "archived_aggregate_check": {
+    "source_sha256": "ad1d4391fd991298aee03a9d9b856246897f58ee5d92952d0ad4323cbdcf747d",
+    "method": "ForceVLA",
+    "episodes": 200,
+    "successes": 24,
+    "seed_range": [
+      300,
+      499
+    ],
+    "sampler_and_verdict_mismatches": 0,
+    "model_identity_verified": false
+  },
+  "shared_controller_status": {
+    "new_task_arm_gains": [
+      80,
+      12
+    ],
+    "new_task_gripper_gains": [
+      20000,
+      600
+    ],
+    "existing_other_tasks_default_gripper_gains_preserved": [
+      4000,
+      120
+    ],
+    "historical_september_11_default_gripper_gains": [
+      20000,
+      600
+    ],
+    "all_eight_task_controller_alignment_verified": false
+  }
+}

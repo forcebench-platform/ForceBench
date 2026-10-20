@@ -887,9 +887,9 @@ class ParallelSortExpert:
                 box_kind=str(layout["box_kind"]),
                 box_position_m=as_numpy(final_position[env_id]),
                 box_linear_velocity_m_s=as_numpy(final_velocity[env_id]),
-                inspection_completed=bool(self.inspection_completed[env_id]),
                 gripper_open_fraction=float(gripper[env_id]),
             ).to_dict()
+            report["inspection_completed"] = bool(self.inspection_completed[env_id])
             reports.append(report)
         return reports
 

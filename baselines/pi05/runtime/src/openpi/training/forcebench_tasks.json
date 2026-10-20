@@ -1,0 +1,26 @@
+{
+  "weight_sort": {
+    "label": "weight_sort"
+  },
+  "rattle_sort": {
+    "label": "rattle_sort"
+  },
+  "faucet_turn": {
+    "label": "faucet_turn"
+  },
+  "faucet_force_turn": {
+    "label": "faucet_force_turn"
+  },
+  "stove_turn_on": {
+    "label": "stove_turn_on"
+  },
+  "stove_press_turn": {
+    "label": "stove_press_turn"
+  },
+  "radmanso_drawer_sort_table": {
+    "label": "radmanso_drawer_sort_table"
+  },
+  "nut_thread": {
+    "label": "nut_thread"
+  }
+}

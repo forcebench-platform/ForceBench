@@ -1,0 +1,17 @@
+#usda 1.0
+(
+    customLayerData = {
+        string assetVersion = "stovetop-single-center-environment-v1"
+        string derivedAsset = "Stovetop012_single_center.usd"
+        string sourceAsset = "Lightwheel Kitchen v1.1 Stovetop012"
+    }
+    defaultPrim = "Stovetop012Environment"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Stovetop012Environment" (
+    prepend references = @./Stovetop012_single_center.usd@
+)
+{
+}

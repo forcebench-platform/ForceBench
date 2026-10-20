@@ -1,0 +1,28 @@
+{
+  "source_asset": "lightwheel_kitchen/Stovetop012/Stovetop012_single_center.usd",
+  "source_sha256": "13752a57eab665223aed7e5f63817dcb2cfe83f0ff2e621a26963d0d0a574f68",
+  "upstream_commit": "10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1",
+  "upstream_license": "CC-BY-NC-4.0",
+  "measured_on": "2026-10-21",
+  "method": "USD local-to-world mesh points; components connected by shared face vertex indices; axis-aligned bounds in metres",
+  "mesh_path": "/Stovetop012SingleCenter/CenterComponents",
+  "mesh_vertices": 6216,
+  "mesh_faces": 11685,
+  "meters_per_unit": 1.0,
+  "concentric_components": [
+    {
+      "vertices": 201,
+      "min_m": [-0.02032371424138546, 0.005982048809528351, 0.006434837356209755],
+      "max_m": [0.020335489884018898, 0.04664121940732002, 0.009982888586819172]
+    },
+    {
+      "vertices": 161,
+      "min_m": [-0.02032371424138546, 0.005982048809528351, -0.012121831998229027],
+      "max_m": [0.020335489884018898, 0.04664121940732002, 0.006096169352531433]
+    }
+  ],
+  "retained_assembly_max_z_m": 0.022435124963521957,
+  "authored_flame_center_z_m": 0.047,
+  "outer_flame_height_m": 0.003,
+  "height_note": "Flame Z and thickness are task-owned historical runtime values; they are not inferred from the mesh centroid."
+}

@@ -1,0 +1,1599 @@
+{
+  "schema_version": 1,
+  "release": "0.1.0",
+  "observed_date": "2026-10-21",
+  "release_checks_passed": true,
+  "paper_reproduction_verified": false,
+  "scope": "Paper-v1 research source release: bounded software execution checks, frozen paper references, separately acquired assets/data/weights.",
+  "hardware": {
+    "gpu": "NVIDIA H200",
+    "memory_mib_per_gpu": 143771,
+    "driver": "560.35.05"
+  },
+  "cpu": {
+    "passed": 220,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "platform": "Linux x86_64",
+    "python": "3.12.13",
+    "command": "python -m pytest tests -q",
+    "receipt_sha256": "699cc3cfe48875589e38cb6943bcb8179c1dcad91e8609d486df47ace83f8c89",
+    "test_source_sha256": {
+      "tests/test_architecture.py": "c59b9483dba2c60874affc76f8e6da4dc359b2e84c5317f1104d001bcb509c8a",
+      "tests/test_asset_preparation.py": "7f8f40c2d061bef585aa0d184de2a84701035b46968cf86cac35d9edd9bf1617",
+      "tests/test_camera_profile.py": "1c31caa7e2de6bbbdced197f22ed59bf4da54f640b2afdcf173d57aab702722b",
+      "tests/test_collector_completion_snapshot.py": "2c826aaffde621ca5e3b3466bb5ab31e75969989bd6a5cf53e8b768a0937e681",
+      "tests/test_episode_qc.py": "b06ebf08149cdbffdb66932f18adaf24ce707696eeb8c6e10b1ef7524287c7ee",
+      "tests/test_expert_interface.py": "3dba84d61238839dd96f605c6de69cf312c6be0da5c80fca207d27ff6a47ddd2",
+      "tests/test_faucet_turn.py": "7a45d1d9e85d3e4fa69bba2f3e4b338563d0c4291db8366ca3608584ebcc766e",
+      "tests/test_forceflow_integration.py": "9f9b238995450a537673a941fcfe4b4f29d4b208a7387fa893a929a9df6a0c38",
+      "tests/test_forge_task_specs.py": "a28fdb473922612912ef370d350d5401f7f309994efd88d5bd5468fe46edc0fe",
+      "tests/test_isaac_session.py": "29d31e8187490a7157d3337f1a166f82a8a583ed52206dac076a6c23ec5b37f1",
+      "tests/test_nut_asset_setup.py": "50bda8f60d87f9ead1116096848f6170a25e14bf7470d7863ff9011bd488ab53",
+      "tests/test_outcomes.py": "4e4d6ef9ac74fb4310211b3e5de859787d219b1b99bf8ffb721c5926ce3635b9",
+      "tests/test_paper_direction_scoring.py": "3ed239be81463d7b3d02034db18e515ce8588b9ab4f1e1c4a92e8bc9c10fdd35",
+      "tests/test_paths.py": "518c8c768229aa9d00cd327c50a115771744a1d29ff752a1caafe88d83388c05",
+      "tests/test_peg_release_gate.py": "356c29718e9812650d0dc0f12712da5131483f30668d8163670c7e0b2d1113c9",
+      "tests/test_policy_interface.py": "0d1d63e59fea495549157caf92f09608b93ee0c9002e72930063905a29126230",
+      "tests/test_radmanso_drawer_sort_table.py": "5387cbf0247c92a4391a5d60e959455fe6bb8763b08c55763aed4807b39ff1ee",
+      "tests/test_recording.py": "ce93cb2cfce0fce2ebdc8fe2d7e950522c95670ca0785839ead8f370f82e7507",
+      "tests/test_recovered_direction_tasks.py": "0b397a587daf80f143090b1050cba180c0c6df7e5063ef2d0b1816d7cd8de45b",
+      "tests/test_scene_profiles.py": "5c2bc46cbb36eff4310ec5af7dd551390670b9291c256cfec41fcd0d2b39e9c0",
+      "tests/test_stats16_policy.py": "81b6dc503c3218bfaa9fe21daf084ec669a91876cd087cb00740a5ba04d821c2",
+      "tests/test_stove_turn_on.py": "bf300ef98b763f64c19f650259f3ea288bdf514af9f257f6405f2ab138a3cc69",
+      "tests/test_task_specs.py": "d16de65011db8add10268216816e0b75db73985e67053650ff52c67f9ab93b40",
+      "tests/test_visual_scene.py": "229e96b610daecf23ba6eab5ee9501327c3c79c7e4a80215627e89a99cda2b2c",
+      "tests/test_wheel_launcher.py": "e24070a8367bc8bec79e67d4d4de30f31535c68e58eb939d3f137602fce8d6c7"
+    },
+    "windows_cross_check": {
+      "passed": 216,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 4,
+      "python": "3.13.1",
+      "skip_reasons": [
+        "Three POSIX process-supervisor cases",
+        "One USD test requires pxr; executed successfully on Linux"
+      ]
+    }
+  },
+  "simulation": {
+    "cases": [
+      {
+        "task": "faucet_force_turn",
+        "num_envs": 2,
+        "seconds": 29.656601667404175,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "2f69dfddee166931ae9a03d0f47a1b04edd53b5cd43988fc8182b0b2601a9ff1",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "dcfe35476f7a491eda0b041121d385ecabed98e1313fe43e93e48f56abb364ff",
+                "std": 77.47963565743275
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "d57f6f2f333444c58a097c512798a06ab0eb5a2033e83a7d1a3c72875a680ed1",
+                "std": 93.30021699845278
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "edb9926d24ad5adc746c8fd39df607b3e9b8bd6689704fa70604c21b595ee4c8",
+                "std": 77.00173075250092
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "1b318f762dfbeeb819c1c1e01285c98f0908268476a1bc710dbbc41305a2f4a4",
+                "std": 93.1029745595257
+              }
+            ],
+            "summary_sha256": "c7c7553f699f0c56a6899e51237968e04a43ef41afa1e848c46e6cb6344d31b3",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "5d2a152c2163269388a15f8646a66bf506bb248e16025f6e941d0550714647cb",
+                "std": 74.48710043422385
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "d2113769e65f2c39235ac53816407dd8278581482e713fc8746ced2b6b247d55",
+                "std": 86.95752451137912
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "9352955a305c6cd1129d43e49368b33439bd22b5cb61c3b28f2c0f886562e154",
+                "std": 74.33824048787355
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "602ddd02e0e7427bc6504294fd8d9aa2259320de5992be81afc2006b3dd132e0",
+                "std": 86.56440864775563
+              }
+            ],
+            "summary_sha256": "0562f42761a8619d57ac5d514cc22f1c6d9a908828c13b2c5132c8fc84a7a439",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "faucet_turn",
+        "num_envs": 2,
+        "seconds": 21.429481506347656,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "e9f2a63bcbe0111573a32cf591d44a28e268ca6ece110f560b63cdad9d625b2e",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "c94d799e4702fec183ea389b994ec5f49ea146a6dd1f7cf3a69f8abfae490d1a",
+                "std": 77.4931105411907
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "d57f6f2f333444c58a097c512798a06ab0eb5a2033e83a7d1a3c72875a680ed1",
+                "std": 93.30021699845278
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "9172a656f4831a57d7b3c022070d6d3aa6ff17e070422c829c438f740894d243",
+                "std": 77.00678321964399
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "1b318f762dfbeeb819c1c1e01285c98f0908268476a1bc710dbbc41305a2f4a4",
+                "std": 93.1029745595257
+              }
+            ],
+            "summary_sha256": "033712d0adeecd4a73a195cd85a68713a43d61057b77ae84f4b1d54bdb2aca04",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "12c08a152847d8d3bce4e5ef4a80e11fe1dc17f39618410ff2d79e5ef533f948",
+                "std": 74.57508169378522
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "d2113769e65f2c39235ac53816407dd8278581482e713fc8746ced2b6b247d55",
+                "std": 86.95752451137912
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "98105f0c55e8b5d9feca477be824f9b55ace655427b2c6fc5b60ea90c848cb0c",
+                "std": 74.45909622917755
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "47b5f2cf76d345b321b281e08dcf3314b9df0f0525a2ae3f354dc248bc507055",
+                "std": 86.56441924538179
+              }
+            ],
+            "summary_sha256": "eb00af3e77c2bfa150d3d40faabfb3ee0bd052e4b250067d7a4a3f92ce6deb8d",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "nut_thread",
+        "num_envs": 2,
+        "seconds": 27.187665700912476,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "1c5f30e517bae37611acce3986189d59765493b5f7c0b4596695fdcaff2adee5",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "d841d9f0533daf5654e216bb1bde5f19f6b885fe1ad9ead410e5ee4ecc030e63",
+                "std": 26.562113096245053
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "8d52e3867cef9f40fef2d18b91f3426d24aa67a773caae9667a632a26b9210a9",
+                "std": 66.04339585253105
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "487898d36987fc598fd39d418fac4ca5320475834bfd18e1ff24cbdc59585446",
+                "std": 26.16534713755561
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "3905dd7126ae1c9b5d0aee96261fcba70dbbfea68b08f1d76c3cc28fc0179acb",
+                "std": 66.24304688329428
+              }
+            ],
+            "summary_sha256": "f9dd4490c7af7b03209de8f9e247c8ca693b81331d551506ec159353d076eb7d",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "a5555ad9b8cb946bfe08d246e98b4a97c057d93b504fadc7497f2bc415052ade",
+                "std": 25.83458625622213
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "52f07c864624039cb202781b906b1bb6e63667497817596357820cbf0ab840b2",
+                "std": 64.48533945711625
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "782a79ab2cf0c7ac7562caf0183d238e50cc7c0203bd51338e6731394861ee07",
+                "std": 26.237095188638488
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "028fd6cca3b57ec29e14b0905c7104f9b8613b5ec22990b46e21d445bd460c6b",
+                "std": 64.54568857642944
+              }
+            ],
+            "summary_sha256": "e74543ff7915e77a197356fc7007feb7379fd019d87d1f7ddcf4770059dd6a3c",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "radmanso_drawer_sort_table",
+        "num_envs": 2,
+        "seconds": 24.785783052444458,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "92e42aae410031ffd523ed6181813969772a7b794ed260adc55f66d8dc76051c",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "2f3a7616195f01a7882bc94bd081e363be7ded0ebf93ef26209865aa717413f9",
+                "std": 56.53040580570004
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "46e50a111cee19982d0afb49c45d5dc5e679dcfb87a6efbde77176b3456b57c9",
+                "std": 54.22562334395787
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "7d8bfb61c4cbb99018b7ced1be3933c4cc7588029f04c789a5e36830c250d646",
+                "std": 55.92678799787015
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "49fe0ec1f5fa646da8744392c33a8bb263a8abd20de5dd253e981f1099127494",
+                "std": 53.9068116684428
+              }
+            ],
+            "summary_sha256": "2f442919becf2317193adc629117f54a89ee9a92d670d7d727294f78ee8b5b27",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "9fd5398e01376500e3464e4c73ba2f83df7f7c068e030b979bd16374bf17efbc",
+                "std": 56.486592570088035
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "658edb0d64f9bb19ea1a4a21f996dbb2b7e1f36a1affd2ba95b921c06a9fe59c",
+                "std": 51.89824376788476
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "bab7b4abd5dd8248b0c9fa77a71dfe5b15d2b900c5cb2f558189f8687bf77846",
+                "std": 55.76831528696558
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "ce2e7e68a00894ffef3a4c8d1f3699aabeeb26e5bc5d6560933c56bc8a829129",
+                "std": 51.67223451441855
+              }
+            ],
+            "summary_sha256": "ccb9127a573cb691b905d6c00e7b8ab77f65e5d7c49367b770689b8e727a41c4",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "rattle_sort",
+        "num_envs": 2,
+        "seconds": 25.636430263519287,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "1e2d9979364b4d52e2ac0561b530d0d8a6686b4bb9170f64bd7e3a3143f81fd1",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "cecf0d988ec3c5221811669671abc7636c9cfe1730904af93c5835bb395a6167",
+                "std": 68.96894849604398
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "f8d20ec9d2b446cb794fc8163a33b2481e006eb3b675247e4ca864e861ec7ab5",
+                "std": 78.40323867795405
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "6372c2e3a1281ca50cd3a0f73078ea2f50f7ddad0b2f4593783501b2a55dd613",
+                "std": 68.84736432481873
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "43579887765f3fcef706b12bdcde9a8f45d578ea6e7598fd247c5ce1ac024334",
+                "std": 78.21440403966544
+              }
+            ],
+            "summary_sha256": "3363b2050fb6f8023a28c711b829bfce42f19c67e984eb55159ee51c559389c7",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "1b63fab7e02eb92ff83716784fc9843fb1478e3b5605d0c0fd777ecfc18bae81",
+                "std": 68.75131615919983
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "3e22ed4c77a08da2f8cb88b3725bce2feb6aa17d3f7ee949d4471d414e49fcad",
+                "std": 78.02231481962482
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "30cdd76763426235b538d1faefd4c93f8efb71dd2a480c93bdd4b43d6c99dc06",
+                "std": 68.7351244182925
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "d738086c85d72acdcefa0598c5c9fb09f53aee1f970d635123332d57c5bd6188",
+                "std": 77.82647567230853
+              }
+            ],
+            "summary_sha256": "beb1994e245831b1cf3d315213d90d476faa26c469badc9973e7e6f33101a0d9",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "stove_press_turn",
+        "num_envs": 2,
+        "seconds": 24.38363480567932,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "bbcfff7dad2731112b677608754c5d886f6fbc11a609dc249d469c962aa75dff",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "7e4c1ee65d5123fd20b7dfbba71e78016a298aef89b4e1c200eb529a8f22d139",
+                "std": 66.19282380798892
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "aaebe2fe6702c2e934687034789a777fc4e5f7562af128c411252d816ec27a15",
+                "std": 86.29317887751729
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "c6634faea2ae9d6cc578a3806e0dc5e57695068eec9ef15162de25439ce5a721",
+                "std": 65.79066687008104
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "e1b5d6ce51ee24cdec5659a539a8877c86ae689ed47b0ba221aba05991cf59c1",
+                "std": 86.48751881796265
+              }
+            ],
+            "summary_sha256": "dd6f6f374b76e7a094bc8bba5909b8f5b1c8d40184f29cd252624b3febf45ce6",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "b5e39e6da66f058dd4db43f7bffc857afd85297d1d32dae240fad6c0248b8e2f",
+                "std": 65.7048909703182
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "133562be4dda81a69e3183d003b9e8fee29131b7be6aaba6139e1752330307af",
+                "std": 81.80437045122677
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "6e83fb17bb673dbf8f5730fdc74ebc1ffcb286f43639e5585a648ef6488695d3",
+                "std": 65.28135857997506
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "231d6a897b55f59c5a181eb12130aa668d93b02408e9b971d1bf29df8855145e",
+                "std": 82.19374020135311
+              }
+            ],
+            "summary_sha256": "c72a2e9b82d4acc38e2d2fb5b4663b1439fcd1e47533d6e2b69359f2ba994226",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "stove_turn_on",
+        "num_envs": 2,
+        "seconds": 22.980998992919922,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "7399f9d1cea6c9397ab548a034872acfe0b103da5f674ec05afa0566603ec035",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "4c074adaebccae5d6311da956deb5468328a2d382440a341c7eba0cccb8367a9",
+                "std": 66.13958306992518
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "71e658e223ca3aad88bf4e688c96b8682dc680b19121c583d3aca8982cbc933a",
+                "std": 86.27354208348466
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "95b5dbaa82aaa07338541d58704135a05ddc20bc97640cdbb291b885ad0dc5b2",
+                "std": 65.71487565159568
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "c4e5bdbca229a2bdf24468c496213d837e572146fd85aa6007cd6a13b76a43c1",
+                "std": 86.47205889689491
+              }
+            ],
+            "summary_sha256": "054896c0c0463be554702f3ce8993776af7bc8c48f9175f56d75f50ade7d6205",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "3fd2402a5ea1a1a21f4195844a5edbde2a85fd0350467b422db69771be3987c7",
+                "std": 65.7885760619238
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "49de87eaaf65443c385b3ca63626dd2b80d520b48814fab2bf7525017dfc6daf",
+                "std": 81.76759920625668
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "d4217571895da39494d47118ea3ac8ef4349e740d4bab47ab87a67f29da6397e",
+                "std": 65.34553986588999
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "cc0e984b763ed3444c6aac3c17e36c6e047b04fa1be6ea43b2ad0af48691a5a7",
+                "std": 82.14560533468193
+              }
+            ],
+            "summary_sha256": "b30c1ac39ac86167917cedf7fda64f3b76191a64f5e770c2714289b1b85101b4",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "weight_sort",
+        "num_envs": 2,
+        "seconds": 17.46858549118042,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "a413fea07f824c6f2591a4a01782b197700ea93fbe6670e6b0cc3c7ad9448bc1",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "8c722656ef44fdd6a4ee79cff47ae218f7876664bfbe1223d02912cf057457f8",
+                "std": 49.73927457562398
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "af10f08b8961e2544b2827a7c5ab93f9f25a92994d43f303c578b8bed90ed1bd",
+                "std": 55.66142683474155
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "126a8336ab38ca5099a58cb5d81ff4342b8faadaf563b8fb1de1990b05b1bcfb",
+                "std": 49.44919153252978
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "6ef9e02d7e00b5241ad3e2b27d8544c46521b6c8052b860b2b9008885bcc86e6",
+                "std": 55.58787370715759
+              }
+            ],
+            "summary_sha256": "297bce0f2c27f8bb070ddf743889049d8efa97378e72313f727b9d21f30fc407",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          },
+          {
+            "seed": 301,
+            "images": [
+              {
+                "path": "seed_301/main_initial.png",
+                "sha256": "7fb76b0b40e5613023dc6faaeebcb32dc3f115d0e2e49158903691eab3d80cf7",
+                "std": 48.15579828875442
+              },
+              {
+                "path": "seed_301/wrist_initial.png",
+                "sha256": "af5d55b56c3c75c7fdfd8ea994b96ce55eee17c0e16a0e90abcdea4797e287b4",
+                "std": 52.25905315912993
+              },
+              {
+                "path": "seed_301/main_final.png",
+                "sha256": "c2c18f150029e82be537da9574985283c2838e32a32d9ff94ead6cd797e3d11f",
+                "std": 47.595211479535955
+              },
+              {
+                "path": "seed_301/wrist_final.png",
+                "sha256": "ceeccd731e49aca2c3bff2a1fc0877e72aca01e712319bf885855321d76c7432",
+                "std": 52.25673170621133
+              }
+            ],
+            "summary_sha256": "0e2bcd276e3a17c5a6200d91aede87cc0d7d5af185ff5e4f88292cfa94bd06fd",
+            "rollout_sha256": "12dbd0251eea3590d8008bd7a09c0854d0b98adacbea4442a89e9b276e3f0bcc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "weight_sort",
+        "num_envs": 1,
+        "seconds": 20.118128538131714,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "cee03931265978655fc1494ff853e9d35e19a547a00034f059b91aabac1661bc",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "4a5b20a1d7e7bfb27972d191fbdafd3ce4c72659343db65fa3210f6b9015ffbd",
+                "std": 50.57969076149596
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "69702b531f2341e0288b23fa9e02bdb6721a5c8bf4c1d32c13683113baaffc55",
+                "std": 55.24280700509115
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "9fc0dccc2656d7d0b19058081834fc7f7730bd2a505357ccddb06fa212d09d45",
+                "std": 50.0510780369094
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "bba205baf648ea2b131423a3833b454ddc0ab7a7517803631e510cdc3e448912",
+                "std": 55.23295136898797
+              }
+            ],
+            "summary_sha256": "114219911676123d73cf0cbd0d1131eaed2acd51a1da1144a6424cfa4dc83996",
+            "rollout_sha256": "27fe8064526dd1e198eb6310dc35572859026ecfcfd7172676afe72f2c0f1acc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      },
+      {
+        "task": "nut_thread",
+        "num_envs": 1,
+        "seconds": 24.384371519088745,
+        "exit_code": 0,
+        "timed_out": false,
+        "passed": true,
+        "issues": [],
+        "log_sha256": "66ea149ca4552bc947369590fa7e02934061f5c0984516e1e149cec414d3b986",
+        "episodes": [
+          {
+            "seed": 300,
+            "images": [
+              {
+                "path": "seed_300/main_initial.png",
+                "sha256": "5f7d3bbbe63bfaaf4ddf806409882d5f39f7a68b69d2bf8c23940ee745c0c56d",
+                "std": 28.821381039770895
+              },
+              {
+                "path": "seed_300/wrist_initial.png",
+                "sha256": "8b98675b208c90adc310ee91a2c7bea16f67c2b839b5a5f99ea5d9d7ad050507",
+                "std": 66.04844432005413
+              },
+              {
+                "path": "seed_300/main_final.png",
+                "sha256": "a82a23f2d0165a86f991f476b7e3060f13423c533d2a07af40ddf443ee8ea037",
+                "std": 26.511539294999864
+              },
+              {
+                "path": "seed_300/wrist_final.png",
+                "sha256": "2fb5f45bb988c986d501617b7969d787eed638a1d8b36b8c32b48ef018a97d2b",
+                "std": 65.90528099510978
+              }
+            ],
+            "summary_sha256": "9169c3e8a36e0cad1e19f98533c70b82325e3aa1abb0eda54b9f5313ae376f1a",
+            "rollout_sha256": "27fe8064526dd1e198eb6310dc35572859026ecfcfd7172676afe72f2c0f1acc",
+            "final_success": false,
+            "success_is_smoke_metric": true
+          }
+        ]
+      }
+    ],
+    "control_steps_per_episode": 10,
+    "total_episodes": 18,
+    "total_control_steps": 180,
+    "physics_hz": 60,
+    "control_hz": 15,
+    "image_size": [
+      224,
+      224
+    ],
+    "source_sha256": {
+      "forcebench/scene_profiles.py": "985e9a4e7cd221b24b8cee32181d31669eb23edff1bd34f4d5c364e086a2ea83",
+      "forcebench/outcome.py": "0bedb69c8ab96221a4baf059fdb228deae2445c0cf65f689fa2081cf2c5b90e5",
+      "forcebench/isaac_session.py": "94ebfe8d45e9a6194f0895f1c5f8ee5f2bf17fbf159ec038aa6f7bd8bca00b2a",
+      "forcebench/task_api.py": "494d4ec5e667e7d3d435ae40285a662e5263acf3a7c76138f4c35a0c74513aa1",
+      "forcebench/privileged_expert_runner.py": "5629a97fa43cc2302b01946c5489f531ca877b8e670900722ca5e67c03c29eed",
+      "forcebench/expert_api.py": "f89190bc3159bd5cdece9d9953000b421bbfe4d87c5740d6800daeee167aa648",
+      "forcebench/nut_assets.py": "4c1fa633f7b5f947916275d6e8a058555047d99174ff40add13286512001eb83",
+      "forcebench/cli.py": "1b9196db30db143e76d0bed8acd67891daed248418633b71058050019a98c3ad",
+      "forcebench/env.py": "3dc165362f808e6abaa6729d420a5faffcf7a66d4a73f6b50484cd3c40291f0c",
+      "forcebench/expert_collection.py": "2c19fdbf3362e0168cf80d3cf37017a62ef88e7b6a1b55e046e838ee099b0f92",
+      "forcebench/paths.py": "bd33636b11cda70bfd3cd789e70babaae0123c42403a3f409eb3e7bd35ee3f57",
+      "forcebench/privileged_placement.py": "3db72a3fd5547de79ede2c3c6bc352518f9f4cc1329b7a7cadaa862bcfa70e81",
+      "forcebench/object_models.py": "84f2aa0913383bde91a1c900849891692a3152184009fae40e82f8fd45b8e94c",
+      "forcebench/episode_qc.py": "8aa41ed848c2c4e9dc2cfd01504c56905bc81baf4c34770db648b5201a4e4fff",
+      "forcebench/registry.py": "f73cc6198a89392b06246ccc1f8ba310b04ef8ddcfbee40cad2e776a84cf5bfc",
+      "forcebench/policy_transport.py": "e9d8fd86ad324d3aa64754490c4dc3f27df8db98a6cd06a0981b1b44c1bdbc21",
+      "forcebench/control.py": "58af495631b5968752f1165d1e53a63ac84c8c1d58af4091489159865f2868c1",
+      "forcebench/policy_registry.py": "f206b5271f64735a25ae8ab7175fcc585767233d7bd6e9e814b2068cdc412aa1",
+      "forcebench/policy_api.py": "dfaedf5b71476d68ec2880282fb13a32f36175e9354cc6d8dd8a044235e472a9",
+      "forcebench/physics.py": "705b0788ad666eb1a279abbfed243b81e36caa13045addd183d046d7b8431d6f",
+      "forcebench/sort_expert_path.py": "0584ea285af5c06d0d212e71375f9a2eccc0cdb62ef1a7006d77a341da5412fb",
+      "forcebench/env_cfg.py": "6d6af5cf344f533cf01747ddfb2a517772162aa1e49745ce08664a4d2b9320f0",
+      "forcebench/visual_scene.py": "758df3fc2952ba4fafaa3984f689c965a03d1683c06c9f25b890ec4b74b9dfb8",
+      "forcebench/__init__.py": "5725c0a091a1dd13f5f613c38faa50bdb6e9c22be668850cfedcbc2b653107c6",
+      "forcebench/recording.py": "5dccdbe8778070ddc73319e5650c019708db7596db7972cd21963fd79d7c7b2b",
+      "forcebench/seed_balance.py": "e16e5f6deb6cdaff7b4c0b28d567258722b1f10fd1d81086a91b1c140d138fce",
+      "forcebench/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "forcebench/expert_registry.py": "32b1e231823ae9c52f17cec2d99152a76a9c2dcd269c6d3b7bdfc45974b4fb90",
+      "forcebench/policy_adapters/forcebench_ws.py": "f528aa32636a53934b44ff9bbb25172a839de474a8c2f02209a69afd31968667",
+      "forcebench/policy_adapters/stats16_ws.py": "fa610b330fcce76d0c9011dbe5d72728724ff10dd72401e34a80c412b6d896f6",
+      "forcebench/policy_adapters/_websocket.py": "72926eaef4b93af41ce66375432a3593897189724b84926da7c344f1e7299ee1",
+      "forcebench/policy_adapters/forceflow_ws.py": "29b079005bc28dd8b0968ab34c4b9047ab57bbd728dc5cbea023ab505a78c471",
+      "forcebench/policy_adapters/forcevla_ws.py": "b737b4920f20b961aa571518559b6626d89724e4288cf2eb89b8878b1736a6f9",
+      "forcebench/policy_adapters/openpi_ws.py": "70c2b08b23f635fbee93f6ce757df1c351d8f3ae4319f00805fbdd7fdd7f30a5",
+      "forcebench/policy_adapters/__init__.py": "1a8ada8188e32cd25e11d9d9229a49e8aeaf9bdd1b907bc2e96d33a4ef53fa22",
+      "forcebench/tasks/__init__.py": "c59dce94e7e2c9a46fbaa01f6b316c6511e141fb4ab84345f36197eb900f0e21",
+      "forcebench/expert_adapters/faucet_turn.py": "61becb87f799f34fab1ad2ae6a553699db880a66040da27fd518a8a7f8b3be94",
+      "forcebench/expert_adapters/weight_sort.py": "74ff2ead6653cdddafa29b52c92be0d050c09d6627c57a36ffdd601329348d3b",
+      "forcebench/expert_adapters/rattle_sort.py": "edb48f8fe803620f39ba4aa766b68d4e2a0fbd89a2e84e3043a3bfdea161457f",
+      "forcebench/expert_adapters/stove_turn_on.py": "b5e0d583cdf19ebf1498b2b8f0f69809e3ccafc25bc7bdfee48dfb4ef524fce1",
+      "forcebench/expert_adapters/_command.py": "0446e960a3124334af23968f71563c2c3134a19deb392f876058d82e41c17798",
+      "forcebench/expert_adapters/gear_mesh.py": "c1c822e9922a03973fe9edbc41b0ebf6885d048d99b242d7e23abae02983df4e",
+      "forcebench/expert_adapters/peg_insert.py": "01230dc8052b7ed1c2ec5a00aa8ead78253ab7b175b8fab9aa40cd55c6d520fb",
+      "forcebench/expert_adapters/radmanso_drawer_sort_table.py": "b690ac32179326210e7d4d631920af618f48125e60a7d0f2c0d8906a0325bb0b",
+      "forcebench/expert_adapters/__init__.py": "729b2e1ab9863c35373bcc3ee4a9e691355a5c23a6fcfa0e5e224ebc6c5b631a",
+      "forcebench/expert_adapters/nut_thread.py": "1fcffb22baf97c7e45e7cabaf373019e7763c5643643cb9240cfd1b1295bc9ab",
+      "forcebench/tasks/faucet_turn/outcome.py": "d7415acd5718254823fd81368ec55fb725654aba87e90cbeff25751fe450c2b2",
+      "forcebench/tasks/faucet_turn/spec.py": "7895867d8f3f489b8fac3d92bfa2fbaef7e23a4e26f87ee61e47c8517319c753",
+      "forcebench/tasks/faucet_turn/runtime.py": "365d127a59b5e2a75c69c65ed7ce144ab1856be03b2a831944d4e50f0eba84ae",
+      "forcebench/tasks/faucet_turn/__init__.py": "6e223cc2a6a01fd208964a6bb989d44705f436e6503d941bad97659bfb379fd9",
+      "forcebench/tasks/radmanso_drawer_sort_table/outcome.py": "ba7a2afb380d1c49603db4458aca5ae638669c7f97c5af61e85a4c08066ed9bf",
+      "forcebench/tasks/radmanso_drawer_sort_table/spec.py": "182852e350b9577455b3af73b3bcdc7746c53cbe6bbb8fe830ac0d581b2d6e5d",
+      "forcebench/tasks/radmanso_drawer_sort_table/runtime.py": "14faa071c7cffbab6d65f6ae85c0a53598659fec3df1357ddf76998d16835c4e",
+      "forcebench/tasks/radmanso_drawer_sort_table/__init__.py": "df439452a2634d385dea7b43e8b23a8f7c589c84046181bb9527d4af75197ce7",
+      "forcebench/tasks/weight_sort/outcome.py": "5a9ceacbc1b916377d255b8bc2fb30c72a4ebe0b2bb3841c23e472c05360ca24",
+      "forcebench/tasks/weight_sort/spec.py": "174ea419503f060ab826b2edf5c258914ebb8d845d642d53eb92aa116b488739",
+      "forcebench/tasks/weight_sort/runtime.py": "0669e7a456b4039c118e2bad091984af5e3fb85e07a41c40359d53549ef60cc6",
+      "forcebench/tasks/weight_sort/__init__.py": "7d5b9b488429df8b68cabf58bdf046d3cc9b24e7d7f701d85996f5a5ab76da5c",
+      "forcebench/tasks/nut_thread/outcome.py": "2125df6b913dda67193f657163539a65e62ef56f22fbb0b9f959fd1201578516",
+      "forcebench/tasks/nut_thread/spec.py": "e2e62fa943d8f502af914e69a39548413eb968c02bc667a8ff2549804ba6daec",
+      "forcebench/tasks/nut_thread/runtime.py": "4f5163d30d991b7b90ce94fd09aaab03b1e4a57dd0205b29c355ab5d9544a4da",
+      "forcebench/tasks/nut_thread/__init__.py": "8a3dddb27c288544f4c8e05528760cabf1fdb490fe1cc4be1c549e857ba43647",
+      "forcebench/tasks/stove_turn_on/outcome.py": "9800440cf1dc4088858b8b193c346a3d735f3bb2dc5941b9662343abb6788528",
+      "forcebench/tasks/stove_turn_on/spec.py": "e235d2b9b58037baa321ad62aca360c41aa42f5e0058246df6fedb15eb21a52c",
+      "forcebench/tasks/stove_turn_on/runtime.py": "7484abf56be8fb237808b93ce297e124054b41704724edb8afe0f6fa23a28528",
+      "forcebench/tasks/stove_turn_on/__init__.py": "b8da47bac056a3deb771d2ea00366e620d4f17874d026267e8075bcaa8d260af",
+      "forcebench/tasks/peg_insert/outcome.py": "35e6894cf8fd58a83b9f7f58821530322a0633406962c905b4b4aaa8cb294640",
+      "forcebench/tasks/peg_insert/spec.py": "dfcaf41d8435dda5065e5a3230989e21253e7b46fb5235e638e82b5657f532a2",
+      "forcebench/tasks/peg_insert/runtime.py": "f8563a7c6e6421416c6c4115a7195dc93dc14ac31aba591b4a2f70fc24417229",
+      "forcebench/tasks/peg_insert/__init__.py": "a41d88799647a525a71b070e48907a806e658688820c717e9cd67217bdf4d11e",
+      "forcebench/tasks/faucet_force_turn/outcome.py": "5f6b5b8e3c04305c857f1d4d81a27060f2f8778d8d50f07935c05876d12c0729",
+      "forcebench/tasks/faucet_force_turn/spec.py": "d88681b6d2d213118ad6c1d31416babe85ffe1ce8ba411299a6f24bf76c380ea",
+      "forcebench/tasks/faucet_force_turn/runtime.py": "61be8933fa13b4395e9a73f4fdc1e918e2aa62bbe23fe6044483516987aae0f8",
+      "forcebench/tasks/faucet_force_turn/__init__.py": "66cb19904bc7353d2648bea80a753536968c4e32544cff101cafd6a855e807de",
+      "forcebench/tasks/gear_mesh/outcome.py": "c76524eafe6903cffd14cbb4ce7a694644025888828376e3cd98faa2efab6f88",
+      "forcebench/tasks/gear_mesh/spec.py": "4fcb8699bd1ef6503b91d36271abe12a967495bd5aa8f01db49f36317ac9f9f3",
+      "forcebench/tasks/gear_mesh/runtime.py": "c4e5bb67e52331f8aa64fc8390165971aa91127eb66a2b494282eb9c6d84dd58",
+      "forcebench/tasks/gear_mesh/__init__.py": "bc22314221e1c06bac570c54b284fff787cd244fe5bc82e55c3738837499968d",
+      "forcebench/tasks/rattle_sort/outcome.py": "7247d1ccbc59340bb1db28cff575a7b30f3ccf3d90114f4d540d4fb7fb52df47",
+      "forcebench/tasks/rattle_sort/spec.py": "9f1847a8d41b72986792ba76db7ae2a0a732784f473a7cdc5fb409d7db35b5c8",
+      "forcebench/tasks/rattle_sort/runtime.py": "88fab6275ab5647eb41462dd3a555a33a3e4020e53fd2371deba35aaf1bcd9b7",
+      "forcebench/tasks/rattle_sort/__init__.py": "362d21c148d7f5a473b19cad53556284dc062f5440b327c2550cf21b2ff96c2a",
+      "forcebench/tasks/stove_press_turn/outcome.py": "082ca656a429c12c722feae1d08b831a90d4f83445914e764ba33214506fe0f7",
+      "forcebench/tasks/stove_press_turn/spec.py": "55ce64db60ca9b1d4f974a6cd921adbfc1ae4e32e268364e9aec3f829c1e50d7",
+      "forcebench/tasks/stove_press_turn/runtime.py": "8794897251d85aff7d0feb5548c2aa6bd25d067e6c229464d53b9d57e5e2039a",
+      "forcebench/tasks/stove_press_turn/__init__.py": "d79183b827e958ee6e48c22e08d6ef5ec090cde20140f7c8a6beccee2b337c9f",
+      "scripts/evaluation/resolve_task_max_steps.py": "2235faaaeed046ed481d3dc4c6c0cdcca135d507dec9c6d70a9d344a0e0434bb",
+      "scripts/evaluation/resolve_vector_batch_size.py": "7e852181292860bbe57d26f1eb92d6cf846fae8f459d6e16c195e423bd369dbd",
+      "scripts/evaluation/replay_forcebench.py": "7b9020bcc4ac72df06c538585593231c9a73194f672f0ce7f9615ac5d7b1c7bb",
+      "scripts/evaluation/render_policy_rollout.py": "70b123e19cb35f06c827e473904941717519b7631128701ccd3ad103b1a9a4f2",
+      "scripts/evaluation/inference_forcebench_vectorized.py": "88a800cd57dee871eb9f7e822a3fdd5c45518123c18e6b78ff37690bf55cb2f8",
+      "scripts/evaluation/audit_expert_replay.py": "7dcdb2e74c8b74d951cc9a8bc2210d539af36232840bd21f16554da2af3c578b",
+      "scripts/evaluation/export_episode_video.py": "c9d397b0a535542908ee192f07adfb004618a6424d337a686b25bcadaba5ee7f"
+    },
+    "source_files_match_release_candidate": true,
+    "command": "python tools/validate_simulation.py --python \"$SIM_PYTHON\" --assets \"$FORCEBENCH_ASSET_DIR\" --output \"$NEW_OUTPUT\" --single-env-check",
+    "checks": [
+      "Actual PhysX GPU and IsaacRtxRenderer startup",
+      "Finite (10,7) state/action/joint and (10,6) wrist-wrench records",
+      "Two nonuniform 224x224 RGB camera views, before and after stepping",
+      "No simulator [Error] log lines",
+      "Task-specific outcome collection; hold success values are not policy scores"
+    ],
+    "environment": {
+      "python": "3.12.13",
+      "isaacsim": "6.0.1.0",
+      "isaaclab_physx": "1.1.3",
+      "isaaclab_assets": "0.3.4",
+      "isaaclab_tasks": "1.10.9",
+      "isaaclab_contrib": "0.4.4",
+      "isaaclab_rl": "0.5.5",
+      "torch": "2.11.0+cu128",
+      "numpy": "2.3.1",
+      "usd-core": "25.11",
+      "warp-lang": "1.13.0",
+      "fresh_simulator_install_verified": false,
+      "isaaclab_source_identity": {
+        "upstream_git_sha_verified": false,
+        "has_git_metadata": false,
+        "version_file": "3.0.0",
+        "selected_source_files": 2003,
+        "source_hash_recipe": "SHA256(JSON of sorted POSIX relative path and file SHA256 pairs; .py/.toml/VERSION, excluding caches and venvs)",
+        "selected_source_sha256": "0b0327a2f1bb4fa15144b98da40a7d7f838e7f70ba5e989170ee42d8ac917a61"
+      },
+      "native_environment_repair": "Matching environment libstdc++.so.6 selected by LD_PRELOAD; libXt/libSM/libICE supplied by an isolated native-library directory. No global system libraries were replaced.",
+      "isaaclab_distribution": "3.0.0b2.post1",
+      "isaaclab_extension_metadata": "6.1.14"
+    },
+    "raw_report_sha256": "c7d2b3ec7a8d4e8515f73e64ba64015463a2150c59ddd20ecf11aa894655aeb4",
+    "official_wheel_validation": {
+      "schema": "forcebench_official_isaaclab_wheel_execution_v1",
+      "status": "passed",
+      "date": "2026-10-21",
+      "official_package": {
+        "distribution": "isaaclab",
+        "version": "3.0.0b2.post1",
+        "index": "https://pypi.nvidia.com",
+        "observed_download_url": "https://pypi.nvidia.cn/isaaclab/isaaclab-3.0.0b2.post1-py3-none-any.whl",
+        "wheel_bytes": 6070415,
+        "wheel_sha256": "dd32886588479ffd70f7348019aeac1582eb9ad16c40244f41d9f458f96f73c3",
+        "wheel_entries_verified_before_and_after": 2353,
+        "exact_version_6_1_14_is_a_public_pip_release": false,
+        "explanation": "6.1.14 is the original editable core extension metadata, not the public isaaclab distribution version. The wheel bundles the sub-packages."
+      },
+      "source_comparison_to_original_editable": {
+        "modules": {
+          "isaaclab": {
+            "installed_python_files": 429,
+            "wheel_python_files": 429,
+            "identical_files": 429,
+            "different_files": 0,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [],
+            "exact_module_match": true
+          },
+          "isaaclab_physx": {
+            "installed_python_files": 87,
+            "wheel_python_files": 87,
+            "identical_files": 86,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_assets": {
+            "installed_python_files": 31,
+            "wheel_python_files": 31,
+            "identical_files": 30,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_tasks": {
+            "installed_python_files": 451,
+            "wheel_python_files": 451,
+            "identical_files": 448,
+            "different_files": 3,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py",
+              "direct/factory/factory_env.py",
+              "direct/factory/factory_env_cfg.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_contrib": {
+            "installed_python_files": 44,
+            "wheel_python_files": 44,
+            "identical_files": 43,
+            "different_files": 1,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [
+              "__init__.py"
+            ],
+            "exact_module_match": false
+          },
+          "isaaclab_rl": {
+            "installed_python_files": 20,
+            "wheel_python_files": 20,
+            "identical_files": 20,
+            "different_files": 0,
+            "installed_only": [],
+            "wheel_only": [],
+            "changed_files": [],
+            "exact_module_match": true
+          }
+        },
+        "extension_toml_files_identical": 6,
+        "app_kit_files_identical": 9,
+        "difference_interpretation": [
+          "All 429 core isaaclab Python files and all 20 isaaclab_rl Python files match byte-for-byte.",
+          "Four sub-package __init__.py files adjust metadata directory lookup for the wheel layout; numerical definitions are unchanged in those files.",
+          "The original editable Factory environment has two additional optional pi05 camera patches. Those environment modules were not imported in these ten ForceBench checks.",
+          "The official wheel adds its distribution bootstrap and nested core-module layout; module-origin checks and actual GPU execution test that packaged layout."
+        ]
+      },
+      "gpu_validation": {
+        "gpu": "NVIDIA H200",
+        "physical_device": 0,
+        "cuda_visible_devices_unset": true,
+        "environment_installation": "Official wheel extracted into a new directory and selected by PYTHONPATH; all other simulator dependencies inherited from the existing environment.",
+        "fresh_simulator_installation_verified": false,
+        "cases": [
+          {
+            "task": "faucet_force_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "2a5a52a7a6274b7b9d7a8f784babd1bef3f8589eb72b1d102e02a6b91daf1fa6",
+            "process_log_sha256": "983ec3e73885513c5083e690bcb65e5edacecc4d6629b1e751f1130f404a6313"
+          },
+          {
+            "task": "faucet_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "4c665eb3e91cfe7820a01ddd48d493d4d0cf7cd1da0ebe3d95168981d0c077af",
+            "process_log_sha256": "2cd1e423d0b4d472cdf1e9ae2c9882c7e29a4d16cf711d358011bc4a90072fc9"
+          },
+          {
+            "task": "nut_thread",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "71c49a51edc8442b9cee7493444995c17ae334e3e91a83e1f7fa2f9802538b5b",
+            "process_log_sha256": "96e6dd99c0cd77b92b9e4d31db02f4e1215478e7e2c0b082591f12d93dfca80b"
+          },
+          {
+            "task": "radmanso_drawer_sort_table",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "cf53c51aa79868bdc0c430bebeb40e231ba7bfa5961e7fc91a3bc05c7724fc9a",
+            "process_log_sha256": "ee1e2a75ac38f0c29acc9e1c7f491b0560b29434b6ec5c5f18db8c9f68a7f605"
+          },
+          {
+            "task": "rattle_sort",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "4d7ab5d1f143ca986301a5a07b9fd97cdd608e656f25ad236f023b03a035e028",
+            "process_log_sha256": "b3c3a6f9566e5abc9e2def82ac70fd069bb3d60a3b1df3fe299c13115d810f6f"
+          },
+          {
+            "task": "stove_press_turn",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "61da812994f2cc8c8e99ebb28efaa9390b729c58c260c588a050a35fab19811c",
+            "process_log_sha256": "fc4af36587ddf870fe4d756346b147825d019e05c0de935dfe9577abb90aa019"
+          },
+          {
+            "task": "stove_turn_on",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 397,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "a49900a5ec243a4e868fd83b3dcb5eb21029b0857751a1d191eed341fe159854",
+            "process_log_sha256": "f54a79613ab4a2a468ac8bc2bb5a8802548a053f989e194680344ac15d4ec6b9"
+          },
+          {
+            "task": "weight_sort",
+            "num_envs": 2,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "653e803f11f62839ce58eea58cb0e5d6e5c5ca02afc05691caa8ec073c4caa5a",
+            "process_log_sha256": "286c846af3544b79ddcd41893e00d2836617f09f8c9f8d65c0f0d083da0133de"
+          },
+          {
+            "task": "weight_sort",
+            "num_envs": 1,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "962c0ca6a559ab5cb32da4e312b0833ef9e49db8b7b0a39ac30da3460a1a5999",
+            "process_log_sha256": "1ed43bf3979937a5d91bb4614cacbee7f52f1991d0cbf7593e6c7ee462562a09"
+          },
+          {
+            "task": "nut_thread",
+            "num_envs": 1,
+            "passed": true,
+            "control_steps_per_environment": 10,
+            "finite_arrays_and_two_nonuniform_rgb_views": true,
+            "rgb_shape": [
+              224,
+              224,
+              3
+            ],
+            "simulator_error_log_lines": 0,
+            "actual_loaded_isaac_modules": 400,
+            "all_module_origins_inside_official_wheel": true,
+            "factory_or_forge_environment_implementation_loaded": false,
+            "origin_record_sha256": "911df7f5a5c6ef5d418865be0e38158cc25108dd52e43f2e4112b7b5113db968",
+            "process_log_sha256": "2514ac3a5d2530a7c91068d2d3012a60284e03d3dcc9a78f030e01265774fec7"
+          }
+        ],
+        "all_ten_cases_passed": true,
+        "first_party_source_files_unchanged": 1276,
+        "read_only_origin_guard_sha256": "671e888886d48bbbdd5892114e8d4e15412af3d4cfed0d03ea28585fdab4aa94",
+        "raw_suite_report_sha256": "2489f8ddfb54abdcdf15226aa5b132779044dfd9c0e70d8461fce8278291fb40",
+        "factory_forge_environment_implementations_loaded": false,
+        "agent_metadata_namespace_packages_loaded": [
+          "isaaclab_tasks.direct.factory.agents",
+          "isaaclab_tasks.direct.forge.agents"
+        ]
+      },
+      "limitations": [
+        "Bounded hold-action simulator checks, not task-success scores, full model training or paper-result reproduction.",
+        "This is not a fresh dependency installation; it validates the official wheel over existing compatible simulator dependencies.",
+        "The original editable Git revision remains unknown. The public wheel hash is a separate reproducible artifact identity.",
+        "Factory/FORGE agent metadata namespaces may be registered by startup; their environment implementations and optional camera patch modules were not loaded.",
+        "An earlier GPU4 remapped diagnostic was aborted and excluded because its CUDA/Kit device mapping was not accepted as reliable."
+      ]
+    },
+    "official_wheel_validation_receipt_sha256": "c312c3fe3058f854b44eafb0aea3bb19b253dd91a710a05a88fb8f9928eb817b",
+    "subsequent_launcher_checks": {
+      "source_files": [
+        "run_native.sh",
+        "scripts/expert/parallel_sort_collection.py"
+      ],
+      "tests": "tests/test_wheel_launcher.py",
+      "source_and_wheel_modes_passed": true,
+      "numerical_runtime_or_scoring_changed": false,
+      "scope": "CPU routing tests; simulator execution above uses the same direct-Python numerical scripts."
+    }
+  },
+  "models": {
+    "cases": [
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 2,
+          "metadata_matched": true,
+          "finite_actions": true
+        },
+        "source_sha256": "cdcae25713f8daf6117d5c0610bab27ac91d31f3e371180eff1bcdfe4d486540",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "a7c300ad434ed4ac15eb3e661e6fb60a456bc27eb0849024df58cc4fc2beed1e",
+        "inference_receipt_sha256": "d696a16200167a9472e003d36a6483208faffd44aadf2991b8ee7a37c971e9c1",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "pi05_no_force",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 2,
+          "metadata_matched": true,
+          "finite_actions": true
+        },
+        "source_sha256": "cdcae25713f8daf6117d5c0610bab27ac91d31f3e371180eff1bcdfe4d486540",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "53f7d36598b315e291a7f527462805163604c7f51bf68de1db4cf6bae670c01b",
+        "inference_receipt_sha256": "02acef91fcaede1853aa88493acff44abd4a2c8a8c7b612dc927238491c9a65d",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "token_fusion",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 2,
+          "metadata_matched": true,
+          "finite_actions": true
+        },
+        "source_sha256": "cdcae25713f8daf6117d5c0610bab27ac91d31f3e371180eff1bcdfe4d486540",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "8352f5bc9057734e18678cdd5c5fff0c003a9736d363a5366de1529b348cfca7",
+        "inference_receipt_sha256": "722f0eb104bec0fe995d552a24d74bc244db4db6732e1857830919499987179c",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "prompt_fusion",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 2,
+          "metadata_matched": true,
+          "finite_actions": true
+        },
+        "source_sha256": "cdcae25713f8daf6117d5c0610bab27ac91d31f3e371180eff1bcdfe4d486540",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "53f7d36598b315e291a7f527462805163604c7f51bf68de1db4cf6bae670c01b",
+        "inference_receipt_sha256": "bf7d377dbcea83789e16cdc7b00546357b72069fa38a638c731f1f7b8c8e29d6",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "cross_attention",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 2,
+          "metadata_matched": true,
+          "finite_actions": true
+        },
+        "source_sha256": "cdcae25713f8daf6117d5c0610bab27ac91d31f3e371180eff1bcdfe4d486540",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "48afefc5bfff971b76a2f62c5279dbb88f142bda586b8e5fae0c4c3ca9deb926",
+        "inference_receipt_sha256": "e674cb80ac6321cd3fa590abf62b69cf9f22dd39585ae02348f2d30e23a4cd5f",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "token_fusion_pred",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 1,
+          "finite_actions": true
+        },
+        "source_sha256": "36fee1d7fbc525d41f25b92bdb14ffa213dc31887989c8d0acac6deae2af118d",
+        "diagnostic_tool_sha256": "c48f415d23346f0d486dbc597634faadde76f61a8c0794887a4ab99c0ef063f4",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "a7c300ad434ed4ac15eb3e661e6fb60a456bc27eb0849024df58cc4fc2beed1e",
+        "result_receipt_sha256": "afeca9b4662d9d6616c41a5eb64db641a815932711b18297aa7e10dca73f6292",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "pi0",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 1,
+          "finite_actions": true
+        },
+        "source_sha256": "5fc617a284f44a8ce40d0cd99d6407d06791b75abec4e8622654c4734313dfa3",
+        "diagnostic_tool_sha256": "c48f415d23346f0d486dbc597634faadde76f61a8c0794887a4ab99c0ef063f4",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "255b625372737599d944a2b21d6cecf514e7a9b0c785b4f2d1d4525e3057b282",
+        "result_receipt_sha256": "279c0e916029b1fb2bfbda922eabcdcc0cd274cc7c71c0b9313d4ef778418e81",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "temporal_prompt",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 32,
+        "fsdp_devices": 1,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 1,
+          "finite_actions": true
+        },
+        "source_sha256": "5fc617a284f44a8ce40d0cd99d6407d06791b75abec4e8622654c4734313dfa3",
+        "diagnostic_tool_sha256": "c48f415d23346f0d486dbc597634faadde76f61a8c0794887a4ab99c0ef063f4",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "12f81d1561b8ac8472b09d9134578be01933405620571b8b7756a53e70e2a24e",
+        "result_receipt_sha256": "85501ddadad1de5e56521c73cef970deaca80e14c5d78161b885afdacb5a6960",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "dual_path_fusion",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "faucet_turn",
+        "actual_optimizer_updates": 3,
+        "global_batch": 64,
+        "fsdp_devices": 2,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          50,
+          7
+        ],
+        "websocket": {
+          "handler": "OpenPI WebsocketPolicyServer",
+          "loopback_requests": 1,
+          "finite_actions": true
+        },
+        "source_sha256": "5b50547426c7e5bb14af6cfa5a50738f258d52c1699ec642c1e399e5e411b438",
+        "diagnostic_tool_sha256": "c48f415d23346f0d486dbc597634faadde76f61a8c0794887a4ab99c0ef063f4",
+        "input_metadata_sha256": "3b4e41e4728a5f5770ca55ab1bc4f91d5eee5951f94be5eb90a35e0d23d2b933",
+        "normalization_sha256": "451fe8454d26abcf88052ef778f161746cb5eb7a529e65537cdb51b27be6b114",
+        "result_receipt_sha256": "b116ffc95d0c48f890dd3b052f2a5d29d41228c56b6395277c41a238e0048fe3",
+        "production_checkpoint_saved_or_restored": false,
+        "method_id": "forcevla",
+        "passed": true
+      },
+      {
+        "status": "passed",
+        "task": "weight_sort",
+        "actual_optimizer_updates": 2,
+        "global_batch": 2,
+        "finite_nonzero_gradient": true,
+        "real_recorded_observation_inference": true,
+        "direct_action_shape": [
+          32,
+          7
+        ],
+        "websocket": {
+          "handler": "Native ForceFlow server and forceflow_ws adapter",
+          "direct_vs_wire_max_abs_difference": 0.0,
+          "finite_actions": true
+        },
+        "checkpoint_strict_load": true,
+        "input_checkpoint_global_step": 100000,
+        "new_checkpoint_strict_reload_and_infer": true,
+        "input_checkpoint_unchanged": true,
+        "normalizer_full_dataset_comparison": true,
+        "native_training_cli_optimizer_updates": 2,
+        "source_file_sha256": {
+          "coribench_forceflow/__init__.py": "5f2eccfd0e5479efde55f254fd1167422e33d8ee3d4898e2472f535b7a705cfd",
+          "coribench_forceflow/data.py": "f88d3fadb4991daf30529a0a950ccf728104781538437ad8b677e3ac4b238b22",
+          "coribench_forceflow/model.py": "bd884ec47354d00fc5ae418d902fe47d1a187b71d8d26edce291e1f692a294fb",
+          "coribench_forceflow/prepare_config.py": "c854f4cac9b8807d0b7d5833a431c54e1f9a961404b093a9b3b8156244f687bb",
+          "coribench_forceflow/run_output.py": "7260b18ca9271fb6425458ea903c625ed45dd17460422284eff2d1475dd2a571",
+          "coribench_forceflow/server.py": "bcb8931ce5da073aaedff1429de3967bdf345f316f19ed24dc3f01081c20f143",
+          "coribench_forceflow/train.py": "837591b8915e8b9d2e09614c2c8d91b3104c0e8a83616d24a651bf5fbaaf4409",
+          "coribench_forceflow/video_decode.py": "cc9e73cadb1f8f48d14c1e477158aa458b09d366e3c31297ad5358b21a3db204"
+        },
+        "diagnostic_tool_sha256": "78772ea0bb0fb12eb5b574b4392e2ac79c6600b9bc075d126485e0b4d56b949f",
+        "input_metadata_sha256": "ec7f31c141a8dffbc9d531fc024c8722fa22fc1f7a7732f0955dbd5f11498091",
+        "result_receipt_sha256": "fe7a28b946a7634604cf2026174220cb874731b4d6d5910a1c4d2ea317c1de85",
+        "environment": {
+          "python": "3.11.11",
+          "torch": "2.7.1+cu126",
+          "lightning": "2.5.5",
+          "fresh_install": false
+        },
+        "method_id": "forceflow",
+        "passed": true
+      }
+    ],
+    "environment": {
+      "python": "3.11.11",
+      "versions": {
+        "jax": "0.5.3",
+        "jaxlib": "0.5.3",
+        "torch": "2.7.1",
+        "flax": "0.10.2",
+        "lerobot": "0.1.0",
+        "orbax-checkpoint": "0.11.13",
+        "transformers": "4.53.2",
+        "datasets": "3.6.0",
+        "huggingface-hub": "0.32.3"
+      },
+      "torch_cuda": "12.6",
+      "base_parameter_loading": "Real pi0_base or pi05_base parameters; no fake model"
+    },
+    "input_scope": [
+      {
+        "task": "faucet_turn",
+        "available_dataset_episodes": 200,
+        "available_dataset_frames": 101608,
+        "control_hz": 15,
+        "use": "Actual decoded images/states/actions/wrench batches and recorded inference observations for the nine OpenPI systems; not all trajectories were evaluated."
+      },
+      {
+        "task": "weight_sort",
+        "available_dataset_episodes": 200,
+        "available_dataset_frames": 91368,
+        "control_hz": 15,
+        "use": "ForceFlow real data, full normalizer-boundary comparison, short training and inference."
+      }
+    ],
+    "fresh_install_check": {
+      "method": "token_fusion_pred",
+      "status": "passed",
+      "fresh_venv": true,
+      "existing_site_packages_on_sys_path": false,
+      "python": "3.11.11",
+      "package_versions": {
+        "jax": "0.5.3",
+        "jaxlib": "0.5.3",
+        "torch": "2.7.1",
+        "flax": "0.10.2",
+        "lerobot": "0.1.0",
+        "transformers": "4.53.2",
+        "datasets": "3.6.0",
+        "orbax-checkpoint": "0.11.13"
+      },
+      "locked_dependency_file_sha256": "793488b5a55bb87200db90a61fd0af51922b686d94e1da4f4c587ab119b37d74",
+      "transport_exception": {
+        "reason": "GitHub Git fetch failed over HTTP/2 and HTTP/1.1 TLS; an initial offline attempt also lacked a cached JAX wheel.",
+        "lerobot_commit": "0cf864870cf29f4738d3ade893e6fd13fbd7cdb5",
+        "same_commit_official_archive": "https://codeload.github.com/huggingface/lerobot/tar.gz/0cf864870cf29f4738d3ade893e6fd13fbd7cdb5",
+        "archive_sha256": "2455b2ed303778f8bcd570caceae0b22c97908eaaf029dff868d9f237b495c00",
+        "other_locked_versions_changed": false
+      },
+      "actual_optimizer_updates": 3,
+      "real_recorded_inference": true,
+      "loopback_websocket_requests": 2,
+      "inference_receipt_sha256": "e0f399acff20cef123b7107f1431c5703f233e17bc20582fbe607e89b82d629d",
+      "scope": "Controlled pi05 environment and F4 only; not a fresh installation of all baseline variants."
+    },
+    "representative_simulator_model_closed_loop": {
+      "status": "passed",
+      "task": "faucet_turn",
+      "seed": 300,
+      "environments": 1,
+      "executed_control_steps": 8,
+      "hold_action_bypass_used": false,
+      "model": "Real pi05_base plus explicit Faucet normalization; zero task-training updates",
+      "server_fresh_environment": true,
+      "pipeline": "Actual simulator RGB/state -> openpi_ws adapter -> GPU model inference -> absolute TCP actions -> simulator controller",
+      "actual_model_requests": 1,
+      "predicted_action_shape": [
+        50,
+        7
+      ],
+      "finite_model_actions": true,
+      "physics_hz": 60,
+      "control_hz": 15,
+      "inference_recorded_action_sha256": [
+        "50e9a32c59c2f5e54e264ebabd88bcc71a5ccf3f43dc33fd9ffb22cba809e73a"
+      ],
+      "simulation_receipt_sha256": "faa26bd722cc48b715a134672061e47c6b0c193d9df7a03b3d9ee8b6fd2b6277",
+      "server_identity_receipt_sha256": "5bf24315987caec8ed6a3ba1fe6ededdf5955ead0bbb17684ce50a88ddbae13c",
+      "server_tool_sha256": "abfc0bc114947349a5f2026f20ce21c961c6af571ceecf3c1fb56c986d75703d",
+      "scope": "One environment and eight executed steps from a real model-generated 50-action chunk. This verifies an action pipeline, not complete-task success, a trained checkpoint or a benchmark score."
+    },
+    "limitations": [
+      "Software execution validation only; no task-success estimates or paper-result reproduction were produced.",
+      "Nine OpenPI systems ran three updates at preserved global batch sizes with diagnostic num_workers=0. No production 10000-update checkpoint save/restore was tested for them.",
+      "Loopback OpenPI handler tests do not validate ForceVLA production single/batched server modes or their batching equivalence.",
+      "Explicit data and normalization inputs are not proof of final historical paper checkpoint, data and normalization mapping. The pi0 diagnostic used the explicit compatible state/action norm asset selected for the software check, not a verified historical pi0 norm.",
+      "Full dataset/base-weight payload checksum audits, all task-method cells, convergence, statistical repeatability and real-world operation are outside this check.",
+      "ForceFlow used an existing environment and a small batch for its two-step diagnostic. Its native CLI was also exercised for two steps; neither is a full training run.",
+      "Production checkpoint identity/budget gates were preserved; no identity bypass or fabricated receipt was used."
+    ],
+    "raw_summary_sha256": "0396a5ad0a76d29b6e113d173e8c95413710abf5f07309311ba3d6e9fe20988a"
+  },
+  "assets": {
+    "manifest": "assets/asset_manifest.json",
+    "manifest_sha256": "7d125cb3e411578b317fa9f45bdd446d876dd16c4925e8b4969c3291cab4c035",
+    "verified_files": 300,
+    "verified_bytes": 2300568689,
+    "independent_copy_checks_passed": true,
+    "bundled_authored_usda_files": 17,
+    "bundled_authored_usda_bytes": 109516,
+    "runtime_materials_verified": [
+      "OmniPBR.mdl",
+      "OmniGlass.mdl"
+    ],
+    "raw_authored_gaps": 97,
+    "unreviewed_gaps": 0,
+    "all_upstream_variants_closed": false,
+    "third_party_payloads_distributed": false,
+    "source_wrapper_mesh_composition_verified": true,
+    "stove_single_center_rebuilt_sha256_matched": true,
+    "conveyor_and_rack_fresh_rebuild_verified": false
+  },
+  "expert_collection": {
+    "recovered_entry_points": [
+      "faucet_force_turn",
+      "stove_press_turn"
+    ],
+    "gpu_startup": "32 environments, actual RTX reset/initial recording checked; hard-timeout stopped",
+    "complete_demonstrations_verified": false,
+    "completed_paper_dataset_regeneration": false,
+    "stove_press_quality_timepoint": "Per-clone post-action completion snapshot for both retained trajectory and quality gates; thresholds/physics preserved",
+    "receipt_sha256": "dbe70d7ae8c615a72aa990e47d0f2f87a57fc462667d009b057ed69dcf27e39e"
+  },
+  "scoring_changes": [
+    "CoM placement/release/rest; inspection remains diagnostic",
+    "Stove geometry test uses actual compact burner center; runtime SPEC position unchanged",
+    "Faucet Direction new-run paper scorer uses signed final angle >= resistance peak, with no upper bound; historical band scorer retained explicitly",
+    "Historical batch-end state is separate from first simultaneous success and fixed post-success stability"
+  ],
+  "frozen_reference_sha256": {
+    "results/paper_reference.json": "fa08c8bf54139eacfd6a9231136614c1b83837a30970542e5d042cd4c43b58b8",
+    "results/leaderboard.json": "fa08c8bf54139eacfd6a9231136614c1b83837a30970542e5d042cd4c43b58b8",
+    "configs/paper_protocol.json": "559fb72c98835e4df1604cd84f308aeb45eaeb8fe222a430f43af085d2ee730d"
+  },
+  "limitations": [
+    "This is not reproduction of the 80 simulation task-method scores, convergence or statistical repeatability.",
+    "Original paper checkpoint-to-data-to-normalizer bindings remain incomplete; frozen table values are not overwritten by new runs.",
+    "The historical Isaac Lab Git commit remains unknown. The official 3.0.0b2.post1 wheel is source-compared and GPU-executed as a public installation target; its remaining dependencies were inherited, so a complete fresh simulator installation is unverified.",
+    "Exact external meshes, textures, datasets and weights must be obtained separately under their applicable terms; current asset import pins identity rather than granting rights or providing public downloads.",
+    "The recovered expert collectors were initialized/rendered, not run to complete the 1600 demonstrations.",
+    "Real-world reference values do not constitute a validated real-robot deployment."
+  ],
+  "ci": {
+    "status": "passed",
+    "passed": 196,
+    "skipped": 1,
+    "skip_reason": "pxr not installed in lightweight CPU runner; covered by H200 CPU suite",
+    "source_head": "c365a465a80e7fcf863dbce3d45147a96d9295f2",
+    "run_url": "https://github.com/forcebench-platform/ForceBench/actions/runs/39484491866",
+    "scope": "Clean CPU install before the final launcher-only additions; the current commit is checked again by CI."
+  }
+}

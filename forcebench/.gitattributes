@@ -1,0 +1,6 @@
+# Migration receipts hash the exact source bytes, independent of checkout OS.
+env.py text eol=lf
+task_api.py text eol=lf
+seed_balance.py -text whitespace=cr-at-eol
+tasks/faucet_force_turn/** -text whitespace=cr-at-eol
+tasks/stove_press_turn/** -text whitespace=cr-at-eol

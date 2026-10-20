@@ -1,0 +1,2885 @@
+#usda 1.0
+(
+    customLayerData = {
+        string assetProvenance = "Lightwheel Kitchen v1.1, CC BY-NC 4.0"
+        string purpose = "Collision-free visual background for CoRiBench faucet_turn"
+        string sourceArchiveSha256 = "721fb9e47d09b2c43a7db396c1d63c659e987d5925db0a5e78cf4fd40cd0b0b0"
+    }
+    defaultPrim = "KitchenBackground"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "KitchenBackground" (
+    prepend references = @Collected_KitchenRoom/KitchenRoom.usd@</root>
+)
+{
+    over "Sink054_01" (
+        active = false
+    )
+    {
+    }
+
+    over "WallCollider" (
+        active = false
+    )
+    {
+    }
+
+    over "Kitchen_Wall001" (
+        active = false
+    )
+    {
+    }
+
+    over "Kitchen_Windows" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_01" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_02" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_03" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_04" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_05" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_06" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_07" (
+        active = false
+    )
+    {
+    }
+
+    over "CylinderLight_08" (
+        active = false
+    )
+    {
+    }
+
+    over "RectLight_01" (
+        active = false
+    )
+    {
+    }
+
+    over "DomeLight_01" (
+        active = false
+    )
+    {
+    }
+
+    over "Kitchen_Floor" (
+        delete apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+    }
+
+    over "Kitchen_Light" (
+        delete apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+    }
+
+    over "Kitchen_Wall002" (
+        delete apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+    }
+
+    over "Kitchen_Ground" (
+        delete apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+    }
+
+    over "Kitchen_InsularShelf_01" (
+        delete apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        over "Kitchen_InsularShelf" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_InsularShelf_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C003" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C004" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C005" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C006" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C007" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C008" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C009" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_C010" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "FixedJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Kitchen_InsularShelf_Door001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_InsularShelf_Door001"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_InsularShelf_Door001_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_Door001_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_InsularShelf_Door002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_InsularShelf_Door002"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_InsularShelf_Door002_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_Door002_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_InsularShelf_Door003" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_InsularShelf_Door003_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_InsularShelf_Door003_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_Cabinet001_01"
+    {
+        over "Kitchen_Cabinet001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C003_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C004_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C005_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C006_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C007_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C008_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C009_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C010_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C011_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C012_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C013_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C014_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C015_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C016_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_C017_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet001_Door001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet001_Door001"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_Door001_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_Door001_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet001_Door002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet001_Door002"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_Door002_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_Door002_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet001_Door003" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet001_Door003"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_Door003_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_Door003_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet001_Door004" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet001_Door004"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_Door004_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_Door004_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet001_Door005" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet001_Door005"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet001_Door005_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet001_Door005_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "WallStackOven004_01"
+    {
+        over "WallStackOven004_Door001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "WallStackOven004_Shelf001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "WallStackOven004_Shelf002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "WallStackOven004_Door001_Clear" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "FixedJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "WallStackOven004_Body001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_TopCabinet_01"
+    {
+        over "Kitchen_TopCabinet_Body_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Body_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C003" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C004" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C005" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C006" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C007" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C008" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C009" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Body_C010" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door001"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door001_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door001_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_02" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door002"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door002_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door002_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_03" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door003"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door003_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door003_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_04" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door004"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door004_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door004_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_05" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door005"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door005_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door005_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_06" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door006"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door006_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door006_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Door001_07" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_TopCabinet_Door007"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_TopCabinet_Door007_C002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_TopCabinet_Door007_C001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_TopCabinet_Body" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Stovetop012_01"
+    {
+        over "Stovetop012_knob_center" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Stovetop012_knob_rear_right" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Stovetop012_knob_rear_left" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Stovetop012_knob_front_right" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Stovetop012_knob_front_left" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Stovetop012_Body001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "CoffeeMachine006" (
+        delete apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        over "CoffeeMachine006_Spout" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Knob3" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Knob2" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Knob1" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Handle" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Button3" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Button2" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Button1" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "CoffeeMachine006_Body" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Bottle"
+    {
+        over "Kitchen_Bottle" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Bottle_Clear" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "FixedJoint" (
+                active = false
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_Bottle_01"
+    {
+        over "Kitchen_Bottle" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Bottle_Clear" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "FixedJoint" (
+                active = false
+            )
+            {
+            }
+        }
+    }
+
+    over "SM_P_Choppingboard_01"
+    {
+        over "Xform"
+        {
+            over "SM_P_Choppingboard_01"
+            {
+                over "SM_P_Choppingboard_01" (
+                    delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "SM_P_Flavour_02"
+    {
+        over "SM_P_Flavour_03" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "SM_P_Flavour_03" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "SM_P_Jar_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "SM_P_Jar_01" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "SM_P_Flavour_04" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "SM_P_Flavour_04" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "SM_P_Flavour_02" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "SM_P_Flavour_02" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "SM_P_Tray_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "SM_P_Tray_01" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "SM_P_Flavour_03_Cover" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_bottle002"
+    {
+        over "Kitchen_bottle002_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_bottle002" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "Collider" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_bottle003"
+    {
+        over "Kitchen_bottle003_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_bottle003" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "Collider" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_bottle004"
+    {
+        over "Kitchen_bottle004_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_bottle004" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "Collider" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_Flowers002"
+    {
+        over "Kitchen_Flowers002_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Kitchen_Flowers002" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "Cylinder001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_Disk002"
+    {
+        over "Kitchen_Disk002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange001"
+    {
+        over "Kitchen_Orange001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange001_01"
+    {
+        over "Kitchen_Orange001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange001_02"
+    {
+        over "Kitchen_Orange001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange001_03"
+    {
+        over "Kitchen_Orange001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange002"
+    {
+        over "Kitchen_Orange002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Orange002_01"
+    {
+        over "Kitchen_Orange002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Plane" (
+        delete apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+    }
+
+    over "Kitchen_Bottle005"
+    {
+        over "Kitchen_Bottle005" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Bottle006"
+    {
+        over "Kitchen_Bottle006" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Bottle007"
+    {
+        over "Kitchen_Bottle007" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+    }
+
+    over "Refrigerator001" (
+        delete apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        over "Refrigerator001_Door4" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container8" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container7" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Switch" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Door3" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Door2" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Door1" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container1" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container2" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container4" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container3" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container6" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Container5" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Refrigerator001_Body" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "FixedJoint" (
+                active = false
+            )
+            {
+            }
+        }
+    }
+
+    over "Kitchen_Disk001"
+    {
+        over "Kitchen_Disk001_01" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Disk001_01"
+    {
+        over "Kitchen_Disk001_01" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Disk001_02"
+    {
+        over "Kitchen_Disk001_01" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Pot057" (
+        delete apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+        over "Pot057_Lid" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Pot057_Body" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Paper"
+    {
+        over "Kitchen_Paper" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_KnifeHolders001"
+    {
+        over "Kitchen_KnifeHolders001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "c001" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c002" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c003" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c004" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c005" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c006" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c007" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c008" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c009" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c010" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c011" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c012" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c013" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c014" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c015" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c016" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c017" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c018" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c019" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c020" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c021" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c022" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c023" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "c024" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Knife001_01" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Knife001_C2" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Knife001_C1" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Knife001_02" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Knife002_C2" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Knife002_C1" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Knife001_03" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Knife003_C2" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Knife003_C1" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Knife001_04" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Knife004_C2" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Knife004_C1" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "Kitchen_Box"
+    {
+        over "Kitchen_Box001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Box002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Box003" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Box004" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Box07"
+    {
+        over "Kitchen_Box007" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Box02"
+    {
+        over "Kitchen_Box008" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Box010" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Box009" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Basket"
+    {
+        over "Kitchen_Basket004" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Basket001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Basket002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Basket003" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Basket006" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Basket005" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Hookrack001"
+    {
+        over "Kitchen_Hookrack001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack003" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack005" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack006" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack004" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Hookrack007" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Shelf001"
+    {
+        over "Kitchen_Shelf004" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Shelf005" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Shelf001" (
+            delete apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Shelf003" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Kitchen_Shelf002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Kitchen_Cabinet002"
+    {
+        over "Kitchen_Cabinet002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C003_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C004_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C005_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C006_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C007_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C008_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C009_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C010_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C011_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C012_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C013_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C014_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C015_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C016_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C017_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C018_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C019_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C020_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C021_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C022_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C023_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C024_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_C025_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door001"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door001_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door001_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door002"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door002_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door002_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door003" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door003"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door003_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door003_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door004" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door004"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door004_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door004_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door005" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door005"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door005_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door005_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door006" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door006"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door006_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door006_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door007" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door007"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door007_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door007_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Door008" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Door008"
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Door008_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Door008_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Drawer001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Drawer001"
+            {
+                over "PrismaticJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Drawer001_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer001_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer001_C003_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer001_C004_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer001_C005_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer001_C006_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+
+        over "Kitchen_Cabinet002_Drawer002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Kitchen_Cabinet002_Drawer002"
+            {
+                over "PrismaticJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collisions"
+            {
+                over "Kitchen_Cabinet002_Drawer002_C001_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer002_C002_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer002_C003_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer002_C004_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer002_C005_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Cabinet002_Drawer002_C006_Shape" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "RangeHood015"
+    {
+        over "RangeHood015_Button002" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "RangeHood015_Button001" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "RangeHood015_Button003" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "RangeHood015_Button004" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "RangeHood015_Body001_01" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+    }
+
+    over "Toaster003"
+    {
+        over "Toaster003_Body001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Collider"
+            {
+                over "Toaster003_Body001_Collider9"
+                {
+                    over "wBox_011" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider8"
+                {
+                    over "wBox_013" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider7"
+                {
+                    over "wBox_012" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider6"
+                {
+                    over "wBox_008" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider5"
+                {
+                    over "wBox_007" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider4"
+                {
+                    over "wBox_006" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider3"
+                {
+                    over "wBox_005" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider2"
+                {
+                    over "wBox_001" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+
+                over "Toaster003_Body001_Collider1"
+                {
+                    over "wBox" (
+                        delete apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+            }
+        }
+
+        over "Toaster003_Knob001"
+        {
+            over "Toaster003_Knob001" (
+                delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+            )
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+        }
+
+        over "Toaster003_Lever001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Toaster003_Lever001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                over "PrismaticJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+
+            over "Collider"
+            {
+                over "Cube" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Cube_01" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "Kitchen_Flowers001"
+    {
+        over "Kitchen_Flowers001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+            over "Collider"
+            {
+                over "Kitchen_Flowers001_Collider1" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+
+                over "Kitchen_Flowers001_Collider2" (
+                    delete apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "Microwave017"
+    {
+        over "Microwave017_Body" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+        }
+
+        over "Microwave017_Container" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Door" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Knob" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button2" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button3" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button4" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button1" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button6" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button5" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button7" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Microwave017_Button8" (
+            delete apiSchemas = ["PhysicsCollisionAPI", "PhysicsRigidBodyAPI"]
+        )
+        {
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+    }
+
+    over "Door012" (
+        delete apiSchemas = ["PhysicsArticulationRootAPI"]
+    )
+    {
+    }
+
+    over "Dishwasher054_01"
+    {
+        over "Dishwasher054_Body001"
+        {
+            over "Dishwasher054_Body001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+        }
+
+        over "Dishwasher054_Container001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Dishwasher054_Container001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Dishwasher054_Container002" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Dishwasher054_Container002" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Dishwasher054_Button001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Dishwasher054_Button001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+            }
+
+            over "PrismaticJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        over "Dishwasher054_Door001" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI"]
+        )
+        {
+            over "Dishwasher054_Door001" (
+                delete apiSchemas = ["PhysicsCollisionAPI"]
+            )
+            {
+                over "RevoluteJoint" (
+                    active = false
+                )
+                {
+                }
+            }
+        }
+    }
+}
+

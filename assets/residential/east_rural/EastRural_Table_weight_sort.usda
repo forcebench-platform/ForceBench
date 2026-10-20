@@ -1,0 +1,21 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "visual" (
+        prepend references = @./EastRural_Table.usd@
+    )
+    {
+    }
+
+    # CoRiBench deactivates this branch after spawning.  The actual tabletop
+    # contact plane is the invariant native collider created by the environment.
+    def Xform "collisions"
+    {
+    }
+}

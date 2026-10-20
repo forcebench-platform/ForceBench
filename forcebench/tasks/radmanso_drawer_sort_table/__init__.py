@@ -15,6 +15,7 @@ MANIFEST = TaskManifest(
         "RadmansoDrawerSortTableTask"
     ),
     dataset_subdir="radmanso_drawer_sort_table",
+    evaluation_max_steps=1500,
     scene_profile="simple_room_sort_table",
     description=(
         "ArtVIP RADMANSO three-drawer cabinet standing upright on the EastRural "

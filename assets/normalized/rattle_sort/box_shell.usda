@@ -1,0 +1,100 @@
+#usda 1.0
+(
+    defaultPrim = "Parcel"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Parcel" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+)
+{
+    custom string coribench:modelSchemaVersion = "1.0"
+    float physics:mass = 0.18
+    bool physics:rigidBodyEnabled = 1
+
+    def Xform "VisualOffset"
+    {
+        double3 xformOp:translate = (2.8284206692602003e-8, 5.637215846739885e-9, -0)
+        uniform token[] xformOpOrder = ["xformOp:translate"]
+
+        def Xform "VisualScale"
+        {
+            float3 xformOp:scale = (0.21090233, 0.37830716, 0.21090311)
+            uniform token[] xformOpOrder = ["xformOp:scale"]
+
+            def Xform "Source" (
+                prepend references = @../../simready/flatbox_a07/flatbox_a07.usd@
+            )
+            {
+            }
+        }
+    }
+
+    def Cube "CollisionBottom" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.054, 0.12, 0.0025)
+        double3 xformOp:translate = (0, 0, 0.00125)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CollisionTop" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.054, 0.12, 0.0025)
+        double3 xformOp:translate = (0, 0, 0.022029999999999998)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CollisionXNeg" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.0025, 0.12, 0.01828)
+        double3 xformOp:translate = (-0.02575, 0, 0.01164)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CollisionXPos" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.0025, 0.12, 0.01828)
+        double3 xformOp:translate = (0.02575, 0, 0.01164)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CollisionYNeg" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.049, 0.0025, 0.01828)
+        double3 xformOp:translate = (0, -0.05874999999999999, 0.01164)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+
+    def Cube "CollisionYPos" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        float3 xformOp:scale = (0.049, 0.0025, 0.01828)
+        double3 xformOp:translate = (0, 0.05874999999999999, 0.01164)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+}
+

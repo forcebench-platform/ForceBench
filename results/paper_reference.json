@@ -1,0 +1,442 @@
+{
+  "schema_version": "forcebench-paper-results-v1",
+  "record_type": "paper_results",
+  "is_sample": false,
+  "source": {
+    "paper_title": "ForceBench: Benchmarking Force Integration for Robotic Manipulation",
+    "publication_status": "submitted",
+    "submitted_date": "2026-09-15",
+    "tables": {
+      "simulation": "Table I",
+      "real_world": "Table II"
+    },
+    "description": "Reference values transcribed from the submitted manuscript, not reproduced by tests in this repository."
+  },
+  "metric": {
+    "name": "task_success_rate",
+    "unit": "percent",
+    "mean": "Unweighted arithmetic mean over the tasks in each study, displayed as reported to two decimal places.",
+    "uncertainty": "No confidence intervals, significance tests, or per-training-seed estimates are reported in these tables."
+  },
+  "methods": [
+    {
+      "id": "pi05_no_force",
+      "name": "π₀.₅ (No Force)",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "token_fusion",
+      "name": "Token Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "prompt_fusion",
+      "name": "Prompt Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "cross_attention",
+      "name": "Cross-Attention",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "token_fusion_pred",
+      "name": "Token Fusion + Pred",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "temporal_prompt",
+      "name": "Temporal Prompt",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "dual_path_fusion",
+      "name": "Dual-Path Fusion",
+      "comparison_group": "controlled_pi05"
+    },
+    {
+      "id": "pi0",
+      "name": "π₀",
+      "comparison_group": "additional_reference"
+    },
+    {
+      "id": "forcevla",
+      "name": "ForceVLA",
+      "comparison_group": "additional_reference"
+    },
+    {
+      "id": "forceflow",
+      "name": "ForceFlow",
+      "comparison_group": "additional_reference"
+    }
+  ],
+  "simulation": {
+    "source_table": "Table I",
+    "tasks": [
+      {
+        "id": "weight_sort",
+        "name": "Weight Sort",
+        "category": "Physical-property inference"
+      },
+      {
+        "id": "com_sort",
+        "name": "CoM Sort",
+        "category": "Physical-property inference"
+      },
+      {
+        "id": "faucet_turn",
+        "name": "Faucet Turn",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "faucet_direction",
+        "name": "Faucet Direction",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "stove_turn",
+        "name": "Stove Turn",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "stove_press",
+        "name": "Stove Press",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "drawer_pull",
+        "name": "Drawer Pull",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "nut_thread",
+        "name": "Nut Thread",
+        "category": "Contact-rich assembly"
+      }
+    ],
+    "episodes_per_task_method": 200,
+    "total_evaluation_episodes": 16000,
+    "protocol": {
+      "training_instance_seeds": {
+        "start": 0,
+        "end": 199,
+        "inclusive": true
+      },
+      "evaluation_seeds": {
+        "start": 300,
+        "end": 499,
+        "inclusive": true
+      },
+      "physics_rate_hz": 60,
+      "control_rate_hz": 15,
+      "max_control_steps": 1500,
+      "max_simulated_seconds": 100,
+      "separate_policy_per_task": true,
+      "controlled_pi05_training_steps": 10000,
+      "controlled_pi05_batch_size": 32,
+      "action_chunks": [
+        {
+          "method_ids": [
+            "pi05_no_force",
+            "token_fusion",
+            "prompt_fusion",
+            "cross_attention",
+            "token_fusion_pred",
+            "temporal_prompt",
+            "dual_path_fusion",
+            "pi0",
+            "forcevla"
+          ],
+          "predicted_steps": 50,
+          "executed_steps": 50
+        },
+        {
+          "method_ids": [
+            "forceflow"
+          ],
+          "predicted_steps": 64,
+          "executed_steps": 32
+        }
+      ],
+      "notes": [
+        "The seven pi0.5 configurations share the backbone and task demonstrations.",
+        "The shared-backbone comparison includes changes in representation, normalization, capacity, and insertion location. Temporal designs serve as separate reference points; the predictive variant retains the Token Fusion input pathway.",
+        "Additional reference systems are shown separately; their training and execution settings are not identical to the shared-backbone pi0.5 comparison.",
+        "Faucet Direction uses the same lower-bound-only angle criterion for all ten systems.",
+        "The control rate is not the policy-query rate."
+      ]
+    },
+    "results": [
+      {
+        "method_id": "pi05_no_force",
+        "success_rates_percent": [
+          54.0,
+          45.5,
+          9.5,
+          31.5,
+          8.5,
+          1.0,
+          4.5,
+          31.5
+        ],
+        "mean_success_percent": 23.25
+      },
+      {
+        "method_id": "token_fusion",
+        "success_rates_percent": [
+          50.5,
+          50.0,
+          12.0,
+          28.5,
+          6.0,
+          2.5,
+          13.0,
+          26.0
+        ],
+        "mean_success_percent": 23.56
+      },
+      {
+        "method_id": "prompt_fusion",
+        "success_rates_percent": [
+          88.0,
+          56.5,
+          21.0,
+          41.5,
+          16.0,
+          2.5,
+          23.0,
+          34.0
+        ],
+        "mean_success_percent": 35.31
+      },
+      {
+        "method_id": "cross_attention",
+        "success_rates_percent": [
+          54.5,
+          51.0,
+          6.5,
+          33.0,
+          5.5,
+          2.5,
+          6.5,
+          17.5
+        ],
+        "mean_success_percent": 22.13
+      },
+      {
+        "method_id": "token_fusion_pred",
+        "success_rates_percent": [
+          78.0,
+          48.5,
+          13.5,
+          32.5,
+          6.0,
+          1.0,
+          4.0,
+          26.5
+        ],
+        "mean_success_percent": 26.25
+      },
+      {
+        "method_id": "temporal_prompt",
+        "success_rates_percent": [
+          90.0,
+          69.5,
+          17.5,
+          31.0,
+          7.0,
+          21.5,
+          2.5,
+          22.0
+        ],
+        "mean_success_percent": 32.63
+      },
+      {
+        "method_id": "dual_path_fusion",
+        "success_rates_percent": [
+          99.5,
+          72.0,
+          22.0,
+          30.0,
+          17.5,
+          19.0,
+          4.5,
+          16.5
+        ],
+        "mean_success_percent": 35.13
+      },
+      {
+        "method_id": "pi0",
+        "success_rates_percent": [
+          61.5,
+          39.0,
+          3.5,
+          27.0,
+          7.0,
+          5.0,
+          7.5,
+          36.0
+        ],
+        "mean_success_percent": 23.31
+      },
+      {
+        "method_id": "forcevla",
+        "success_rates_percent": [
+          35.5,
+          45.5,
+          12.5,
+          14.0,
+          10.0,
+          12.0,
+          20.0,
+          26.0
+        ],
+        "mean_success_percent": 21.94
+      },
+      {
+        "method_id": "forceflow",
+        "success_rates_percent": [
+          51.5,
+          3.0,
+          0.0,
+          0.5,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "mean_success_percent": 6.88
+      }
+    ]
+  },
+  "real_world": {
+    "source_table": "Table II",
+    "tasks": [
+      {
+        "id": "weight_sort",
+        "name": "Weight Sort",
+        "category": "Physical-property inference"
+      },
+      {
+        "id": "plate_retrieve",
+        "name": "Plate Retrieve",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "stamp_press",
+        "name": "Stamp Press",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "plug_insert",
+        "name": "Plug Insert",
+        "category": "Resistance-dependent interaction"
+      },
+      {
+        "id": "block_insert",
+        "name": "Block Insert",
+        "category": "Contact-rich assembly"
+      }
+    ],
+    "trials_per_task_method": 20,
+    "total_evaluation_trials": 800,
+    "protocol": {
+      "demonstrations_per_task_method": 200,
+      "training_steps": 10000,
+      "batch_size": 64,
+      "same_initial_conditions_across_methods": true,
+      "robot": "Franka Research 3",
+      "sensor": "Six-axis wrist force/torque sensor"
+    },
+    "results": [
+      {
+        "method_id": "pi05_no_force",
+        "success_rates_percent": [
+          30.0,
+          20.0,
+          40.0,
+          60.0,
+          50.0
+        ],
+        "mean_success_percent": 40.0
+      },
+      {
+        "method_id": "token_fusion",
+        "success_rates_percent": [
+          45.0,
+          40.0,
+          50.0,
+          60.0,
+          10.0
+        ],
+        "mean_success_percent": 41.0
+      },
+      {
+        "method_id": "prompt_fusion",
+        "success_rates_percent": [
+          70.0,
+          40.0,
+          65.0,
+          80.0,
+          60.0
+        ],
+        "mean_success_percent": 63.0
+      },
+      {
+        "method_id": "cross_attention",
+        "success_rates_percent": [
+          60.0,
+          30.0,
+          40.0,
+          50.0,
+          55.0
+        ],
+        "mean_success_percent": 47.0
+      },
+      {
+        "method_id": "token_fusion_pred",
+        "success_rates_percent": [
+          45.0,
+          60.0,
+          60.0,
+          45.0,
+          35.0
+        ],
+        "mean_success_percent": 49.0
+      },
+      {
+        "method_id": "temporal_prompt",
+        "success_rates_percent": [
+          80.0,
+          45.0,
+          65.0,
+          75.0,
+          35.0
+        ],
+        "mean_success_percent": 60.0
+      },
+      {
+        "method_id": "dual_path_fusion",
+        "success_rates_percent": [
+          95.0,
+          45.0,
+          70.0,
+          85.0,
+          20.0
+        ],
+        "mean_success_percent": 63.0
+      },
+      {
+        "method_id": "forcevla",
+        "success_rates_percent": [
+          50.0,
+          0.0,
+          40.0,
+          70.0,
+          5.0
+        ],
+        "mean_success_percent": 33.0
+      }
+    ]
+  }
+}

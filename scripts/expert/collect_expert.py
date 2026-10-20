@@ -33,6 +33,8 @@ PARALLEL_CLONE_TASKS = frozenset(
         "nut_thread",
         "gear_mesh",
         "faucet_turn",
+        "faucet_force_turn",
+        "stove_press_turn",
     )
 )
 
@@ -106,6 +108,9 @@ def list_plugins() -> None:
     manifests = expert_backend_manifests()
     all_manifests = all_expert_backend_manifests()
     for task in task_names():
+        if task in PARALLEL_CLONE_TASKS:
+            print(f"{task}\tparallel32\tsource available; GPU validation pending")
+            continue
         names = expert_backend_names(task)
         if not names:
             disabled = [
@@ -184,6 +189,11 @@ def main(argv: list[str] | None = None) -> int:
             flush=True,
         )
         return 1 if summary.get("failed_seeds") else 0
+    if not expert_backend_names(args.task):
+        cli.error(
+            f"expert collection for {args.task!r} is not packaged in this preview; "
+            "task specifications and evaluation source are available, but collection is unsupported"
+        )
     try:
         options = json.loads(args.backend_options)
     except json.JSONDecodeError as error:

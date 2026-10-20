@@ -1,4 +1,5 @@
 import json
+import ast
 import os
 from pathlib import Path
 import signal
@@ -8,7 +9,8 @@ import numpy as np
 import pytest
 
 import forcebench.expert_collection as expert_collection
-from forcebench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest
+from forcebench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest, ExpertBackendManifest, ExpertBackend
+from scripts.expert import collect_expert, parallel_sort_collection
 from forcebench.expert_collection import (
     EMA_WRENCH_FIELD,
     RAW_WRENCH_FIELD,
@@ -31,6 +33,8 @@ from scripts.expert.parallel_sort_collection import (
 
 
 SCRIPT_PATHS = (
+    "scripts/expert/generate_parallel_privileged_placement.py",
+    "scripts/expert/generate_parallel_faucet.py",
     "scripts/expert/run_persistent_expert_worker.py",
     "scripts/expert/generate_faucet_peak_expert.py",
     "scripts/expert/generate_scripted_gear_mesh.py",
@@ -82,12 +86,14 @@ def request_for(
 
 def test_expert_backends_are_registered_per_task():
     manifests = expert_backend_manifests()
-    assert manifests
     assert all(key == (manifest.task, manifest.name) for key, manifest in manifests.items())
     assert expert_backend_names("radmanso_drawer_sort_table") == ()
     assert expert_backend_names("peg_insert") == ()
-    assert default_expert_backend_name("gear_mesh") == "scripted"
-    assert default_expert_backend_name("nut_thread") == "scripted"
+    for task in ("faucet_turn", "gear_mesh", "nut_thread"):
+        assert expert_backend_names(task) == ()
+        with pytest.raises(ValueError, match="no automated expert backend"):
+            default_expert_backend_name(task)
+        assert task in collect_expert.PARALLEL_CLONE_TASKS
     assert expert_backend_names("weight_sort") == ()
     assert expert_backend_names("rattle_sort") == ()
     assert expert_backend_names("stove_turn_on") == ()
@@ -103,40 +109,44 @@ def test_expert_backends_are_registered_per_task():
         default_expert_backend_name("peg_insert")
 
 
-def test_every_scripted_task_builds_one_isolated_seed_command(tmp_path):
-    scripted_tasks = (
-        "faucet_turn",
-        "gear_mesh",
-        "nut_thread",
-    )
-    for index, task in enumerate(scripted_tasks):
-        request = request_for(tmp_path / str(index), task, "scripted")
-        command = load_expert_backend(task, "scripted").build_command(request)
-        assert command[:2] == [str(request.isaaclab_root / "isaaclab.sh"), "-p"]
-        assert str(request.dataset_dir) in command
-        assert str(request.seed) in command
-        assert "--enable_cameras" in command
+def test_current_expert_cli_routes_to_cloned_collection(monkeypatch):
+    received = []
+    def fake_collect(args):
+        received.append(args)
+        return {"failed_seeds": []}
+    monkeypatch.setattr(parallel_sort_collection, "collect", fake_collect)
+    for task in ("weight_sort", "rattle_sort", "faucet_turn", "stove_turn_on",
+                 "radmanso_drawer_sort_table", "nut_thread", "faucet_force_turn", "stove_press_turn"):
+        assert collect_expert.main(["--task", task, "--seeds", "0-3", "--dry-run"]) == 0
+        assert received[-1].task == task
+        assert received[-1].seeds == "0-3"
+        assert received[-1].dry_run
+    for task in ("faucet_force_turn", "stove_press_turn"):
+        with pytest.raises(SystemExit) as error:
+            collect_expert.main(["--task", task, "--seeds", "0", "--backend", "not_registered"])
+        assert error.value.code == 2
 
 
-def test_faucet_expert_uses_weight_sort_physics_rate(tmp_path):
-    request = request_for(tmp_path, "faucet_turn", "scripted")
-    command = load_expert_backend("faucet_turn", "scripted").build_command(request)
-    rate_index = command.index("--physics_rate_hz")
-    assert command[rate_index + 1] == "60"
-    solver_index = command.index("--solver_position_iterations")
-    assert command[solver_index + 1] == "64"
+def test_faucet_expert_retains_physics_and_control_rates():
+    tree = ast.parse(Path("scripts/expert/generate_parallel_faucet.py").read_text(encoding="utf-8"))
+    constants = {node.targets[0].id: ast.literal_eval(node.value) for node in tree.body
+                 if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)
+                 and isinstance(node.value, ast.Constant)}
+    assert constants["PHYSICS_RATE_HZ"] == 60
+    assert constants["CONTROL_RATE_HZ"] == 15
+    assert constants["NUM_ENVS"] == 32
 
 
 def test_faucet_expert_transition_uses_only_physical_valve_state():
-    source = Path("scripts/expert/generate_faucet_peak_expert.py").read_text(
+    source = Path("scripts/expert/generate_parallel_faucet.py").read_text(
         encoding="utf-8"
     )
     assert "force_sensor_task_compensated_smooth" not in source
     assert "wrist_torque_z_nm" not in source
     assert '"expert_transition_signal": "valve_joint_angle_rad"' in source
-    assert '"physical_transition_condition"' in source
-    assert "wrench_raw=vector(env.force_sensor_joint_raw[0])" in source
-    assert "wrench_ema=vector(env.force_sensor_joint_smooth[0])" in source
+    assert '"physical_transition_detected"' in source
+    assert "wrench_raw = as_numpy(self.env.force_sensor_joint_raw)" in source
+    assert "wrench_ema = as_numpy(self.env.force_sensor_joint_smooth)" in source
 
 
 def test_sort_batches_always_use_32_distinct_clones_and_skip_existing():
@@ -153,20 +163,35 @@ def test_sort_batches_always_use_32_distinct_clones_and_skip_existing():
         seed for batch in batches for seed in batch.write_seeds
     )
 
-def test_assembly_backends_are_task_specific_scripts(tmp_path):
+def test_batch_collector_uses_task_generator_and_configured_isaac_path(tmp_path, monkeypatch):
     expected_scripts = {
-        "gear_mesh": "generate_scripted_gear_mesh.py",
-        "nut_thread": "generate_privileged_nut_thread.py",
+        "nut_thread": "generate_parallel_privileged_placement.py",
+        "faucet_turn": "generate_parallel_faucet.py",
     }
+    code_root, isaaclab_root = fake_roots(tmp_path)
+    monkeypatch.setattr(parallel_sort_collection, "CODE_ROOT", code_root)
+    monkeypatch.setattr(parallel_sort_collection, "SCRATCH_ROOT", tmp_path / "scratch")
+    monkeypatch.setenv("FORCEBENCH_ISAACLAB_ROOT", str(isaaclab_root))
+    commands = []
+    def fake_process(command, **kwargs):
+        commands.append(command)
+        return 1, False, 0.01
+    monkeypatch.setattr(parallel_sort_collection, "_run_process", fake_process)
     for index, (task, script) in enumerate(expected_scripts.items()):
-        request = request_for(tmp_path / str(index), task, "scripted")
-        command = load_expert_backend(task, "scripted").build_command(request)
+        args = parallel_sort_collection.parser().parse_args([
+            "--task", task, "--seeds", "7", "--max-attempts", "1",
+            "--dataset-dir", str(tmp_path / "data" / "datasets" / task),
+            "--run-name", f"test_{index}",
+        ])
+        result = parallel_sort_collection.collect(args)
+        assert result["failed_seeds"] == [7]
+        command = commands[-1]
+        assert command[:2] == [str(isaaclab_root / "isaaclab.sh"), "-p"]
         assert command[2].endswith(script)
         assert "--checkpoint" not in command
-        if task == "gear_mesh":
-            assert command[command.index("--variant") + 1] == "direct"
-        else:
-            assert "--variant" not in command
+        assert "--enable_cameras" in command
+        assert command[command.index("--write_seeds") + 1] == "7"
+        assert len(command[command.index("--seeds") + 1].split(",")) == 32
 
 
 def test_seed_spec_is_unambiguous_and_deduplicated():
@@ -201,6 +226,7 @@ def test_training_and_inference_use_raw_wrench():
     assert "env.force_sensor_joint_smooth[0]" not in inference
 
 
+@pytest.mark.skipif(os.name != "posix", reason="generic supervisor uses POSIX fcntl locks")
 def test_standard_supervisor_validates_and_resumes_by_seed(tmp_path, monkeypatch):
     code_root, isaaclab_root = fake_roots(tmp_path)
     data_root = (tmp_path / "data").resolve()
@@ -245,9 +271,20 @@ def test_standard_supervisor_validates_and_resumes_by_seed(tmp_path, monkeypatch
         return 0, False, 0.01
 
     monkeypatch.setattr(expert_collection, "_run_process", fake_run)
+    # Exercise the generic supervisor with a declared test backend, rather than
+    # re-enabling the retired per-seed Faucet adapter in production.
+    manifest = ExpertBackendManifest("test_backend", "faucet_turn", "test:Backend",
+                                     "CPU supervisor fixture")
+    class Backend(ExpertBackend):
+        def build_command(self, request):
+            return ["test-worker", "--seed", str(request.seed)]
+    backend = Backend()
+    backend.manifest = manifest
+    monkeypatch.setattr(expert_collection, "get_expert_backend_manifest", lambda *args: manifest)
+    monkeypatch.setattr(expert_collection, "load_expert_backend", lambda *args: backend)
     plan = expert_collection.ExpertCollectionPlan(
         task="faucet_turn",
-        backend="scripted",
+        backend="test_backend",
         seeds=(5,),
         dataset_dir=dataset,
         run_dir=run_dir,

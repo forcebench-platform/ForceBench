@@ -11,8 +11,12 @@ from .scene_profiles import get_scene_profile
 from .task_api import TaskManifest, TaskRuntime
 
 
-@lru_cache(maxsize=1)
-def task_manifests() -> dict[str, TaskManifest]:
+LEGACY_TASK_NAMES = frozenset({"gear_mesh", "peg_insert"})
+
+
+@lru_cache(maxsize=2)
+def task_manifests(*, include_legacy: bool = False) -> dict[str, TaskManifest]:
+    """Discover tasks; keep prototype Gear/Peg out of default paper choices."""
     from . import tasks as task_namespace
 
     discovered: dict[str, TaskManifest] = {}
@@ -32,16 +36,21 @@ def task_manifests() -> dict[str, TaskManifest]:
         discovered[manifest.name] = manifest
     if not discovered:
         raise RuntimeError("no ForceBench task plugins were discovered")
-    return dict(sorted(discovered.items()))
+    return {
+        name: manifest for name, manifest in sorted(discovered.items())
+        if include_legacy or name not in LEGACY_TASK_NAMES
+    }
 
 
-def task_names() -> tuple[str, ...]:
-    return tuple(task_manifests())
+def task_names(*, include_legacy: bool = False) -> tuple[str, ...]:
+    return tuple(task_manifests(include_legacy=include_legacy))
 
 
 def get_task_manifest(name: str) -> TaskManifest:
     try:
-        return task_manifests()[name]
+        # Explicit lookups still support historical tooling; ordinary CLI
+        # choices and the release inventory use the paper task set.
+        return task_manifests(include_legacy=True)[name]
     except KeyError as exc:
         raise ValueError(f"unknown ForceBench task: {name!r}; available={task_names()}") from exc
 

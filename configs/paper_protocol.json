@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "release": "paper-v1",
+  "scope": "Submitted manuscript, September 2026; excludes post-submission InternVLA evaluations.",
+  "tasks": [
+    {
+      "id": "weight_sort",
+      "paper_name": "Weight Sort",
+      "category": "Physical-property inference",
+      "runtime_id": "weight_sort",
+      "display_id": "weight_sort"
+    },
+    {
+      "id": "rattle_sort",
+      "paper_name": "CoM Sort",
+      "category": "Physical-property inference",
+      "runtime_id": "rattle_sort",
+      "display_id": "com_sort"
+    },
+    {
+      "id": "faucet_turn",
+      "paper_name": "Faucet Turn",
+      "category": "Resistance-dependent interaction",
+      "runtime_id": "faucet_turn",
+      "display_id": "faucet_turn"
+    },
+    {
+      "id": "faucet_force_turn",
+      "paper_name": "Faucet Direction",
+      "category": "Resistance-dependent interaction",
+      "runtime_id": "faucet_force_turn",
+      "display_id": "faucet_direction"
+    },
+    {
+      "id": "stove_turn_on",
+      "paper_name": "Stove Turn",
+      "category": "Resistance-dependent interaction",
+      "runtime_id": "stove_turn_on",
+      "display_id": "stove_turn"
+    },
+    {
+      "id": "stove_press_turn",
+      "paper_name": "Stove Press",
+      "category": "Resistance-dependent interaction",
+      "runtime_id": "stove_press_turn",
+      "display_id": "stove_press"
+    },
+    {
+      "id": "radmanso_drawer_sort_table",
+      "paper_name": "Drawer Pull",
+      "category": "Resistance-dependent interaction",
+      "runtime_id": "radmanso_drawer_sort_table",
+      "display_id": "drawer_pull"
+    },
+    {
+      "id": "nut_thread",
+      "paper_name": "Nut Thread",
+      "category": "Contact-rich assembly",
+      "runtime_id": "nut_thread",
+      "display_id": "nut_thread"
+    }
+  ],
+  "demonstrations_per_task": 200,
+  "training_seeds": {
+    "start": 0,
+    "stop_exclusive": 200
+  },
+  "evaluation_seeds": {
+    "start": 300,
+    "stop_exclusive": 500
+  },
+  "physics_hz": 60,
+  "control_hz": 15,
+  "max_control_steps": 1500,
+  "image_size": [
+    224,
+    224
+  ],
+  "state_dim": 7,
+  "wrench_dim": 6,
+  "wrench_frame": "incoming wrist-hand joint",
+  "wrench_convention": "parent_on_child",
+  "gravity_compensated": false,
+  "action": "absolute_tcp_xyz_rpy_and_gripper",
+  "method_ids": [
+    "pi05_no_force",
+    "token_fusion",
+    "prompt_fusion",
+    "cross_attention",
+    "token_fusion_pred",
+    "temporal_prompt",
+    "dual_path_fusion",
+    "pi0",
+    "forcevla",
+    "forceflow"
+  ],
+  "default_predicted_steps": 50,
+  "default_executed_steps": 50,
+  "forceflow_predicted_steps": 64,
+  "forceflow_executed_steps": 32,
+  "faucet_direction": {
+    "angle_rule": "direction_sign * final_angle >= resistance_peak_magnitude",
+    "upper_angle_bound": null,
+    "min_gripper_open_fraction": 0.65,
+    "min_tcp_clearance_m": 0.09,
+    "max_angular_speed_rad_s": 0.01
+  },
+  "pi05_training": {
+    "steps": 10000,
+    "batch_size": 32
+  },
+  "predictive_auxiliary": {
+    "future_horizon": 10,
+    "loss_weight": 0.0003,
+    "reduction": "sum masked squared errors / (6 * max(1, sum validity mask))"
+  },
+  "temporal": {
+    "history_steps": 16,
+    "prompt_state_dim": 25,
+    "dual_path_stat_dim": 25,
+    "dual_path_tokens": 4,
+    "dual_path_training_dropout": 0.3
+  },
+  "record_type": "paper_protocol_reference",
+  "paper_sha256": "5f7754c42c00f98b7d559ad5f0a8cda1819718854c5af4fb9eba0336ab573fcb",
+  "execution_status": "Reference only. Runtime selection, per-cell identities and GPU validation remain incomplete."
+}

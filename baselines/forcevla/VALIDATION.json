@@ -1,0 +1,84 @@
+{
+  "status": "preserved_core_verified_portable_gpu_unvalidated",
+  "training_or_serving_started": false,
+  "original_snapshots": {
+    "status": "all_manifest_files_verified",
+    "verified_files": 680,
+    "files_per_snapshot": {
+      "base": 234,
+      "stove_sep14": 230,
+      "stovepress_sep13": 216
+    }
+  },
+  "preserved_core": {
+    "src/openpi/models/model.py": {
+      "identical_across_snapshots": true,
+      "sha256": "c1c75eeaf0c2374ee97011d55dd346acc8670b6677522299f3620ee44010777b"
+    },
+    "src/openpi/models/pi0_force.py": {
+      "identical_across_snapshots": true,
+      "sha256": "d943307b9e87cdfa9cb18814d174d66d0dfcd6c6b09690a829d54e3b6b318ad0"
+    },
+    "src/openpi/models/limoe_simple.py": {
+      "identical_across_snapshots": true,
+      "sha256": "49856160d56a6ef2195753a7c1b039849b033293658e8db86b95da0350c8eee8"
+    },
+    "src/openpi/policies/forcevla_policy.py": {
+      "identical_across_snapshots": true,
+      "sha256": "2fd376f190c5e3c4d4ea38ec92889dbda83c6b3b6d6f4c5d283215c3768addfa"
+    },
+    "src/openpi/transforms.py": {
+      "identical_across_snapshots": true,
+      "sha256": "27844c58228c423016684c0d0d49f4c694408e222de319c310ce95cc2ba12ae4"
+    },
+    "src/openpi/training/optimizer.py": {
+      "identical_across_snapshots": true,
+      "sha256": "83a56937a4604af6cd523ef6ec8de8e7d739d9c8ed6f6c6338ee06b949786bab"
+    },
+    "src/openpi/training/weight_loaders.py": {
+      "identical_across_snapshots": true,
+      "sha256": "f35f29d942bf2a9877ad118767eab4ae90ba0ecd171e63fc54a83d480fd5db08"
+    }
+  },
+  "declared_defaults": {
+    "DataConfig.use_quantile_norm": false,
+    "Pi0_GuidanceConfig.action_dim": 32,
+    "Pi0_GuidanceConfig.action_horizon": 50,
+    "Pi0_GuidanceConfig.max_token_len": 48,
+    "Pi0_GuidanceConfig.proprio_dim": 7,
+    "Pi0_GuidanceConfig.force_dim": 6,
+    "CosineDecaySchedule.warmup_steps": 1000,
+    "CosineDecaySchedule.decay_steps": 30000,
+    "CosineDecaySchedule.peak_lr": 2.5e-05,
+    "CosineDecaySchedule.decay_lr": 2.5e-06
+  },
+  "paper_result_reproduction_verified": false,
+  "isolated_cpu_transform_checks": {
+    "numpy_version": "2.2.3",
+    "runtime": "runtime_base",
+    "passed_checks": [
+      "state32_and_action50x32_shapes",
+      "proprio7_current_wrench6_order_and_zero_padding",
+      "training_and_inference_state_identical",
+      "action_padding_preserves_values",
+      "two_rgb_views_and_masked_zero_third_camera",
+      "current_force_only_inference_and_prompt_contract",
+      "reject_wrong_state_dimension",
+      "reject_wrong_eef_wrench_dimension",
+      "hwc_float_rgb_to_uint8",
+      "xyz_rpy_delta_and_absolute_gripper",
+      "delta_absolute_roundtrip",
+      "shortest_rpy_wrap_leaves_xyz_gripper_unchanged",
+      "output50x7_and_wrapped_orientation_equivalence",
+      "actual_zscore_methods_and_inverse_include_wrench_dimensions",
+      "action_transforms_noop_for_inference_observation"
+    ],
+    "limitations": [
+      "Definitions were AST-isolated; full runtime imports were not executed.",
+      "No replacement model or tokenizer was used, and neither was imported.",
+      "Images cover HWC only; CHW/einops handling was not executed.",
+      "Z-score arithmetic methods were executed; nested-tree normalization integration was not.",
+      "Dataset loading, optimizer, checkpoint, training, serving and GPU execution remain untested."
+    ]
+  }
+}

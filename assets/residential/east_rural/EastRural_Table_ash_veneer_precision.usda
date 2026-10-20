@@ -1,0 +1,20 @@
+#usda 1.0
+(
+    defaultPrim = "World"
+    metersPerUnit = 0.01
+    upAxis = "Z"
+)
+
+def Xform "World"
+{
+    def Xform "visual" (
+        prepend references = @./EastRural_Table_ash_veneer.usda@
+    )
+    {
+    }
+
+    # Contact remains on CoRiBench's exact-height native table collider.
+    def Xform "collisions"
+    {
+    }
+}

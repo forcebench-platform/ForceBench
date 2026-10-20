@@ -1,0 +1,31 @@
+{
+  "status": "cpu_metadata_and_asset_checks_passed_gpu_unvalidated",
+  "python_files_parsed": 597,
+  "checks": [
+    "nine_recipe_numeric_arguments_match_catalog",
+    "nine_recipe_numeric_arguments_match_original_source",
+    "25_explicit_recipe_snapshot_metadata_cli_combinations",
+    "cli_help_without_model_imports",
+    "actual_training_receipt_to_serving_gate_with_reserialized_norm",
+    "source_sha256_mismatch_rejected",
+    "candidate_identity_mismatch_rejected",
+    "normalization_sha256_mismatch_rejected",
+    "completed_updates_mismatch_rejected",
+    "altered_saved_wrench_norm_value_rejected",
+    "new_stove_recipe_with_wrong_snapshot_rejected",
+    "dataset_path_traversal_rejected"
+  ],
+  "original_recipe_constructors_checked": 9,
+  "source_identities": {
+    "base": "27db846a113daa3927d1b2f0388e3f8d4a236996eeeff3ddce2258cfdb01e95c",
+    "stove_sep14": "58741a44680b03967e2ac2c1489cf19dbc9ab7c30f42d5b14dc6ff27d90c70fe",
+    "stovepress_sep13": "40797e127a49771aa3430109f79de597f33d0ce66a6da15612241b7487c84632"
+  },
+  "training_started": false,
+  "server_started": false,
+  "weights_loaded": false,
+  "limitations": [
+    "Fixtures have no dataset payload or model weights.",
+    "No fresh dependency installation, tokenizer/model import, GPU or simulator was exercised."
+  ]
+}

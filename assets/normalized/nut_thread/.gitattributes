@@ -1,0 +1,2 @@
+# Exact wrapper bytes are pinned by the asset manifest.
+*.usda -text

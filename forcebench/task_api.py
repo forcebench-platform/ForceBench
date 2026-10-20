@@ -23,6 +23,12 @@ class TaskManifest:
     scene_profile: str = "contact_lab"
     description: str = ""
     evaluation_max_steps: int = 600
+    # None keeps the existing environment drive configuration unchanged.
+    # Recovered tasks declare their historical gains explicitly.
+    arm_actuator_stiffness: float | None = None
+    arm_actuator_damping: float | None = None
+    gripper_actuator_stiffness: float | None = None
+    gripper_actuator_damping: float | None = None
 
     def validate(self) -> None:
         if not self.name or not self.name.replace("_", "").isalnum():
@@ -40,6 +46,15 @@ class TaskManifest:
             raise ValueError(f"invalid scene profile name: {self.scene_profile!r}")
         if type(self.evaluation_max_steps) is not int or self.evaluation_max_steps < 1:
             raise ValueError("evaluation_max_steps must be a positive integer")
+        for field_name in (
+            "arm_actuator_stiffness", "arm_actuator_damping",
+            "gripper_actuator_stiffness", "gripper_actuator_damping",
+        ):
+            value = getattr(self, field_name)
+            if value is not None and (
+                type(value) not in (int, float) or not 0.0 < float(value) < float("inf")
+            ):
+                raise ValueError(f"{field_name} must be a positive finite number or None")
 
 
 @dataclass(frozen=True)

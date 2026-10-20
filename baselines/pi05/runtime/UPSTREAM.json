@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/Physical-Intelligence/openpi",
+  "commit": "215abfb217dbac7d5f1273282331b9b1866c0479",
+  "files": {
+    "src/openpi/policies/policy.py": "a2ac5236e23b11d0f5a840d4a8fef148d89dba921d5452ec5dfcd5a6ffa46f20",
+    "src/openpi/policies/policy_config.py": "aaf42ab04a33b6c91d2447926211646c33ebd8ebfa427f026d7b6c4f7c45ec52",
+    "src/openpi/policies/droid_policy.py": "99ebf8b252bde5e33dba7af10552137c421589ec88887bb0ee6507366d24da68",
+    "src/openpi/policies/libero_policy.py": "d8679d99facc3fef48da07406081b20709ed872fcefdf7de67ede99422d623fa",
+    "src/openpi/training/config.py": "c34231f888dba5dc981d808765b3d98775ab845b04313bf53fcecd567c520b0d",
+    "src/openpi/training/optimizer.py": "cfb5d6f6aec61fbe961287b4015c652260628a0ed4682a0dbdc271b8e65431fa",
+    "src/openpi/transforms.py": "a1b94e9e72849a18834778f229c6bb389a495eb7fbe0aa800edea728b9424ff4",
+    "src/openpi/serving/websocket_policy_server.py": "1370d345e6c3c5b8f15573050e485e60a5b423d1df33e24b237805e6b442b026",
+    "scripts/serve_policy.py": "eccc0448b4873fd30a1fff3355c5de7a7c227138e6db04b7dcaa5bb38a6a5809"
+  }
+}

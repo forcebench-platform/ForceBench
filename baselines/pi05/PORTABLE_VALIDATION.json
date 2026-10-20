@@ -1,0 +1,66 @@
+{
+  "status": "cpu_checks_passed_gpu_not_validated",
+  "python_files_parsed": 80,
+  "source_sha256": "fb87b25042197e43754fd1098343d570670d887e8cb8da2a67ae8f33f2e7e2bc",
+  "isolated_transform_checks": {
+    "numpy_version": "2.2.3",
+    "passed_checks": [
+      "F0_input_camera_and_train_infer_contract",
+      "F0_reject_future_wrench",
+      "F0_reject_wrench_window",
+      "F1_input_camera_and_train_infer_contract",
+      "F1_reject_future_wrench",
+      "F1_reject_wrench_window",
+      "F2_input_camera_and_train_infer_contract",
+      "F2_reject_future_wrench",
+      "F2_reject_wrench_window",
+      "F3_input_camera_and_train_infer_contract",
+      "F3_reject_future_wrench",
+      "F3_reject_wrench_window",
+      "F4_input_camera_and_train_infer_contract",
+      "F4_reject_future_wrench",
+      "F4_reject_wrench_window",
+      "reject_invalid_current_force",
+      "reject_nan_force",
+      "reject_nan_state",
+      "reject_third_camera",
+      "hwc_float_image_scaling",
+      "reject_wrong_action_horizon",
+      "absolute_action_output_shape",
+      "angle_wrap",
+      "wrench_only_clipping"
+    ],
+    "limitations": [
+      "No tokenizer, JAX model, optimizer, dataset loader, checkpoint, or GPU was exercised.",
+      "Definitions were AST-isolated from the verified snapshot; this is not a full runtime import.",
+      "Image checks cover HWC only; CHW/einops handling was not executed."
+    ]
+  },
+  "portable_wrapper_checks": [
+    "F0_metadata_cli",
+    "F1_metadata_cli",
+    "F2_metadata_cli",
+    "F3_metadata_cli",
+    "F4_metadata_cli",
+    "cli_help_without_model_imports",
+    "missing_identity_rejected",
+    "checkpoint_reserialization_preserves_exact_selected_norm",
+    "checkpoint_changed_norm_values_rejected",
+    "imported_norm_change_during_training_rejected",
+    "schema_mismatch_rejected",
+    "source_sha256_mismatch_rejected",
+    "normalization_sha256_mismatch_rejected",
+    "completed_updates_mismatch_rejected",
+    "portable_inputs_mismatch_rejected",
+    "matching_fixture_identity_accepted_without_loading_weights",
+    "dataset_traversal_rejected"
+  ],
+  "training_started": false,
+  "server_started": false,
+  "weights_loaded": false,
+  "limitations": [
+    "Fixtures contain no real dataset or model weights.",
+    "No clean dependency installation, JAX model, GPU, tokenizer, optimizer or simulator was exercised.",
+    "Check mode validates metadata and norm structure, not dataset payload identity or base weight content."
+  ]
+}

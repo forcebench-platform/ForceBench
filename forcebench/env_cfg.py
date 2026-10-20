@@ -24,7 +24,7 @@ from .control import (
 from .scene_profiles import DEFAULT_SCENE_PROFILE, get_scene_profile
 
 
-ASSET_DIR = Path(os.environ.get("FORCEBENCH_ASSET_DIR", "/home/pc/ForceBench/assets")).resolve()
+ASSET_DIR = Path(os.environ.get("FORCEBENCH_ASSET_DIR", str(Path(__file__).resolve().parents[1] / "assets"))).expanduser().resolve()
 # One benchmark-wide reset pose.  Individual tasks may not override it: object
 # layouts must be designed around a common robot start state.
 START_JOINT_POSITIONS = (

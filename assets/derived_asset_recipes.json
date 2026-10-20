@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "scope": "Recorded author-written recipes for derived third-party geometry. Input files remain separately acquired; outputs retain applicable upstream terms. Use a fresh staging directory, not an existing benchmark asset tree.",
+  "recipes": [
+    {
+      "id": "single_stovetop",
+      "builder": "tools/asset_builders/build_single_stovetop.py",
+      "builder_sha256": "6df32c96a62f69ee10cd77dfe37e4f86e667d7dd97d2e960b6e9d1b7ae05335b",
+      "input_name": "Stovetop012.usd",
+      "input_sha256": "a18e9b9e2cc214516a11e6a4f8403c23e356790b907ff9a77ed4980b69b9dc1c",
+      "output_relative_path": "lightwheel_kitchen/Stovetop012/Stovetop012_single_center.usd",
+      "output_sha256": "13752a57eab665223aed7e5f63817dcb2cfe83f0ff2e621a26963d0d0a574f68",
+      "operation": "Select center-burner connected components and author the compact visual slab; retain source UV/material data.",
+      "rebuild_verified": true
+    },
+    {
+      "id": "conveyor_a04",
+      "builder": "tools/asset_builders/build_conveyor_a04.py",
+      "builder_sha256": "36ce9617dea643c054c5abdc28c2d98a9532dcc58801859dcdccf90177c76699",
+      "input_name": "ConveyorBelt_A04.usd",
+      "input_sha256": "2733b23b396b013743d99fb23d806d39d78770e9bca5924aef92f962c26f1ecf",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Props/Conveyors/ConveyorBelt_A04.usd",
+      "output_relative_path": "simready/conveyor_a04/conveyor_a04.usd",
+      "output_sha256": "f8ad2b845b1197955d1bc41d022431e5abe0e9391d7d36c76c4135627007902f",
+      "operation": "Flatten source conveyor branch and replace external materials/physics with local visual material definitions.",
+      "rebuild_verified": false
+    },
+    {
+      "id": "warehouse_rack",
+      "builder": "tools/asset_builders/build_small_warehouse_rack.py",
+      "builder_sha256": "df414f960b4563832ad7f1fc4f97d613c299d7beee4fdb1bd84ddd20755a7743",
+      "input_name": "small_warehouse_digital_twin.usd",
+      "input_sha256": "ee6f5ef4c5f71541f7302ebaf6a83c8a54b6aec92594fa882877849b5524bd74",
+      "output_relative_path": "simready/small_warehouse_digital_twin/rack.usd",
+      "output_sha256": "2f26e32bee8b4dd437192b8563f34ee6b679474f42675a3af64f8337837ab6e0",
+      "operation": "Extract /Lab/Assets/rack, preserve source unit conversion, replace external materials and remove physics.",
+      "rebuild_verified": false
+    }
+  ]
+}

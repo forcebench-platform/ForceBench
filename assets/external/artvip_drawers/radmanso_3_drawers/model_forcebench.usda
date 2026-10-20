@@ -1,0 +1,49 @@
+#usda 1.0
+(
+    defaultPrim = "root"
+    subLayers = [
+        @./model.usd@
+    ]
+)
+
+# The ArtVIP file contains a world-anchored fixed joint authored at its source
+# origin.  Deactivate only that anchor in this non-destructive overlay; Isaac
+# Lab then creates a fresh fixed-root joint after applying the task transform.
+over "root"
+{
+    # The three drawer handles use the same source mesh dimensions.  Scale each
+    # handle Xform uniformly so its visual mesh and PhysicsCollisionAPI child
+    # remain identical in size while the cabinet and drawer fronts stay fixed.
+    over "E_drawer1_3"
+    {
+        over "E_handle_17"
+        {
+            float3 xformOp:scale = (2.5, 2.5, 2.5)
+        }
+    }
+
+    over "E_drawer2_28"
+    {
+        over "E_handle_26"
+        {
+            float3 xformOp:scale = (2.5, 2.5, 2.5)
+        }
+    }
+
+    over "E_drawer3_32"
+    {
+        over "E_handle_30"
+        {
+            float3 xformOp:scale = (2.5, 2.5, 2.5)
+        }
+    }
+
+    over "E_RaDMANSo_chest_of_3_drawers_brown_walnut_effect_90x48x81cm_1"
+    {
+        over "FixedJoint" (
+            active = false
+        )
+        {
+        }
+    }
+}

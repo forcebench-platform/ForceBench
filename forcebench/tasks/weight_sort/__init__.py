@@ -12,6 +12,7 @@ MANIFEST = TaskManifest(
     ),
     runtime_class="forcebench.tasks.weight_sort.runtime:WeightSortTask",
     dataset_subdir="weight_sort",
+    evaluation_max_steps=1500,
     scene_profile="weight_sort_residential",
     description="Sort one box into the black or blue container using grasp feedback.",
 )

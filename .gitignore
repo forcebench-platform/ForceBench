@@ -3,3 +3,15 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .venv/
+build/
+dist/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.ovpn
+*.hdf5
+*.h5
+*.safetensors
+*.ckpt
