@@ -246,9 +246,10 @@ def evaluate_env(
         "box_linear_velocity_m_s": box_velocity[env_id].detach().cpu().numpy(),
         "gripper_open_fraction": float(gripper[env_id].item()),
     }
+    final_state = evaluate_final_state(**kwargs).to_dict()
     if args.task == "rattle_sort":
-        kwargs["inspection_completed"] = bool(inspection_completed)
-    report = outcome_evaluator(evaluate_final_state(**kwargs).to_dict())
+        final_state["inspection_completed"] = bool(inspection_completed)
+    report = outcome_evaluator(final_state)
     recorded_report = episode.metadata.get("final_success_report", {})
     result = {
         "path": str(episode.path.resolve()),

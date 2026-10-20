@@ -22,6 +22,7 @@ from .spec import (
     SPEC,
     directional_resistance_nm,
     evaluate_turn_angle,
+    evaluate_paper_turn_angle,
     flow_fraction,
     sample_initial_state,
     spec_from_layout,
@@ -316,7 +317,7 @@ class FaucetForceTurnTask(FaucetTurnTask):
         self._ensure_batch_state(env.num_envs)
         env_id = int(env_id)
         episode_spec = self._episode_specs[env_id]
-        report = evaluate_turn_angle(self._last_angle_rad_batch[env_id], episode_spec)
+        report = evaluate_paper_turn_angle(self._last_angle_rad_batch[env_id], episode_spec)
         report["correct_direction_detent_crossed"] = (
             self._correct_direction_detent_crossed_batch[env_id]
         )
@@ -435,7 +436,10 @@ class FaucetForceTurnTask(FaucetTurnTask):
             "mechanism_dofs": [spec.turn_joint_name],
             "expert_grasp_radius_m": spec.expert_grasp_radius_m,
             "success_contract": {
-                "signed_final_angle_band_after_detent_deg": [0.6, 2.1],
+                "scoring_protocol": "forcebench-paper-v1-faucet-direction-lower-bound",
+                "signed_final_angle_lower_bound_deg": spec.detent_center_magnitude_deg,
+                "signed_final_angle_upper_bound_deg": None,
+                "historical_band_after_detent_deg_diagnostic_only": [0.6, 2.1],
                 "min_gripper_open_fraction": spec.min_gripper_open_fraction,
                 "min_final_tcp_lift_m": spec.min_final_tcp_lift_m,
                 "minimum_final_tcp_height_m": spec.minimum_final_tcp_height_m,

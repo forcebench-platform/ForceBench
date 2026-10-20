@@ -1,0 +1,1034 @@
+{
+  "schema_version": 1,
+  "observed_date": "2026-10-21",
+  "scope": "Only the pinned eight default task scenes and variants. Raw authored-dependency gaps remain recorded and are not claimed to form a complete upstream asset distribution.",
+  "reviews": [
+    {
+      "file": "simready/container_f27/container_f27.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../common_tools/content_tagging/thumbnail_rigs/thumb_rig_prop.usd",
+      "classification": "outside_referenced_default_prim",
+      "reason": "The payload belongs to /Tagging/ThumbRig, outside the referenced /RootNode default prim. Task references do not import /Tagging.",
+      "owner_sha256": {
+        "simready/container_f27/container_f27.usd": "c00fb43ed40e108f63e13a70e35a7db0a4b74b4519e1a6f86688d26d283138e8"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/flatbox_a02.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../common_tools/content_tagging/thumbnail_rigs/thumb_rig_prop.usd",
+      "classification": "outside_referenced_default_prim",
+      "reason": "The payload belongs to /Tagging/ThumbRig, outside the referenced /RootNode default prim. Task references do not import /Tagging.",
+      "owner_sha256": {
+        "simready/flatbox_a02/flatbox_a02.usd": "49138e57a21765a0ffd089c4620f02bad86605272cb9595a51c5c3af5e0b46a8"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/flatbox_a07.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../common_tools/content_tagging/thumbnail_rigs/thumb_rig_prop.usd",
+      "classification": "outside_referenced_default_prim",
+      "reason": "The payload belongs to /Tagging/ThumbRig, outside the referenced /RootNode default prim. Task references do not import /Tagging.",
+      "owner_sha256": {
+        "simready/flatbox_a07/flatbox_a07.usd": "f2a65b8ee3b4162dfde255c034f5d48df02ce55c2469c57e98ad3d3226d714a2"
+      }
+    },
+    {
+      "file": "OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "franka_mimic.usd": "6ca52983cbede63f4caf1557896213e732f14fd8da9234658a6981ec2515b1bf",
+        "bolt_m16.usd": "e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654",
+        "nut_m16.usd": "8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/Pot057.usd": "4d36ce9bde33830f2df13632dffcdd56eded1188edfcf3c7229f1f9e846a753f"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/omniverse-content-production.s3.us-west-2.amazonaws.com/Assets/Extensions/Samples/Paint/cube.usd",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "inactive_paint_tool",
+      "reason": "The source reference belongs to /root/PaintTool. Sink054_environment.usda sets PaintTool inactive, and task knob visuals reference only the handle branch. The kitchen background excludes its duplicate Sink054.",
+      "owner_sha256": {
+        "lightwheel_kitchen/Sink054/Sink054.usd": "4dd71001ea65ed14d1622f756d1c86b5433b6cadcc972f3981d4a8920dfded68"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/KitchenRoom.usd": "2c9d4031b7af47eac53ac2ab77ad041e1fd3069b5a31eb8e2abeadc8fb10c6b7"
+      }
+    },
+    {
+      "file": "residential/east_rural/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "residential/east_rural/EastRural_Table.usd": "11e87dc81777b4530ce188d08fdffbee5d14a5a555f6972f31fb89259b22b770"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/CoffeeMachine006/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/CoffeeMachine006/CoffeeMachine006.usd": "b5b7d05a7d07a989eb9a9c6a7ec00ac3194975040c4a84471be25ac51138eb80"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/RangeHood015/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/RangeHood015/RangeHood015.usd": "acf43be175ab4d1c4e660807edecddc6da23bc8d4cd290590fe562919995b9d4"
+      }
+    },
+    {
+      "file": "simready/container_f27/container_f27_inst_base.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../materials/physics/physics_plastic.usda",
+      "classification": "unselected_physics_variant",
+      "reason": "The reference is authored in PhysicsVariant=RigidBody. The supported SimReady task visual roots select PhysicsVariant=None; task collision geometry/materials are authored separately.",
+      "owner_sha256": {
+        "simready/container_f27/container_f27_inst_base.usd": "ffd54b2513b380ef7cbeceb1eb4ec5f66ba12e7189d4f33554688da4b6bc4b6b"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/flatbox_a02_inst_base.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../materials/physics/physics_cardboard.usda",
+      "classification": "unselected_physics_variant",
+      "reason": "The reference is authored in PhysicsVariant=RigidBody. The supported SimReady task visual roots select PhysicsVariant=None; task collision geometry/materials are authored separately.",
+      "owner_sha256": {
+        "simready/flatbox_a02/flatbox_a02_inst_base.usd": "adba1339e27b9a2a4b9a34bceeacfbee56f1d5baa64408c0703903e1b369730a"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/flatbox_a07_inst_base.usd",
+      "kind": "outside_asset_root",
+      "reference": "../../../materials/physics/physics_cardboard.usda",
+      "classification": "unselected_physics_variant",
+      "reason": "The reference is authored in PhysicsVariant=RigidBody. The supported SimReady task visual roots select PhysicsVariant=None; task collision geometry/materials are authored separately.",
+      "owner_sha256": {
+        "simready/flatbox_a07/flatbox_a07_inst_base.usd": "b8522cd4ca439e5d7d917d8654b627793f2f7d5fe2abe91c75d0943153aaf275"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/materials/physics/physics_cardboard.usda",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "unselected_physics_variant",
+      "reason": "The reference is authored in PhysicsVariant=RigidBody. The supported SimReady task visual roots select PhysicsVariant=None; task collision geometry/materials are authored separately.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst_base.usd": "77a9220807493015c1bf378eb55e01d4bef09d7df39d9f945da5d12d7c658f14",
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst_base.usd": "609e1764e8602e22e1081069095a9636b11b58b88dbbe52e39cc5204bd6027cc",
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst_base.usd": "0e2c504dfb5308e5b1eb0a72ea98dd7cdeef0c2f9ca2adbf9831cc71ef1e45eb",
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst_base.usd": "c2973cca4a0367403963ef458e4847180537a56ea7ec058a563f82487711df2d"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": "38ade6debb085cb0c0ed9bfc23cb2b1b119099acdcf24be1924febef91574520"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": "38ade6debb085cb0c0ed9bfc23cb2b1b119099acdcf24be1924febef91574520"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": "38ade6debb085cb0c0ed9bfc23cb2b1b119099acdcf24be1924febef91574520"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": "38ade6debb085cb0c0ed9bfc23cb2b1b119099acdcf24be1924febef91574520"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": "38ade6debb085cb0c0ed9bfc23cb2b1b119099acdcf24be1924febef91574520"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": "fcb75a8ab2c528ef5947fff0fbb884d1a54016c3f24275a29d81a32d063a513b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": "fcb75a8ab2c528ef5947fff0fbb884d1a54016c3f24275a29d81a32d063a513b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": "fcb75a8ab2c528ef5947fff0fbb884d1a54016c3f24275a29d81a32d063a513b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": "fcb75a8ab2c528ef5947fff0fbb884d1a54016c3f24275a29d81a32d063a513b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": "fcb75a8ab2c528ef5947fff0fbb884d1a54016c3f24275a29d81a32d063a513b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": "a61d14a3bdb223f6b4c4a99dd6b1ef23c00ec2957dc35cc0aa094991195dd62b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": "a61d14a3bdb223f6b4c4a99dd6b1ef23c00ec2957dc35cc0aa094991195dd62b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": "a61d14a3bdb223f6b4c4a99dd6b1ef23c00ec2957dc35cc0aa094991195dd62b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": "a61d14a3bdb223f6b4c4a99dd6b1ef23c00ec2957dc35cc0aa094991195dd62b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": "a61d14a3bdb223f6b4c4a99dd6b1ef23c00ec2957dc35cc0aa094991195dd62b"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": "b44c8707ac3bc380b7f545be3c10bd311920354757d478447adfd962b8312e99"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": "b44c8707ac3bc380b7f545be3c10bd311920354757d478447adfd962b8312e99"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": "b44c8707ac3bc380b7f545be3c10bd311920354757d478447adfd962b8312e99"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": "b44c8707ac3bc380b7f545be3c10bd311920354757d478447adfd962b8312e99"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": "b44c8707ac3bc380b7f545be3c10bd311920354757d478447adfd962b8312e99"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": "edce8d436a50420e27a525065726ec03398154dd94df9ef55cf9031e329f7e24"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": "edce8d436a50420e27a525065726ec03398154dd94df9ef55cf9031e329f7e24"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": "edce8d436a50420e27a525065726ec03398154dd94df9ef55cf9031e329f7e24"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": "edce8d436a50420e27a525065726ec03398154dd94df9ef55cf9031e329f7e24"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": "edce8d436a50420e27a525065726ec03398154dd94df9ef55cf9031e329f7e24"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": "7ce8d083b61570a5dcd84946f687c55d8004a6f2d164863e5a0b85d94de652c6"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": "7ce8d083b61570a5dcd84946f687c55d8004a6f2d164863e5a0b85d94de652c6"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": "7ce8d083b61570a5dcd84946f687c55d8004a6f2d164863e5a0b85d94de652c6"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": "7ce8d083b61570a5dcd84946f687c55d8004a6f2d164863e5a0b85d94de652c6"
+      }
+    },
+    {
+      "file": "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": "7ce8d083b61570a5dcd84946f687c55d8004a6f2d164863e5a0b85d94de652c6"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/SM_P_Choppingboard_01.usd": "32f4d2ca6bcf50fd4d7bb7b577d82750bebe2828ee2750ead3eac9020e83d9c6"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/OmniGlass.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_02.usd": "08b8017332509b11abde8788f88fb1e673e92fa029502c0bf5f1622711b85497",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03.usd": "8d2f6314817392ca4096ebf328f3ef66b66f1b4ca523978bfe8272f316e95d7c",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Jar_01.usd": "918ee6cfbfb5b6c54651da0f9295ad5e3b41f914c66ef8fc016fe56e59a011fd"
+      }
+    },
+    {
+      "file": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/OmniPBR.mdl",
+      "kind": "missing_file",
+      "reference": "",
+      "classification": "runtime_material",
+      "reason": "Unqualified shader sourceAsset resolved by the Isaac Sim MDL search path. The kit/mdl/core/Base runtime files were checked separately.",
+      "owner_sha256": {
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_02.usd": "08b8017332509b11abde8788f88fb1e673e92fa029502c0bf5f1622711b85497",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03.usd": "8d2f6314817392ca4096ebf328f3ef66b66f1b4ca523978bfe8272f316e95d7c",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03_Cover.usd": "96c270a39bb1c2318d5af2ac861ad727793260329af76fb7294161c3e8567e34",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_04.usd": "d43c86f7e815656b145761fa04a24296f684196e0146f80b6effa77229c828c2",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Jar_01.usd": "918ee6cfbfb5b6c54651da0f9295ad5e3b41f914c66ef8fc016fe56e59a011fd",
+        "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Tray_01.usd": "4f0716281b45e2ed411632073cd1624216a2afe227cfac19c99254f7cc5cf6b8"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Chrome_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Chrome_A.mdl": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Chrome_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Chrome_A.mdl": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Chrome_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Chrome_A.mdl": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Chrome_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Chrome_A.mdl": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Chrome_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Chrome_A.mdl": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Metal_Rough_A.mdl": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Metal_Rough_A.mdl": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Metal_Rough_A.mdl": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Metal_Rough_A.mdl": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Metal_Rough_A.mdl": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_B.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_B.mdl": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_B.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_B.mdl": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_B.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_B.mdl": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_B.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_B.mdl": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_B.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_B.mdl": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_Black_A.mdl": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_Black_A.mdl": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_Black_A.mdl": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_Black_A.mdl": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237"
+      }
+    },
+    {
+      "file": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/container_f27/materials/Plastic_Black_A.mdl": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::base::mono_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::state::normal",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "::tex::gamma_mode",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    },
+    {
+      "file": "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl",
+      "kind": "mdl_runtime_module",
+      "reference": "OmniPBR",
+      "classification": "runtime_mdl_module",
+      "reason": "Import supplied by the supported Isaac Sim renderer/MDL SDK, not a payload file relative to this material.",
+      "owner_sha256": {
+        "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522"
+      }
+    }
+  ],
+  "runtime_materials": [
+    {
+      "name": "OmniPBR.mdl",
+      "sha256": "d384fc800f120e3cad1b7ca8837f9c554f9c34343d194813fca27caa493001f2",
+      "bytes": 13989
+    },
+    {
+      "name": "OmniGlass.mdl",
+      "sha256": "cc3d21e95997fb16d9435982c4f0a14f3438b1705d2e2b3d3e75454e5b329d61",
+      "bytes": 8343
+    }
+  ],
+  "runtime_material_directory": "isaacsim/kit/mdl/core/Base",
+  "context_checks": {
+    "simready_visual_default_physics_variant": "None",
+    "simready_thumbnail_root": "/Tagging is outside /RootNode defaultPrim",
+    "sink_environment_paint_tool_active": false,
+    "paint_reference_usage": "Only source geometry branches needed by authored task wrappers are used; no editing/painting tool is spawned."
+  },
+  "context_asset_sha256": {
+    "lightwheel_kitchen/Sink054/Sink054_environment.usda": "d965780db9c1942fbbca2272e7bd1a6d0a2ade3e04b47907e938395f449af75d",
+    "lightwheel_kitchen/Stovetop012/Stovetop012_environment.usda": "2e04c5326580f570481f597a9d3025b693c983951284a50454854dff2f5b3176",
+    "simready/container_f27/container_f27.usd": "c00fb43ed40e108f63e13a70e35a7db0a4b74b4519e1a6f86688d26d283138e8",
+    "simready/container_f27/container_f27_base.usd": "9f071ca5f9adc3df53d5f0a4bc26a697247e829047abe9634b93b14aafacaa1d",
+    "simready/container_f27/container_f27_inst_base.usd": "ffd54b2513b380ef7cbeceb1eb4ec5f66ba12e7189d4f33554688da4b6bc4b6b",
+    "simready/flatbox_a02/flatbox_a02.usd": "49138e57a21765a0ffd089c4620f02bad86605272cb9595a51c5c3af5e0b46a8",
+    "simready/flatbox_a02/flatbox_a02_base.usd": "84d8ccd96b9bca7a4a487eb9547bb9d2b6940f9bff19c90ecb68dcbef09ac6ed",
+    "simready/flatbox_a02/flatbox_a02_inst_base.usd": "adba1339e27b9a2a4b9a34bceeacfbee56f1d5baa64408c0703903e1b369730a",
+    "simready/flatbox_a07/flatbox_a07.usd": "f2a65b8ee3b4162dfde255c034f5d48df02ce55c2469c57e98ad3d3226d714a2",
+    "simready/flatbox_a07/flatbox_a07_base.usd": "307f177e53beb69296960c0d1f252dbb342acf4a9bd6f2a633922fdb05eb57fd",
+    "simready/flatbox_a07/flatbox_a07_inst_base.usd": "b8522cd4ca439e5d7d917d8654b627793f2f7d5fe2abe91c75d0943153aaf275",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_base.usd": "20b5ba7b61935f972b10f65fd4aeee338f8fc3208a1d7ece4cd2ca4e40cf291d",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst_base.usd": "77a9220807493015c1bf378eb55e01d4bef09d7df39d9f945da5d12d7c658f14",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_base.usd": "77a1de590fad5d198f48b3e60f8c3db4d8923d0446cae0b0794e6756947fb394",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst_base.usd": "609e1764e8602e22e1081069095a9636b11b58b88dbbe52e39cc5204bd6027cc",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_base.usd": "2cd6dede9481d7205f6f0f79fb245aaf9a60e003315f4525b1597f7321977fb5",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst_base.usd": "0e2c504dfb5308e5b1eb0a72ea98dd7cdeef0c2f9ca2adbf9831cc71ef1e45eb",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_base.usd": "86bff4580998c6d341cd839c8910001d69d2f0b44dc413a6d783604997ededbe",
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst_base.usd": "c2973cca4a0367403963ef458e4847180537a56ea7ec058a563f82487711df2d"
+  },
+  "does_not_prove": [
+    "Asset redistribution authorization",
+    "Support for other scene profiles or changed variants",
+    "GPU physics or historical paper results"
+  ]
+}

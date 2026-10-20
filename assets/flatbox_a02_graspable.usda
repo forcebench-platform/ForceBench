@@ -1,0 +1,33 @@
+#usda 1.0
+(
+    defaultPrim = "FlatBox"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "FlatBox" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+)
+{
+    float physics:mass = 0.06
+    bool physics:rigidBodyEnabled = 1
+
+    def Xform "Visual" (
+        prepend references = @./simready/flatbox_a02/flatbox_a02.usd@</RootNode>
+    )
+    {
+        float3 xformOp:scale = (0.36, 0.36, 0.36)
+        uniform token[] xformOpOrder = ["xformOp:scale"]
+    }
+
+    def Cube "Collision" (
+        prepend apiSchemas = ["PhysicsCollisionAPI"]
+    )
+    {
+        double size = 1
+        token visibility = "invisible"
+        double3 xformOp:translate = (0, 0, 0.0150406198)
+        double3 xformOp:scale = (0.0542134121, 0.0762479362, 0.0300812396)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:scale"]
+    }
+}

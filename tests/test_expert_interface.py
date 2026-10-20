@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 import forcebench.expert_collection as expert_collection
-from forcebench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest, ExpertBackendManifest
+from forcebench.expert_api import EXPERT_COLLECTION_CONTRACT, ExpertRequest, ExpertBackendManifest, ExpertBackend
 from scripts.expert import collect_expert, parallel_sort_collection
 from forcebench.expert_collection import (
     EMA_WRENCH_FIELD,
@@ -116,14 +116,14 @@ def test_current_expert_cli_routes_to_cloned_collection(monkeypatch):
         return {"failed_seeds": []}
     monkeypatch.setattr(parallel_sort_collection, "collect", fake_collect)
     for task in ("weight_sort", "rattle_sort", "faucet_turn", "stove_turn_on",
-                 "radmanso_drawer_sort_table", "nut_thread"):
+                 "radmanso_drawer_sort_table", "nut_thread", "faucet_force_turn", "stove_press_turn"):
         assert collect_expert.main(["--task", task, "--seeds", "0-3", "--dry-run"]) == 0
         assert received[-1].task == task
         assert received[-1].seeds == "0-3"
         assert received[-1].dry_run
     for task in ("faucet_force_turn", "stove_press_turn"):
         with pytest.raises(SystemExit) as error:
-            collect_expert.main(["--task", task, "--seeds", "0"])
+            collect_expert.main(["--task", task, "--seeds", "0", "--backend", "not_registered"])
         assert error.value.code == 2
 
 
@@ -275,7 +275,7 @@ def test_standard_supervisor_validates_and_resumes_by_seed(tmp_path, monkeypatch
     # re-enabling the retired per-seed Faucet adapter in production.
     manifest = ExpertBackendManifest("test_backend", "faucet_turn", "test:Backend",
                                      "CPU supervisor fixture")
-    class Backend:
+    class Backend(ExpertBackend):
         def build_command(self, request):
             return ["test-worker", "--seed", str(request.seed)]
     backend = Backend()

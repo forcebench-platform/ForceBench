@@ -7,12 +7,12 @@ case "${mode}" in
   help|--help|-h)
     echo "Usage: $0 {expert|policy-vector|replay|policy-replay} ..."
     echo "Inspect tasks without Isaac Sim: python -m forcebench list-tasks"
-    echo "See docs/source_preview.md for required runtime and assets."
+    echo "See docs/getting_started_main.md for required runtime and assets."
     exit 0
     ;;
   expert|policy-vector|replay|policy-replay) ;;
   *)
-    echo "Mode '${mode}' is not a supported entry point in this source preview." >&2
+    echo "Mode '${mode}' is not a supported entry point." >&2
     echo "Use '$0 --help' for available entry points." >&2
     exit 2
     ;;

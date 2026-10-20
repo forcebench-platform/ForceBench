@@ -3,7 +3,8 @@
 The normal call signature matches LeRobot decode_video_frames. The PyAV path
 retains installed LeRobot/torchvision seeking, timestamp selection, RGB conversion,
 and float32 /255 normalization. Only codec_context.thread_count is constrained.
-Non-PyAV backends are delegated unchanged to the installed LeRobot implementation.
+Non-PyAV backends are delegated unchanged to an optional installed LeRobot
+implementation. The formal PyAV path does not require LeRobot to be installed.
 
 Reviewed baseline:
   lerobot/common/datasets/video_utils.py SHA256
@@ -15,13 +16,14 @@ from pathlib import Path
 
 import torch
 import torchvision
-from lerobot.common.datasets.video_utils import decode_video_frames as _original_decode
 
 
 def decode_video_frames(video_path: Path | str, timestamps: list[float],
                         tolerance_s: float, backend: str | None = None, *,
                         decoder_threads: int = 1) -> torch.Tensor:
     if backend != "pyav":
+        from lerobot.common.datasets.video_utils import decode_video_frames as _original_decode
+
         return _original_decode(video_path, timestamps, tolerance_s, backend)
     if not isinstance(decoder_threads, int) or decoder_threads < 1:
         raise ValueError("decoder_threads must be a positive integer")

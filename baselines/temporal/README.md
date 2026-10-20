@@ -21,7 +21,9 @@ cd ..
 export TEMPORAL_PYTHON="$PWD/runtime/.venv/bin/python"
 ```
 
-The source dependency recipe is retained, with upstream OpenPI licenses and source hashes. A clean GPU installation and retraining have not been repeated during packaging.
+The source dependency recipe is retained, with upstream OpenPI licenses and source hashes. On 2026-10-21, both methods passed bounded H200 diagnostics in an existing compatible Python 3.11/JAX 0.5.3 environment: actual base-parameter loading, real 200-episode Faucet data, three training updates, finite `[50,7]` direct inference and loopback WebSocket responses. These checks do not establish a clean installation for this variant, full training, production checkpoint restoration, simulator scores, or final paper-to-run identity.
+
+The optional repository tool `tools/gpu_smoke_openpi.py --family temporal --method temporal_fusion` (or `dual_path_fusion`) requires explicit dataset, normalization, base parameter, tokenizer and new run paths. It executes the packaged model and update functions, with single-process data loading for the bounded diagnostic. It does not create a production checkpoint receipt. Use `--help`, explicit GPUs and an external timeout.
 
 ## Check, prepare, train
 

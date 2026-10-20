@@ -15,7 +15,9 @@ cd ..
 export PI0_PYTHON="$PWD/openpi/.venv/bin/python"
 ```
 
-`pyproject.toml` retains the observed JAX/Flax/LeRobot recipe. GPU support depends on the installed CUDA runtime/driver. This release has not repeated a clean GPU installation or retrained the models.
+`pyproject.toml` retains the observed JAX/Flax/LeRobot recipe. GPU support depends on the installed CUDA runtime/driver. On 2026-10-21, a bounded H200 diagnostic loaded real base parameters, decoded observations from a 200-episode Faucet dataset, executed three actual training updates, and returned finite `[50,7]` actions through direct inference and a loopback WebSocket. It used an existing compatible Python 3.11/JAX 0.5.3 environment. This does not establish a clean installation for this variant, full retraining, historical normalization identity, production checkpoint restoration, or paper-score reproduction.
+
+The optional repository tool `tools/gpu_smoke_openpi.py --family pi0 --method pi0` requires explicit dataset, normalization, base parameter, tokenizer and new run paths. It uses the packaged numerical model and update functions without creating a production checkpoint receipt. Run `--help` for the full interface, select GPUs explicitly and apply an external timeout.
 
 ## Train
 

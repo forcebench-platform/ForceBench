@@ -1,4 +1,4 @@
-"""Inspect the source preview without importing Isaac Sim or a model runtime."""
+"""Inspect task and asset requirements without importing simulator/model runtimes."""
 from __future__ import annotations
 
 import argparse
@@ -9,6 +9,7 @@ from importlib.resources import files
 from pathlib import Path
 
 from .registry import task_manifests
+from .nut_assets import inspect_nut_assets
 
 
 def inspect_assets(asset_dir: Path, tasks: list[str]) -> dict:
@@ -21,10 +22,13 @@ def inspect_assets(asset_dir: Path, tasks: list[str]) -> dict:
             "required_direct_files": len(paths),
             "missing": [path for path in paths if not (root / path).is_file()],
         }
+        if task == "nut_thread":
+            rows[task]["source_check"] = inspect_nut_assets(root)
     return {
         "asset_dir": str(root),
         "tasks": rows,
         "direct_files_present": all(not row["missing"] for row in rows.values()),
+        "pinned_sources_valid": all(row.get("source_check", {}).get("ready", True) for row in rows.values()),
         "scope": "Direct file existence only. USD references, textures, licensing, physics and GPU execution are not validated.",
     }
 
@@ -60,4 +64,4 @@ def main(argv: list[str] | None = None) -> int:
     report["gpu_execution_validated"] = False
     report["paper_results_reproduced"] = False
     print(json.dumps(report, indent=2))
-    return 0 if report["direct_files_present"] and all(report["modules"].values()) else 1
+    return 0 if report["direct_files_present"] and report["pinned_sources_valid"] and all(report["modules"].values()) else 1

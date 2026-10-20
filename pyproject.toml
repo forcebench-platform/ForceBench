@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "forcebench"
-version = "0.1.0a1"
-description = "ForceBench task specifications and policy interfaces (source preview)"
+version = "0.1.0"
+description = "ForceBench: force-aware robotic manipulation tasks and policy interfaces"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {file = "LICENSE"}

@@ -33,6 +33,8 @@ PARALLEL_CLONE_TASKS = frozenset(
         "nut_thread",
         "gear_mesh",
         "faucet_turn",
+        "faucet_force_turn",
+        "stove_press_turn",
     )
 )
 

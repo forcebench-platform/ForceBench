@@ -365,6 +365,30 @@ def evaluate_turn_angle(
     }
 
 
+def evaluate_paper_turn_angle(
+    angle_rad: float,
+    spec: FaucetForceTurnSpec = SPEC,
+) -> dict[str, object]:
+    """Paper-v1 final angle: signed progress reaches C, with no upper bound.
+
+    Keep the historical capture-band function above unchanged for old records
+    and load/diagnostic bookkeeping. This version is the public task judge.
+    """
+    report = evaluate_turn_angle(angle_rad, spec)
+    progress = spec.easy_direction_sign * report["valve_angle_deg"]
+    reached = bool(progress >= spec.detent_center_magnitude_deg or math.isclose(
+        progress, spec.detent_center_magnitude_deg, rel_tol=0.0, abs_tol=1.0e-9
+    ))
+    report.update({
+        "success": reached,
+        "final_angle_reached": reached,
+        "signed_final_angle_deg": progress,
+        "minimum_signed_final_angle_deg": spec.detent_center_magnitude_deg,
+        "scoring_protocol": "forcebench-paper-v1-faucet-direction-lower-bound",
+    })
+    return report
+
+
 def flow_fraction(angle_rad: float, spec: FaucetForceTurnSpec = SPEC) -> float:
     """Map progress in the sampled easy direction to visible water flow."""
 

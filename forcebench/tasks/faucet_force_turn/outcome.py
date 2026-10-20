@@ -2,7 +2,7 @@
 
 from forcebench.outcome import OutcomeCriterion, evaluate_criteria
 
-CRITERIA = (
+HISTORICAL_CRITERIA = (
     OutcomeCriterion(
         "correct_direction_detent_crossed",
         "easy_direction_detent_not_crossed",
@@ -35,5 +35,20 @@ CRITERIA = (
     ),
 )
 
+CRITERIA = (
+    OutcomeCriterion(
+        "final_angle_reached",
+        "easy_direction_peak_not_reached",
+        "The final signed valve angle reaches the sampled peak C; no upper angle bound.",
+    ),
+    *HISTORICAL_CRITERIA[2:],
+)
+
+
 def evaluate_report(report):
     return evaluate_criteria(report, CRITERIA)
+
+
+def evaluate_historical_report(report):
+    """Explicit original band judge for archived online records only."""
+    return evaluate_criteria(report, HISTORICAL_CRITERIA)

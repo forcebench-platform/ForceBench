@@ -1,3 +1,4 @@
+import json
 import math
 from pathlib import Path
 
@@ -62,9 +63,6 @@ def test_stove_layout_keeps_geometry_fixed_and_randomizes_only_the_load():
         (0.435837259, 0.242254671, 0.022642156)
     )
     assert SPEC.target_knob_position_m[0] == pytest.approx(0.443295459)
-    assert SPEC.burner_center_m == pytest.approx(
-        (0.435837259, 0.242254671, 0.055)
-    )
     assert SPEC.stovetop_yaw_deg == 0.0
     assert SPEC.stovetop_orientation_xyzw == (0.0, 0.0, 0.0, 1.0)
     assert SPEC.target_knob_position_m[1] < SPEC.burner_center_m[1]
@@ -95,6 +93,20 @@ def test_stove_layout_keeps_geometry_fixed_and_randomizes_only_the_load():
     assert min(sampled_angles) >= 60.0
     assert max(sampled_angles) <= 90.0
     assert len({round(value, 9) for value in sampled_angles}) == len(sampled_angles)
+    # Seeds change the hidden load peak; they must not move the stove, knob,
+    # or flame. Check this independently of the single example above.
+    geometry_fields = (
+        "stovetop_translation_m",
+        "stovetop_yaw_deg",
+        "stovetop_orientation_xyzw",
+        "target_knob_position_m",
+        "burner_center_m",
+    )
+    for seed in range(256):
+        sampled_layout = sample_initial_state(seed)
+        assert {key: sampled_layout[key] for key in geometry_fields} == {
+            key: layout[key] for key in geometry_fields
+        }
     assert {
         sample_initial_state(seed)["knob_load_profile"]["detent_peak_torque_nm"]
         for seed in range(32)
@@ -117,6 +129,42 @@ def test_stove_layout_keeps_geometry_fixed_and_randomizes_only_the_load():
         sequence["low_load_end_angle_deg"]
     )
     assert sequence["low_load_end_angle_deg"] < sequence["post_drop_rise_end_angle_deg"]
+
+
+def test_burner_visual_uses_measured_asset_center_and_authored_flame_height():
+    # These bounds were measured from the deployed USD's disconnected mesh
+    # components, without importing SPEC. The USD root is not the burner center.
+    fixture = json.loads(
+        (Path(__file__).parent / "fixtures" / "stove_burner_geometry.json")
+        .read_text(encoding="utf-8")
+    )
+    centers = [
+        tuple(
+            (low + high) / 2.0
+            for low, high in zip(component["min_m"], component["max_m"])
+        )
+        for component in fixture["concentric_components"]
+    ]
+    assert centers[0][:2] == pytest.approx(centers[1][:2], abs=1e-12)
+    yaw = math.radians(SPEC.stovetop_yaw_deg)
+    local_x, local_y = centers[0][:2]
+    expected_xy = (
+        SPEC.stovetop_translation_m[0]
+        + math.cos(yaw) * local_x - math.sin(yaw) * local_y,
+        SPEC.stovetop_translation_m[1]
+        + math.sin(yaw) * local_x + math.cos(yaw) * local_y,
+    )
+    assert SPEC.burner_center_m[:2] == pytest.approx(expected_xy, abs=1e-12)
+    assert abs(SPEC.burner_center_m[1] - SPEC.stovetop_translation_m[1]) > 0.026
+    # Z is the task-owned, collision-free flame plane, not a mesh centroid.
+    # Preserve the historical authored height and keep the outer disk clear
+    # of the retained burner assembly's upper surface.
+    assert SPEC.burner_center_m[2] == pytest.approx(
+        fixture["authored_flame_center_z_m"]
+    )
+    flame_bottom = SPEC.burner_center_m[2] - fixture["outer_flame_height_m"] / 2.0
+    assembly_top = SPEC.stovetop_translation_m[2] + fixture["retained_assembly_max_z_m"]
+    assert flame_bottom > assembly_top
 
 
 def test_stove_resistance_rises_slowly_then_drops_sharply_to_a_unique_minimum():

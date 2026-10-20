@@ -55,3 +55,58 @@ def test_rattle_sort_has_no_stationary_inspection_success_gate():
     )
     assert report["success"]
     assert report["failure_reasons"] == []
+
+
+@pytest.mark.parametrize("box_kind", ("uniform", "imbalanced"))
+@pytest.mark.parametrize("inspection_completed", (False, True))
+def test_rattle_sort_geometry_and_outcome_agree_without_inspection_gate(
+    box_kind, inspection_completed
+):
+    """Both scoring layers must accept a complete placement without a hold."""
+    outcome = importlib.import_module("forcebench.tasks.rattle_sort.outcome")
+    spec = importlib.import_module("forcebench.tasks.rattle_sort.spec")
+    center = (
+        spec.SPEC.conveyor_center_xy_m
+        if box_kind == "uniform"
+        else spec.SPEC.black_basket_center_xy_m
+    )
+    source = spec.evaluate_final_state(
+        box_kind=box_kind,
+        box_position_m=(*center, 0.04),
+        box_linear_velocity_m_s=(0.0, 0.0, 0.0),
+        gripper_open_fraction=1.0,
+    ).to_dict()
+    report = outcome.evaluate_report(
+        {**source, "inspection_completed": inspection_completed}
+    )
+    assert source["success"]
+    assert report["success"]
+    assert report["inspection_completed"] is inspection_completed
+    assert report["outcome"]["source_success_consistent"]
+
+
+@pytest.mark.parametrize(
+    ("changes", "failure_code"),
+    (
+        ({"box_position_m": (0.0, 0.0, 0.04)}, "parcel_misclassified"),
+        ({"gripper_open_fraction": 0.64}, "parcel_not_released"),
+        ({"box_linear_velocity_m_s": (0.151, 0.0, 0.0)}, "parcel_not_settled"),
+    ),
+)
+def test_rattle_sort_inspection_cannot_override_incomplete_placement(
+    changes, failure_code
+):
+    outcome = importlib.import_module("forcebench.tasks.rattle_sort.outcome")
+    spec = importlib.import_module("forcebench.tasks.rattle_sort.spec")
+    state = {
+        "box_kind": "uniform",
+        "box_position_m": (*spec.SPEC.conveyor_center_xy_m, 0.04),
+        "box_linear_velocity_m_s": (0.0, 0.0, 0.0),
+        "gripper_open_fraction": 1.0,
+    }
+    source = spec.evaluate_final_state(**{**state, **changes}).to_dict()
+    report = outcome.evaluate_report({**source, "inspection_completed": True})
+    assert not source["success"]
+    assert not report["success"]
+    assert report["failure_reasons"] == [failure_code]
+    assert report["outcome"]["source_success_consistent"]

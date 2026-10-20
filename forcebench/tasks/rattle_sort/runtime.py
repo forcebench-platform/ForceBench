@@ -325,17 +325,18 @@ class RattleSortTask(TaskRuntime):
         env_id = int(env_id)
         box_position, _ = env.entity_local_pose("box")
         velocity = env.entity("box").data.root_lin_vel_w.torch[env_id]
-        return evaluate_report(
-            evaluate_final_state(
-                box_kind=str(env.layouts[env_id]["box_kind"]),
-                box_position_m=box_position[env_id].detach().cpu().numpy(),
-                box_linear_velocity_m_s=velocity.detach().cpu().numpy(),
-                inspection_completed=self._inspection_completed_batch[env_id],
-                gripper_open_fraction=float(
-                    env.gripper_open_fraction_tensor[env_id].item()
-                )
-            ).to_dict()
-        )
+        report = evaluate_final_state(
+            box_kind=str(env.layouts[env_id]["box_kind"]),
+            box_position_m=box_position[env_id].detach().cpu().numpy(),
+            box_linear_velocity_m_s=velocity.detach().cpu().numpy(),
+            gripper_open_fraction=float(
+                env.gripper_open_fraction_tensor[env_id].item()
+            ),
+        ).to_dict()
+        # Preserve the inspection history for analysis without turning the
+        # expert's preferred sensing behavior into a success condition.
+        report["inspection_completed"] = self._inspection_completed_batch[env_id]
+        return evaluate_report(report)
 
     def evaluate_final_state(self, env) -> dict[str, object]:
         return self.evaluate_final_state_for(env, 0)

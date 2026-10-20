@@ -14,6 +14,7 @@ from forcebench.object_models import (
     make_rigid_object_cfg,
 )
 from forcebench.task_api import CameraProfile, SceneEntitySpec, TaskRuntime
+from forcebench.nut_assets import validate_nut_assets
 from . import MANIFEST
 from .outcome import evaluate_report
 from .spec import (
@@ -40,10 +41,7 @@ class NutThreadTask(TaskRuntime):
     )
 
     def validate_assets(self) -> None:
-        for filename in (SPEC.nut_asset, SPEC.bolt_asset):
-            path = self.asset_dir / filename
-            if not path.is_file():
-                raise FileNotFoundError(f"missing nut_thread asset: {path}")
+        validate_nut_assets(self.asset_dir)
 
     def scene_entities(self):
         entities = (

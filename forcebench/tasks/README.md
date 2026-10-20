@@ -1,3 +1,3 @@
 # forcebench/tasks
 
-See the [source preview guide](../../docs/source_preview.md) for scope, supported entry points and unresolved validation limits.
+See the [installation guide](../../docs/getting_started_main.md) for supported entry points, asset preparation and the scope of validated execution.

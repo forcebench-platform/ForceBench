@@ -23,6 +23,8 @@ PARALLEL_TASKS = (
     "nut_thread",
     "gear_mesh",
     "faucet_turn",
+    "faucet_force_turn",
+    "stove_press_turn",
 )
 DEFAULT_CLONE_COUNT = 32
 
@@ -177,6 +179,8 @@ def collect(args: argparse.Namespace) -> dict[str, object]:
         "nut_thread": "generate_parallel_privileged_placement.py",
         "gear_mesh": "generate_parallel_privileged_placement.py",
         "faucet_turn": "generate_parallel_faucet.py",
+        "faucet_force_turn": "generate_parallel_faucet_force_turn.py",
+        "stove_press_turn": "generate_parallel_stove_press_turn.py",
     }
     generator = CODE_ROOT / "scripts/expert" / generators[args.task]
     if not launcher.is_file() or not generator.is_file():

@@ -27,6 +27,7 @@ from .control import (
 from .physics import add_diagonal_body_inertia, set_asset_friction
 from .scene_profiles import get_scene_profile
 from .task_api import SceneEntitySpec, TaskManifest, TaskRuntime
+from .visual_scene import remove_background_physics
 
 
 def _change_wrench_frame(source_force, source_torque, source_position, target_position):
@@ -300,6 +301,19 @@ class ForceBenchEnv(DirectRLEnv):
                     # Deactivation removes both the visual and any authored
                     # collision under the official room's built-in table.
                     prim.SetActive(False)
+
+            # The room is declared collision-free. Remove inherited dynamic
+            # schemas as well, before cloning the physics scene; otherwise the
+            # refrigerator's decorative bodies produce unsupported-replication
+            # errors even though their collisions were disabled.
+            from isaaclab.sim.utils.prims import get_current_stage
+            stage = get_current_stage()
+            self._visual_room_physics_audit = []
+            roots = ([room_env0_path] if self.cfg.scene.num_envs == 1 else
+                     [f"/World/envs/env_{index}/ForceBenchLab" for index in range(self.cfg.scene.num_envs)])
+            for room_root in roots:
+                if stage.GetPrimAtPath(room_root).IsValid():
+                    self._visual_room_physics_audit.append(remove_background_physics(stage, room_root))
 
         visual_root = (
             "/World/ForceBenchVisuals"

@@ -1,3 +1,3 @@
-# Paper reference
+# Frozen paper reference
 
-These are unchanged manuscript tables, not results from new runs of this source preview. Keep new evaluation outputs separate.
+These unchanged manuscript tables are reference values. New software checks and rollouts do not replace them. See [the public validation report](../validation/public_report.json) for the measured release coverage.

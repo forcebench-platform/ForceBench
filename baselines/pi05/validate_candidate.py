@@ -56,6 +56,15 @@ def main():
             assert receipt["dataset_payload_checksums_checked"] is False
             checks.append(method + "_metadata_cli")
         assert not selected.run_dir.exists(), "check mode must not create run outputs"
+        for mode in ("check", "train"):
+            diagnostic_command = [*command]
+            diagnostic_command[2] = mode
+            result = subprocess.run([*diagnostic_command, "--validate-inference"],
+                                    capture_output=True, text=True)
+            assert result.returncode != 0
+            assert "requires train --preflight" in result.stderr
+        checks.append("gpu_inference_diagnostic_requires_three_update_preflight")
+        assert not selected.run_dir.exists(), "rejected diagnostic mode must not create outputs"
         for path in ("run.py", "serve.py", "audit_candidate.py"):
             subprocess.run([sys.executable, str(ROOT / path), "--help"], capture_output=True, check=True)
         checks.append("cli_help_without_model_imports")

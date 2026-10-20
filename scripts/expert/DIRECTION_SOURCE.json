@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "origin": "captured pc48 source snapshot",
+  "scope": "Recovered scripted collection entry points; newly generated demonstrations are distinct from paper training-data identity.",
+  "files": [
+    {
+      "file": "scripts/expert/generate_parallel_faucet_force_turn.py",
+      "original_sha256": "6eb871aea4deebe0ce16c3e65a2b0472102fec07245f560ab157471ddf87872e",
+      "packaged_sha256": "c87726eff965632721bc47aa73c9e344d1225b8b5b10456241a96d9b47fc37fc",
+      "transforms": [
+        "namespace coribench -> forcebench",
+        "POSIX line endings"
+      ],
+      "numeric_implementation_changed": false,
+      "completion_timepoint_audit": "all retained buffers and quality gates use shared batch-end state; no per-clone early trim"
+    },
+    {
+      "file": "scripts/expert/generate_parallel_stove_press_turn.py",
+      "original_sha256": "f1500de8625e0a96c3d1bbc18da3489c5072a79fa2e13a60fbf04d4569e9534d",
+      "packaged_sha256": "07a00e4457718836b0050b01e72809308ca719681dab79c85f38872e96df3358",
+      "transforms": [
+        "namespace coribench -> forcebench",
+        "POSIX line endings",
+        "snapshot report, press, angle, TCP, and history extrema at each clone completion; trim and score at the same retained final transition",
+        "record completion/batch-end quality-state timepoint and retained control frames"
+      ],
+      "numeric_implementation_changed": true,
+      "collection_quality_postprocessing_changed": true,
+      "controller_physics_and_gate_thresholds_changed": false,
+      "historical_evaluation_scorer_changed": false
+    },
+    {
+      "file": "scripts/expert/independent_release_state.py",
+      "original_sha256": "758d307af8ef70d0d7e8d99cafc8750749054d5be7b081c1bd053b009981278b",
+      "packaged_sha256": "48da5938879360dab1022edba81d41a760fef32c7a29aac9f5e81b5639016f7a",
+      "transforms": [
+        "namespace coribench -> forcebench",
+        "POSIX line endings",
+        "add detached post-action CompletionSnapshot for collection quality gates and diagnostics"
+      ],
+      "numeric_implementation_changed": true,
+      "release_scheduler_thresholds_changed": false
+    }
+  ],
+  "regression_test": "tests/test_collector_completion_snapshot.py"
+}

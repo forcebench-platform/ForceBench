@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "task": "nut_thread",
+  "author_wrapper_license": "MIT; external geometry retains its own upstream terms",
+  "source_geometry": {
+    "nut_m16.usd": {
+      "sha256": "8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4",
+      "bytes": 722644,
+      "external": true,
+      "upstream_name": "factory_nut_m16.usd",
+      "origin": "NVIDIA Factory/FORGE self-contained export, Isaac Lab 2.3.2 / Isaac Sim 5.1"
+    },
+    "bolt_m16.usd": {
+      "sha256": "e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654",
+      "bytes": 1241463,
+      "external": true,
+      "upstream_name": "factory_bolt_m16.usd",
+      "origin": "NVIDIA Factory/FORGE self-contained export, Isaac Lab 2.3.2 / Isaac Sim 5.1"
+    }
+  },
+  "authored_wrappers": {
+    "nut.usda": {
+      "sha256": "17934b50528c06f9a58bbb438d0fd239d752f269bb8fb3683961cbadbc264600",
+      "bytes": 1441
+    },
+    "bolt.usda": {
+      "sha256": "dde98ce014c5837b58c282a3634ca0212168e8e5f407d761382f9c319024a7ac",
+      "bytes": 1502
+    }
+  },
+  "collision_contract": "Preserve the referenced source SDF collision meshes. No convex decomposition override.",
+  "normalization": {
+    "nut_source_translation_m": [
+      0,
+      0,
+      -0.01
+    ],
+    "bolt_source_translation_m": [
+      0,
+      0,
+      0
+    ],
+    "up_axis": "Z",
+    "meters_per_unit": 1
+  },
+  "preparation": "python tools/prepare_nut_assets.py --source-dir SOURCE --asset-dir ASSETS",
+  "validation_scope": "Pinned bytes and USD composition have been checked. Full task GPU initialization and contact behavior require separate validation."
+}

@@ -1,0 +1,195 @@
+#usda 1.0
+(
+    customLayerData = {
+        string assetVersion = "stove-press-turn-knob-v7-linked-visual-surface-indicator"
+        string visualFinish = "brushed stainless steel on charcoal glass"
+        string loadModel = "Runtime axial gate plus hidden bidirectional detent effort"
+        string sourceGeometry = "Stovetop012_knob_center"
+    }
+    defaultPrim = "StoveKnob"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "StoveKnob" (
+    prepend apiSchemas = ["PhysicsArticulationRootAPI"]
+)
+{
+    def Material "KnobBrushedSteel"
+    {
+        token outputs:surface.connect = </StoveKnob/KnobBrushedSteel/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.48, 0.54, 0.62)
+            float inputs:metallic = 0.82
+            float inputs:roughness = 0.26
+            token outputs:surface
+        }
+    }
+
+    def Material "IndicatorWhite"
+    {
+        token outputs:surface.connect = </StoveKnob/IndicatorWhite/PreviewSurface.outputs:surface>
+
+        def Shader "PreviewSurface"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            color3f inputs:diffuseColor = (0.92, 0.95, 0.94)
+            # Remain legible when the fully pressed knob enters the gripper's
+            # shadow.  This changes only the visual marker, not contact.
+            color3f inputs:emissiveColor = (1.2, 1.2, 1.2)
+            float inputs:metallic = 0.05
+            float inputs:roughness = 0.34
+            token outputs:surface
+        }
+    }
+
+    def Xform "base" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.20
+
+        def Cylinder "MountCollarVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            double height = 0.004
+            rel material:binding = </StoveKnob/KnobBrushedSteel>
+            double radius = 0.023
+            double3 xformOp:translate = (0, 0, -0.010)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+
+    # The knob rides on this low-mass carriage.  A prismatic joint moves the
+    # carriage 8 mm into the stove before the runtime unlocks rotation.
+    def Xform "slider" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.03
+    }
+
+    def Xform "knob" (
+        prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+    )
+    {
+        float physics:mass = 0.08
+
+        def Mesh "SourceVisual" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsCollisionAPI", "PhysicsMeshCollisionAPI"]
+            prepend references = @./Stovetop012.usd@</root/Stovetop012_knob_center>
+        )
+        {
+            rel material:binding = </StoveKnob/KnobBrushedSteel>
+            bool physics:collisionEnabled = false
+            bool physics:rigidBodyEnabled = false
+            matrix4d xformOp:transform = ((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1))
+            uniform token[] xformOpOrder = ["xformOp:transform"]
+
+            over "RevoluteJoint" (
+                active = false
+            )
+            {
+            }
+        }
+
+        def Cylinder "KnobCollider" (
+            prepend apiSchemas = ["PhysicsCollisionAPI"]
+        )
+        {
+            uniform token axis = "Z"
+            # Keep the exposed top at +3.6 mm, but omit the portion of the
+            # visual mesh that retracts into the stove panel.  The previous
+            # collider bottom sat 4.947 mm above the world support plane and
+            # physically stopped the nominal 8 mm joint at that depth.
+            double height = 0.0148
+            double radius = 0.019
+            token visibility = "invisible"
+            double3 xformOp:translate = (0, 0, -0.0038)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Mesh "IndicatorVisual" (
+            prepend apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            rel material:binding = </StoveKnob/IndicatorWhite>
+            bool doubleSided = true
+            bool physics:collisionEnabled = false
+            bool physics:rigidBodyEnabled = false
+            uniform token subdivisionScheme = "none"
+            # A zero-thickness 3.2 x 14.0 mm surface patch extending from the
+            # center toward the rim.  It is a pure visual child of the knob
+            # link and follows both pressing and turning without adding mass
+            # or collision geometry.
+            # The source knob reaches local Z = 10.362 mm; the patch plane at
+            # 10.650 mm leaves a 0.288 mm render-safe offset.
+            point3f[] points = [
+                (-0.0016, -0.003, 0.01065),
+                (0.0016, -0.003, 0.01065),
+                (0.0016, -0.017, 0.01065),
+                (-0.0016, -0.017, 0.01065)
+            ]
+            int[] faceVertexCounts = [4]
+            int[] faceVertexIndices = [0, 1, 2, 3]
+            normal3f[] normals = [(0, 0, 1)] (
+                interpolation = "uniform"
+            )
+        }
+    }
+
+    def "joints"
+    {
+        def PhysicsFixedJoint "world_fixed"
+        {
+            rel physics:body1 = </StoveKnob/base>
+        }
+
+        def PhysicsPrismaticJoint "stove_press_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:linear"]
+        )
+        {
+            float drive:linear:physics:damping = 15
+            float drive:linear:physics:maxForce = 60
+            float drive:linear:physics:stiffness = 1000
+            float drive:linear:physics:targetPosition = 0
+            float drive:linear:physics:targetVelocity = 0
+            uniform token drive:linear:physics:type = "force"
+            uniform token physics:axis = "Z"
+            rel physics:body0 = </StoveKnob/base>
+            rel physics:body1 = </StoveKnob/slider>
+            point3f physics:localPos0 = (0, 0, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            float physics:lowerLimit = -0.008
+            float physics:upperLimit = 0
+        }
+
+        def PhysicsRevoluteJoint "stove_turn_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular"]
+        )
+        {
+            float drive:angular:physics:damping = 0
+            float drive:angular:physics:maxForce = 1.2
+            float drive:angular:physics:stiffness = 0
+            float drive:angular:physics:targetPosition = 0
+            float drive:angular:physics:targetVelocity = 0
+            uniform token drive:angular:physics:type = "force"
+            uniform token physics:axis = "Z"
+            rel physics:body0 = </StoveKnob/slider>
+            rel physics:body1 = </StoveKnob/knob>
+            point3f physics:localPos0 = (0, 0, 0)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            float physics:lowerLimit = -120
+            float physics:upperLimit = 120
+        }
+    }
+}

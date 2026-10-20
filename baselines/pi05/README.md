@@ -1,6 +1,6 @@
 # Controlled pi0.5 F0–F4 candidate
 
-**Status: portable source candidate; CPU checks passed, clean installation and GPU execution not yet validated.** This package does not establish the final runtime/checkpoint selection for all forty paper task–method cells.
+**Status: CPU checks and bounded GPU execution passed for F0–F4 on H200.** A fresh Python 3.11 environment also passed the F4 three-update, inference and websocket check. These software checks do not establish the final runtime/checkpoint selection for all forty paper task–method cells.
 
 ## Methods and scope
 
@@ -24,9 +24,38 @@ The numeric model, input/output transforms, data loader, optimizer and training 
 - The missing license, client and dependency reference files were recovered read-only from the original runtime's upstream reference. The active interpreter's OpenPI client matches that reference byte-for-byte.
 - [PACKAGED_SOURCE_MANIFEST.json](./PACKAGED_SOURCE_MANIFEST.json) records source hashes before portability edits and packaged hashes. [ENVIRONMENT_REFERENCE.json](./ENVIRONMENT_REFERENCE.json) records the observed Python 3.11.11 environment; it is not a fresh-install receipt.
 - Local Git attributes preserve exact file bytes, including captured mixed line endings, so checkout conversion does not silently invalidate those hashes.
-- Apache and Gemma license texts are preserved under [runtime](./runtime/). Upstream dependency metadata and lock are preserved; their compatibility with this packaged candidate still needs a clean Linux/GPU installation check.
+- Apache and Gemma license texts are preserved under [runtime](./runtime/). Upstream dependency metadata and lock are preserved; the October 21 fresh Linux environment ran the F4 GPU diagnostic, using the same pinned LeRobot commit through its official source archive.
 
 No dataset, normalization values, base weights or trained checkpoint is bundled. InternVLA and the old Gear/Peg training registry are outside the entry-point task choices.
+
+## Install
+
+Use a separate Python 3.11 environment. The wrappers import their packaged
+OpenPI runtime and client directly, so the workspace projects do not need an
+editable installation:
+
+```bash
+cd baselines/pi05/runtime
+uv sync --frozen --no-install-workspace --no-dev --python 3.11
+export PI05_PYTHON="$PWD/.venv/bin/python"
+```
+
+If GitHub Git transport fails while fetching LeRobot, keep the pinned commit
+and install the official source archive instead:
+
+```bash
+uv sync --frozen --no-install-workspace --no-install-package lerobot --no-dev --python 3.11
+curl --fail --location \
+  https://codeload.github.com/huggingface/lerobot/tar.gz/0cf864870cf29f4738d3ade893e6fd13fbd7cdb5 \
+  --output /tmp/lerobot-0cf864870cf29f4738d3ade893e6fd13fbd7cdb5.tar.gz
+uv pip install --python .venv/bin/python --no-deps \
+  /tmp/lerobot-0cf864870cf29f4738d3ade893e6fd13fbd7cdb5.tar.gz
+```
+
+The archive used in the October 21 installation check had SHA-256
+`2455b2ed303778f8bcd570caceae0b22c97908eaaf029dff868d9f237b495c00`.
+This changes the source transport, while preserving the exact LeRobot commit
+and the other dependency versions in `uv.lock`.
 
 ## Explicit inputs
 
@@ -44,9 +73,19 @@ python baselines/pi05/run.py check \
 
 It checks the 200-episode/15 Hz metadata, feature shapes and method-specific normalization structure. It records metadata and norm hashes, but does **not** validate dataset payload checksums or base parameter contents. Select inputs from a verified per-task provenance manifest; a metadata-compatible dataset is not automatically the paper dataset.
 
-The candidate also implements `run.py train` with the same arguments and `serve.py --checkpoint ...`. Their CLI parsing and identity gates are checked locally; **the training, model-loading and serving paths have not been run during packaging**. GPU execution requires an explicit `CUDA_VISIBLE_DEVICES`. Training optionally supports the preserved three-update `--preflight` and identity-checked `--resume`; no job is started by importing the CLI modules.
+The candidate also implements `run.py train` with the same arguments and `serve.py --checkpoint ...`. The October 21 GPU checks loaded real base weights, decoded the selected 200-episode dataset, performed three updates per method, and returned finite actions through direct inference and a loopback websocket. The formal 10,000-update checkpoint save/restore and production serving path remain separate validation work. GPU execution requires an explicit `CUDA_VISIBLE_DEVICES`. Training optionally supports the preserved three-update `--preflight` and identity-checked `--resume`; no job is started by importing the CLI modules.
 
 Training copies the supplied norm file byte-for-byte into the new run's assets. After OpenPI saves a checkpoint, the wrapper checks that its normalization values match and preserves the exact imported bytes before writing the checkpoint identity; JSON reformatting therefore cannot invalidate an otherwise matching checkpoint. It does not recompute or adjust quantiles. Historical normalization builders and the original assets-copy provenance were recovered for further audit, but do not yet define a verified norm-generation recipe for every final task/model pair.
+
+For a bounded execution check, append `--preflight --validate-inference` to the
+training command. This performs three real updates with the selected dataset,
+base parameters and normalization, then tests the resulting in-memory EMA
+model on a recorded observation and two loopback websocket requests. The
+diagnostic records finite `[50,7]` actions and transport metadata under
+`RUN_DIR/preflight/gpu_inference_validation.json`. It saves no checkpoint and
+does not establish model quality, historical result reproduction, checkpoint
+restore, or the production serving path. Use an external process timeout for
+the entire command; its websocket check has a 300-second timeout.
 
 ## Identity and archived checkpoints
 
@@ -71,4 +110,4 @@ The first command checks the packaged source; the second checks the separately s
 - real, unmodified NumPy transform definitions: F0–F4 force routing, two-camera masks, training-only future labels, F4 padding, output horizon, angle wrapping and wrench clipping;
 - rejection of missing/mismatched checkpoint identities, wrong source or norm hashes, incomplete training budget and dataset path traversal.
 
-The transform definitions are AST-isolated to avoid model/dependency imports. No replacement tokenizer or model is used; HWC image behavior is checked, while CHW/einops is not exercised. These checks do not establish normalized train/serve parity, gradients, checkpoint loading, full inference, fresh installation or paper score reproduction. Those remain release gates.
+The CPU transform definitions are AST-isolated to avoid model/dependency imports. Their original limitations remain recorded in that receipt. Separate October 21 H200 execution checks cover actual dataset decoding, tokenizer/base-weight loading, nonzero module gradients and updates, in-memory inference and websocket transport; F4 was repeated in a fresh environment. They do not establish 10,000-update checkpoint save/restore, production checkpoint serving, or paper-score reproduction.

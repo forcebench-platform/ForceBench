@@ -1,6 +1,6 @@
-# Dependencies needed to run tests/ WITHOUT Isaac Sim (contract/unit tests
-# only -- the two skipped tests and everything under scripts/ still needs a
-# real Isaac Sim 6.0.1 / Isaac Lab 6.1.14 environment, see docs/getting_started.md).
+# Dependencies for lightweight contract tests. The USD scene contract is
+# additionally run in the simulator environment; POSIX process tests skip
+# on Windows. See docs/getting_started_main.md for simulator requirements.
 pytest
 numpy
 h5py

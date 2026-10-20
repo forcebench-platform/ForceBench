@@ -364,7 +364,7 @@
     "runtime/scripts/train_forcebench.py": {
       "source": "pi05_formal_10k/scripts/train_forcebench.py",
       "sha256_before_portability": "9cf469db7e8e3b4489dba6868eb6ec47c24c03c07b5ec157b2c44036678a4eff",
-      "packaged_sha256": "d23e7a2d603163cfde703a3a55a95c91411b2f8e10a9d05e96d83243b1fac501",
+      "packaged_sha256": "551c362ffce1c859f7b3403a7572eb7b425a424186a4f2506f04e010644fd8aa",
       "modified_for_portability": true
     },
     "runtime/scripts/serve_policy.py": {
@@ -499,15 +499,17 @@
     "portable_common.py",
     "audit_candidate.py",
     "validate_candidate.py",
-    "runtime/scripts/runtime_env.py"
+    "runtime/scripts/runtime_env.py",
+    "gpu_validation.py"
   ],
-  "modification_scope": "Explicit task/data/norm/base/run inputs, candidate schema and stronger source/input identity; environment setup before JAX initialization; byte-preserved, value-checked checkpoint norm assets; no numerical model/data/optimizer change.",
+  "modification_scope": "Explicit task/data/norm/base/run inputs, candidate schema and stronger source/input identity; environment setup before JAX initialization; byte-preserved, value-checked checkpoint norm assets; optional three-update diagnostic inference/websocket check; no numerical model/data/optimizer change.",
   "new_wrapper_sha256": {
-    "run.py": "f07858df83f8778de4542c4282bef82791696a95980d1ad12dfec24b2aadfe43",
+    "run.py": "5ce1db8c7cab11431cca256a2a0d74ef0c0e1dc5eb80483b728f678445c1b16d",
     "serve.py": "a74f1a22446ee2f11af3cfd4d0a8c1df68ade62ee28c44dd833eda804940f79b",
     "portable_common.py": "ba0792f43a0f7e5215d2f3c94d7c5e3c07762dbe4b0565c0bd03c6e802c24021",
     "audit_candidate.py": "0a198d942ae4d04e93aab245b402a40d14d8941391a339ef628a69ca79cbd9bb",
-    "validate_candidate.py": "12d4451289f8d5ab225b61e2d33cc94d8abac2250fe520430c180a92a643da6c",
-    "runtime/scripts/runtime_env.py": "390068f5827bedf366c081b8249408ad571c9f495fd57f17887d7336d4b5ea80"
+    "validate_candidate.py": "50fb7ec97ce19b81f7a9301e66152631da100147fbca5f54eaaf49afabe4759e",
+    "runtime/scripts/runtime_env.py": "390068f5827bedf366c081b8249408ad571c9f495fd57f17887d7336d4b5ea80",
+    "gpu_validation.py": "ac593b5cc52b42f218edc3f8653d2cbe8699d19057129de0eab175dface75d53"
   }
 }

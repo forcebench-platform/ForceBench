@@ -1,0 +1,59 @@
+#usda 1.0
+(
+    customLayerData = {
+        string coribenchAssetSchemaVersion = "1.0"
+        string coribenchSourceAsset = "bolt_m16.usd"
+    }
+    defaultPrim = "Bolt"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Bolt" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+)
+{
+    custom string coribench:modelSchemaVersion = "1.0"
+    custom string coribench:originConvention = "support_plane_primary_mate_axis"
+
+    def Xform "Source" (
+        prepend references = @../../bolt_m16.usd@
+    )
+    {
+        double3 xformOp:translate:coribenchNormalization = (0, 0, 0)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale", "xformOp:translate:coribenchNormalization"]
+
+        over "factory_bolt_loose" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+        )
+        {
+        }
+
+        over "root_joint" (
+            active = false
+        )
+        {
+        }
+    }
+
+    def Scope "Frames"
+    {
+        def Xform "Support"
+        {
+            double3 xformOp:translate = (0, 0, 0)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Xform "Grasp"
+        {
+            double3 xformOp:translate = (0, 0, 0.0225)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+
+        def Xform "Mate"
+        {
+            double3 xformOp:translate = (0, 0, 0.032)
+            uniform token[] xformOpOrder = ["xformOp:translate"]
+        }
+    }
+}

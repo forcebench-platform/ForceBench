@@ -173,6 +173,9 @@ def run(args):
         "updates": limit, "metrics": values, "elapsed_s": time.time() - started,
         "checkpoint": None if args.preflight else str(config.checkpoint_dir / str(limit - 1)),
         "camera_masks": [True, True, False]})
+    if args.preflight and getattr(args, "validate_inference", False):
+        from gpu_validation import validate_preflight_policy
+        validate_preflight_policy(config, state, identity, ROOT)
 
 
 if __name__ == "__main__":

@@ -13,10 +13,14 @@ def main():
     parser.add_argument("mode", choices=("check", "train"))
     add_inputs(parser)
     parser.add_argument("--preflight", action="store_true", help="With train: run the preserved three-update GPU check")
+    parser.add_argument("--validate-inference", action="store_true",
+                        help="With train --preflight: test the in-memory model and a loopback websocket after three updates")
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
     if args.mode == "check" and (args.resume or args.preflight):
         parser.error("--resume and --preflight apply only to train")
+    if args.validate_inference and not (args.mode == "train" and args.preflight):
+        parser.error("--validate-inference requires train --preflight")
     paths = inspect_inputs(args)
     print(json.dumps({"input_identity": paths["identity"], "source_sha256": source_identity(),
                       "status": "input_metadata_checked_only", "weights_loaded": False,

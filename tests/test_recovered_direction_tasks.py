@@ -12,7 +12,7 @@ import pytest
 from forcebench.task_api import TaskManifest
 from forcebench.tasks.faucet_force_turn import MANIFEST as FAUCET_MANIFEST
 from forcebench.tasks.faucet_force_turn import spec as faucet
-from forcebench.tasks.faucet_force_turn.outcome import evaluate_report as faucet_outcome
+from forcebench.tasks.faucet_force_turn.outcome import evaluate_historical_report as faucet_outcome
 from forcebench.tasks.stove_press_turn import MANIFEST as STOVE_MANIFEST
 from forcebench.tasks.stove_press_turn import spec as stove
 from forcebench.tasks.stove_press_turn.outcome import evaluate_report as stove_outcome
