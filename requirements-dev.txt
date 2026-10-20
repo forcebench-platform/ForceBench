@@ -7,3 +7,4 @@ h5py
 msgpack
 websockets
 opencv-python
+torch>=2.7

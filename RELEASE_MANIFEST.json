@@ -76,8 +76,8 @@
     },
     {
       "path": ".github/workflows/tests.yml",
-      "bytes": 392,
-      "sha256": "e9aa72451ae0cb0e1a12e4d5f57760de1a9b06f1414ae28b71abad9b3f05139b"
+      "bytes": 489,
+      "sha256": "a99a7707cfb7f0eea3e182bbc2bc1e176d92662a76b6e5c0b52a5d9cef4ea4b9"
     },
     {
       "path": ".gitignore",
@@ -6126,13 +6126,13 @@
     },
     {
       "path": "pyproject.toml",
-      "bytes": 736,
-      "sha256": "ebfc731701acce25983b09e3ea73cafe3239a4f72aec04eaecf21118eb0cf4a8"
+      "bytes": 750,
+      "sha256": "e15dd556d8e857f24f1cd706a3be35c05f23310816dd6ae2460f7736ee8d6eb0"
     },
     {
       "path": "requirements-dev.txt",
-      "bytes": 282,
-      "sha256": "6ec27e97e022b15fd541501fcba547da839b990ed4b3ee5bbf89cb6a6fdc8956"
+      "bytes": 294,
+      "sha256": "ca5f81512cf45cd24b1406b7b4fa9859705f1b517fbd05d739d7458a1d93f341"
     },
     {
       "path": "results/README.md",
