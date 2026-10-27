@@ -1,0 +1,398 @@
+{
+  "schema_version": 1,
+  "verified_date": "2026-10-27",
+  "task": "weight_sort",
+  "non_robot_external_files_verified": 41,
+  "non_robot_external_bytes": 366592605,
+  "official_robot_verification": "robot_asset_equivalence_20261027.json",
+  "robot_included_in_downloader": true,
+  "required_external_files_including_robot": 42,
+  "official_archive": {
+    "url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+    "official_listing": "https://docs.omniverse.nvidia.com/usd/latest/usd_content_samples/downloadable_packs.html",
+    "bytes": 21907097879,
+    "etag": "822c58760f11488f10f4c2f0c2bb6bce-2612",
+    "observed_version_id": "EA03Qh1F9JAFQTeaE_3QdY.I7qn.HzjY"
+  },
+  "files": [
+    {
+      "path": "residential/east_rural/EastRural_Table.usd",
+      "bytes": 260199,
+      "sha256": "11e87dc81777b4530ce188d08fdffbee5d14a5a555f6972f31fb89259b22b770",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/EastRural_Table.usd",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_TableTop_BaseColor.png",
+      "bytes": 20143922,
+      "sha256": "2a7efc926f172a34bae5c6c46ab31fe0fb1d23c75a370e7ffd40bf06de7d7bf3",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_BaseColor.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_TableTop_Normal.png",
+      "bytes": 18157365,
+      "sha256": "89a386333706a66d911c660107e0d6bb9a83ae93efcdb612ed2a98aea59e73be",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_Normal.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_TableTop_Roughness.png",
+      "bytes": 6236217,
+      "sha256": "8ee05dd82dd6bd652308e11bc4516c7f38b0998bcdb7f0c1eb6016bfe4d1ca1a",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_Roughness.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_Table_WhiteWood_BaseColor.png",
+      "bytes": 6144755,
+      "sha256": "0f1b60a4107c119b95ed222e6db6638ccc89d6fa0265d5d168457c6c358b7b71",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_BaseColor.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_Table_WhiteWood_Normal.png",
+      "bytes": 19916517,
+      "sha256": "e2d9227321105d6cbc05415df2e2a72b450863cba6d3c19262713ea1e6ad3a55",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_Normal.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "residential/east_rural/Textures/ER_Table_WhiteWood_Roughness.png",
+      "bytes": 5542130,
+      "sha256": "e963a66972d72f210f8eef816caefae4fc438d76a4db557e252d29f6286eb6f2",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_Roughness.png",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/container_f27.usd",
+      "bytes": 2191,
+      "sha256": "c00fb43ed40e108f63e13a70e35a7db0a4b74b4519e1a6f86688d26d283138e8",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/container_f27.usd",
+      "zip_crc32": "0xd0f1f584",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/container_f27_base.usd",
+      "bytes": 3570691,
+      "sha256": "9f071ca5f9adc3df53d5f0a4bc26a697247e829047abe9634b93b14aafacaa1d",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/container_f27_base.usd",
+      "zip_crc32": "0x76a0de4f",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/container_f27_inst.usd",
+      "bytes": 674,
+      "sha256": "cddd91e455f6b2aa5fbd4fa394cc6873231297bd01a18dbff8793dca8bc6f932",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/container_f27_inst.usd",
+      "zip_crc32": "0xb6177ada",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/container_f27_inst_base.usd",
+      "bytes": 3545995,
+      "sha256": "ffd54b2513b380ef7cbeceb1eb4ec5f66ba12e7189d4f33554688da4b6bc4b6b",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/container_f27_inst_base.usd",
+      "zip_crc32": "0xb2709b6d",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/materials/Chrome_A.mdl",
+      "bytes": 555,
+      "sha256": "d1f050abfab88819689615e498d7a73243406fe63cc854582ca26c1929d30497",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/materials/Chrome_A.mdl",
+      "zip_crc32": "0x43412964",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/materials/Metal_Rough_A.mdl",
+      "bytes": 588,
+      "sha256": "d19885b930f941276132f0c9e21fa0d82bccbd4d59e5e7437af2e0a02ef35e2f",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/materials/Metal_Rough_A.mdl",
+      "zip_crc32": "0xb5136d09",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/materials/Plastic_B.mdl",
+      "bytes": 1617,
+      "sha256": "d9dc6c90174c69a03de966447144cd13c8590656d68dd0fde7de7d4609510d41",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/materials/Plastic_B.mdl",
+      "zip_crc32": "0x7bf31df9",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/materials/Plastic_Black_A.mdl",
+      "bytes": 1707,
+      "sha256": "18ea3ae5e49b223e0442ad1ec15d68e028e9ace5c98ce2adacd490bb0f540237",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/materials/Plastic_Black_A.mdl",
+      "zip_crc32": "0x11116c1d",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Chrome_A_Albedo.png",
+      "bytes": 20673810,
+      "sha256": "abd1a44e96a2192d073f407a033346f781ecb4806dbe9bb06786713c37ffbbf7",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_Albedo.png",
+      "zip_crc32": "0x46d9dd16",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Chrome_A_Normal.png",
+      "bytes": 3420212,
+      "sha256": "a334c86d8d7355dd69617a4c29c88fd17b11abf54ae10c2f05aea7feffaa0bd1",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_Normal.png",
+      "zip_crc32": "0xc9eb41a0",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Chrome_A_ORM.png",
+      "bytes": 14704982,
+      "sha256": "8929777eff60f6e624755f79c4a05bc69184664f911058bc150415af648ecbec",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_ORM.png",
+      "zip_crc32": "0xf4a62b5e",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Rough_A_Albedo.png",
+      "bytes": 37876965,
+      "sha256": "2dbe51946f73ea5559c8d8d3867a23a9ff4d3028290c9d0c2d77121c99917bd2",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_Albedo.png",
+      "zip_crc32": "0xef034fd3",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Rough_A_Normal.png",
+      "bytes": 35982715,
+      "sha256": "08799990cba750899e9127648d7eca49c0cc789b3a40af480e68e67af28eda37",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_Normal.png",
+      "zip_crc32": "0xfb30fec5",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Metal_Rough_A_ORM.png",
+      "bytes": 14732222,
+      "sha256": "3beb4bc13080a75d17206a296a63896e87e8a97854721a2270bcac4e602602f3",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_ORM.png",
+      "zip_crc32": "0xfbfae9d6",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Black_A_Albedo.png",
+      "bytes": 3661071,
+      "sha256": "24eff6de7f41695ad77314c7f51b8f2a845af1ed44866aa16395c5d7390a1f32",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_Albedo.png",
+      "zip_crc32": "0xff826cf",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Black_A_Normal.png",
+      "bytes": 15417956,
+      "sha256": "4ac55afefdc5db7595e12203bf3bb07af0e85f902c812cc9f04a349a03c1e4c9",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_Normal.png",
+      "zip_crc32": "0x13e83fe2",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Black_A_ORM.png",
+      "bytes": 3861820,
+      "sha256": "4d8e2f38c8c0cf1514fc8e11b7e52342259a3f8cf01f17b688a4d40340eefe2f",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_ORM.png",
+      "zip_crc32": "0xffd6d0b4",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Blue_A_Albedo.png",
+      "bytes": 3180154,
+      "sha256": "2b67ac657abb45ccd0fa3a94b59699972f8a2238e100ad558a5fe6f8a2474891",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Blue_A_Albedo.png",
+      "zip_crc32": "0x2a102b44",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Blue_A_ORM.png",
+      "bytes": 3156387,
+      "sha256": "46c623a21a7dd1f8dad4e959c39968dc853e7d4fb5d85b939bbb271d2ee0402d",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Blue_A_ORM.png",
+      "zip_crc32": "0xe8dcc268",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_Normal_1k.png",
+      "bytes": 4152274,
+      "sha256": "017086a4fb5d697900eaa4f52a4918ad7d559405dc733e8af3b090efc5875300",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Normal_1k.png",
+      "zip_crc32": "0xcad00f6",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/container_f27/textures/T_Plastic_ORM_1k.png",
+      "bytes": 901654,
+      "sha256": "c0c44b42d69832fa25d0749a55d36e7d5aa1ceba445d1e48ff026f220bd0f28d",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_ORM_1k.png",
+      "zip_crc32": "0x59b03e56",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/flatbox_a02.usd",
+      "bytes": 1710,
+      "sha256": "49138e57a21765a0ffd089c4620f02bad86605272cb9595a51c5c3af5e0b46a8",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02.usd",
+      "zip_crc32": "0x5fcaea85",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/flatbox_a02_base.usd",
+      "bytes": 850198,
+      "sha256": "84d8ccd96b9bca7a4a487eb9547bb9d2b6940f9bff19c90ecb68dcbef09ac6ed",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_base.usd",
+      "zip_crc32": "0x1c37030b",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/flatbox_a02_inst.usd",
+      "bytes": 672,
+      "sha256": "c5c57a85e03d4a9b29b61a9a729353ae1bbb8da50e50f2419a4aa97ddd1a5962",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_inst.usd",
+      "zip_crc32": "0xd77ed1cf",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/flatbox_a02_inst_base.usd",
+      "bytes": 913810,
+      "sha256": "adba1339e27b9a2a4b9a34bceeacfbee56f1d5baa64408c0703903e1b369730a",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_inst_base.usd",
+      "zip_crc32": "0x54199847",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "bytes": 1714,
+      "sha256": "628f72930065f82db26ea782b1c315275595d2966c919ddfda10eb962cf75a52",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl",
+      "zip_crc32": "0x2c89f3e7",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "bytes": 1786,
+      "sha256": "b2de57f8cbc5883295e9ba91570650407d843213a2bcef290675306082ea6522",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/M_FlatBox_Decal_01.mdl",
+      "zip_crc32": "0xf63f2461",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Albedo.png",
+      "bytes": 37508155,
+      "sha256": "66cc8e105a398383eec2be41f30506f62572d6f9245f13caefbaf0230a012262",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Albedo.png",
+      "zip_crc32": "0x9290b8de",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Normal.png",
+      "bytes": 40367306,
+      "sha256": "fd140f6ab236b84b275df8f1f9b112b4cd8a1bc0c03a50557ee15124ce953f7e",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Normal.png",
+      "zip_crc32": "0x5af0e9d0",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_ORM.png",
+      "bytes": 19817665,
+      "sha256": "1d0db3414ee0e3bd4ef11ce27644668fd4eea82dabfdaabac61ea9948ba9fc35",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_ORM.png",
+      "zip_crc32": "0x6797ca16",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Albedo.png",
+      "bytes": 9959837,
+      "sha256": "4a5eca6721c661fcc1a108806d6095b3f1312aa57e42f7d8af086cbb334afea6",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Albedo.png",
+      "zip_crc32": "0x11b725c1",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Normal.png",
+      "bytes": 4188361,
+      "sha256": "1144b33e323562a88f8863ab3cbdf53759e0270aa51d2943364d761bc5ffdd6c",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Normal.png",
+      "zip_crc32": "0xfc457802",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_ORM.png",
+      "bytes": 7260637,
+      "sha256": "2ab015e91b6d466cf2b89f87c0854785b1e726da5e80bc46807d92b0138137b7",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_ORM.png",
+      "zip_crc32": "0x6e37317e",
+      "size_and_sha256_verified": true
+    },
+    {
+      "path": "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Opacity.png",
+      "bytes": 473409,
+      "sha256": "65166e185a7ab1678fedc396e7e8a0080996ef61b2e020b596c81a677f7c7cb2",
+      "source_url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "archive_member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Opacity.png",
+      "zip_crc32": "0x2e5bc80",
+      "size_and_sha256_verified": true
+    }
+  ],
+  "scope": "Official acquisition and exact file identity; repository-authored wrappers and installed renderer materials are checked separately by prepare_assets.py. No training or policy score reproduction is claimed.",
+  "acquisition_validation": {
+    "fresh_directory_download": {
+      "external_files": 42,
+      "checks_passed": true,
+      "all_files_size_and_sha256_verified": true
+    },
+    "repeat_download_without_network": {
+      "reused_files": 42,
+      "downloaded_files": 0
+    },
+    "supported_runtime_import": {
+      "payload_files_verified": 45,
+      "payload_files_copied": 45,
+      "runtime_materials_verified": [
+        "OmniPBR.mdl",
+        "OmniGlass.mdl"
+      ],
+      "issues": [],
+      "repeat_copied_files": 0
+    },
+    "focused_offline_tests_passed": 56,
+    "scope": "Acquisition, complete USD-layer comparison and asset import checks only; no new GPU policy evaluation or paper-score reproduction."
+  }
+}

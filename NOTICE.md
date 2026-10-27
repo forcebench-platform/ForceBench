@@ -32,7 +32,7 @@ dependency record for separately acquired files.
 | Lightwheel Kitchen sources | Retain the upstream CC BY-NC 4.0 terms and attribution. The upstream text is preserved at `assets/lightwheel_kitchen/LICENSE.txt`; source meshes and textures remain external. |
 | Poly Haven textures | Obtain separately and retain their applicable source terms and attribution information. |
 | ArtVIP RADMANSO model | The historical record has not established redistribution permission. No model payload is supplied or licensed by this repository. |
-| Historical `franka_mimic.usd` export | The deployed bytes are pinned, but their complete upstream custody/permission chain is unconfirmed. The filename does not establish a redistribution grant. |
+| Shared `franka_mimic.usd` robot | A pinned NVIDIA official download and a content-identical historical export are accepted; see `docs/robot_asset.md`. The repository supplies acquisition code and verification records, not the third-party USD payload or a redistribution grant. |
 | Isaac Sim renderer materials and MDL SDK modules | Supplied by the independently installed runtime. They are checked as runtime requirements and are not copied into the asset bundle. |
 
 Authored wrappers and derivation scripts do not license the external geometry

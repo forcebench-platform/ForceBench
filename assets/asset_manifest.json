@@ -189,6 +189,14 @@
       "present": true,
       "bytes": 7073847,
       "sha256": "6ca52983cbede63f4caf1557896213e732f14fd8da9234658a6981ec2515b1bf",
+      "verified_equivalent_exports": [
+        {
+          "bytes": 7075031,
+          "sha256": "86d0017a093669b222a8c640bf581cc3e3715035aa7c596600f478da011f6c8e",
+          "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/franka_mimic.usd",
+          "verification_report": "robot_asset_equivalence_20261027.json"
+        }
+      ],
       "dependencies": [
         "OmniPBR.mdl"
       ],

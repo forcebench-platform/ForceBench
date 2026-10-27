@@ -114,3 +114,145 @@ def test_runtime_material_files_are_checked_without_being_redistributed(tmp_path
     report = _tool().prepare(source, destination, manifest, review, runtime_material_dir=runtime)
     assert report["checks_passed"]
     assert not (destination / "OmniPBR.mdl").exists()
+
+
+def _robot_manifest(historical=b"historical export", official=b"official export"):
+    manifest = _manifest({"franka_mimic.usd": historical})
+    manifest["files"][0]["verified_equivalent_exports"] = [{
+        "bytes": len(official), "sha256": hashlib.sha256(official).hexdigest(),
+        "source_url": "https://example.invalid/audited-robot.usd",
+        "verification_report": "robot_asset_equivalence_20261027.json",
+    }]
+    return manifest
+
+
+def test_audited_robot_export_copies_its_actual_bytes_and_reports_identity(tmp_path):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    official = b"official export"
+    _write(source, {"franka_mimic.usd": official})
+    manifest = _robot_manifest()
+    report = _tool().prepare(source, destination, manifest, {})
+    assert report["checks_passed"] and report["copied_files"] == 1
+    assert (destination / "franka_mimic.usd").read_bytes() == official
+    assert report["verified_bytes"] == len(official)
+    identity = report["verified_assets"][0]
+    for location in ("source", "destination"):
+        assert identity[location]["sha256"] == hashlib.sha256(official).hexdigest()
+        assert identity[location]["export"] == "verified_equivalent"
+        assert identity[location]["present"]
+    assert identity["source"]["verification_report"] == "robot_asset_equivalence_20261027.json"
+    assert manifest["files"][0]["sha256"] == hashlib.sha256(b"historical export").hexdigest()
+    assert _tool().prepare(source, destination, manifest, {})["copied_files"] == 0
+
+
+def test_unknown_robot_bytes_are_rejected_even_at_an_allowed_size(tmp_path):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": b"x" * len(b"official export")})
+    report = _tool().prepare(source, destination, _robot_manifest(), {})
+    assert report["issues"] == [{"file": "franka_mimic.usd", "kind": "source_sha256_mismatch"}]
+    assert not destination.exists()
+
+
+@pytest.mark.parametrize("source_bytes,destination_bytes,source_export,destination_export", [
+    (b"official export", b"historical export", "verified_equivalent", "primary"),
+    (b"historical export", b"official export", "primary", "verified_equivalent"),
+])
+def test_either_audited_destination_export_is_kept(tmp_path, source_bytes, destination_bytes,
+                                                 source_export, destination_export):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": source_bytes})
+    _write(destination, {"franka_mimic.usd": destination_bytes})
+    report = _tool().prepare(source, destination, _robot_manifest(), {})
+    assert report["checks_passed"] and report["prepared"] and report["copied_files"] == 0
+    assert (destination / "franka_mimic.usd").read_bytes() == destination_bytes
+    identity = report["verified_assets"][0]
+    assert identity["action"] == "keep"
+    assert identity["source"]["export"] == source_export
+    assert identity["destination"]["export"] == destination_export
+    assert identity["source"]["sha256"] == hashlib.sha256(source_bytes).hexdigest()
+    assert identity["destination"]["sha256"] == hashlib.sha256(destination_bytes).hexdigest()
+
+
+def test_unknown_robot_destination_is_preserved_and_blocks_other_copying(tmp_path):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    manifest = _robot_manifest()
+    manifest["files"].append(_manifest({"other.usd": b"another asset"})["files"][0])
+    manifest["tasks"]["example"]["files"].append("other.usd")
+    _write(source, {"franka_mimic.usd": b"official export", "other.usd": b"another asset"})
+    _write(destination, {"franka_mimic.usd": b"user changes"})
+    report = _tool().prepare(source, destination, manifest, {})
+    assert not report["checks_passed"]
+    assert report["issues"] == [{"file": "franka_mimic.usd", "kind": "different_existing_destination"}]
+    assert (destination / "franka_mimic.usd").read_bytes() == b"user changes"
+    assert not (destination / "other.usd").exists()
+    identity = next(row for row in report["verified_assets"] if row["file"] == "franka_mimic.usd")
+    assert identity["action"] == "blocked"
+    assert "sha256" not in identity["destination"]
+
+
+def test_equivalent_exports_cannot_relax_unrelated_asset_pins(tmp_path):
+    manifest = _robot_manifest()
+    manifest["files"][0]["path"] = "nut_m16.usd"
+    manifest["tasks"]["example"]["files"] = ["nut_m16.usd"]
+    with pytest.raises(ValueError, match="only supported for the audited robot"):
+        _tool().prepare(tmp_path / "source", tmp_path / "destination", manifest, {})
+
+
+def test_equivalent_robot_keeps_dependency_review_bound_to_historical_pin(tmp_path):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": b"official export"})
+    manifest = _robot_manifest()
+    gap = {"file": "franka_mimic.usd", "kind": "mdl_runtime_module", "reference": "OmniPBR"}
+    manifest["gaps"] = [gap]
+    review = {"reviews": [{**gap, "classification": "runtime_mdl_module",
+                            "owner_sha256": {"franka_mimic.usd": manifest["files"][0]["sha256"]}}]}
+    assert _tool().prepare(source, destination, manifest, review, check_only=True)["checks_passed"]
+    assert not destination.exists()
+    review["reviews"][0]["owner_sha256"]["franka_mimic.usd"] = hashlib.sha256(b"official export").hexdigest()
+    report = _tool().prepare(source, destination, manifest, review, check_only=True)
+    assert report["issues"][0]["kind"] == "stale_dependency_review"
+
+
+def test_copied_robot_is_checked_against_selected_export_and_cleaned_on_failure(tmp_path, monkeypatch):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": b"official export"})
+    module = _tool()
+    monkeypatch.setattr(module.shutil, "copyfileobj", lambda incoming, output, length: output.write(b"corrupted"))
+    with pytest.raises(OSError, match="differs from selected export"):
+        module.prepare(source, destination, _robot_manifest(), {})
+    assert not (destination / "franka_mimic.usd").exists()
+
+
+def test_unknown_destination_created_after_preflight_is_preserved_and_rejected(tmp_path, monkeypatch):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": b"official export"})
+    module = _tool()
+    def create_concurrent_destination():
+        _write(destination, {"franka_mimic.usd": b"concurrent user changes"})
+        return None
+    monkeypatch.setattr(module, "_runtime_material_dir", create_concurrent_destination)
+    with pytest.raises(OSError, match="differs from approved exports; preserved"):
+        module.prepare(source, destination, _robot_manifest(), {})
+    assert (destination / "franka_mimic.usd").read_bytes() == b"concurrent user changes"
+
+
+@pytest.mark.parametrize("concurrent_bytes,export", [
+    (b"historical export", "primary"), (b"official export", "verified_equivalent"),
+])
+def test_audited_destination_created_after_preflight_is_kept_with_actual_identity(
+        tmp_path, monkeypatch, concurrent_bytes, export):
+    source, destination = tmp_path / "source", tmp_path / "destination"
+    _write(source, {"franka_mimic.usd": b"historical export"})
+    module = _tool()
+    def create_concurrent_destination():
+        _write(destination, {"franka_mimic.usd": concurrent_bytes})
+        return None
+    monkeypatch.setattr(module, "_runtime_material_dir", create_concurrent_destination)
+    report = module.prepare(source, destination, _robot_manifest(), {})
+    assert report["checks_passed"] and report["prepared"] and report["copied_files"] == 0
+    assert (destination / "franka_mimic.usd").read_bytes() == concurrent_bytes
+    identity = report["verified_assets"][0]
+    assert identity["source"]["export"] == "primary"
+    assert identity["destination"]["present"] and identity["action"] == "keep"
+    assert identity["destination"]["export"] == export
+    assert identity["destination"]["sha256"] == hashlib.sha256(concurrent_bytes).hexdigest()

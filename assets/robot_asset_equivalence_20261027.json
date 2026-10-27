@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "verified_date": "2026-10-27",
+  "file": "franka_mimic.usd",
+  "historical_export": {
+    "bytes": 7073847,
+    "sha256": "6ca52983cbede63f4caf1557896213e732f14fd8da9234658a6981ec2515b1bf"
+  },
+  "official_export": {
+    "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/franka_mimic.usd",
+    "bytes": 7075031,
+    "sha256": "86d0017a093669b222a8c640bf581cc3e3715035aa7c596600f478da011f6c8e",
+    "same_bytes_verified_in_isaac_asset_releases": ["4.2", "4.5", "5.0", "5.1"]
+  },
+  "comparison": {
+    "openusd_version": [0, 22, 11],
+    "method": "Read each file independently with pxr.Sdf.Layer. Compare every traversed path and authored field using typed value equality, and complete ExportToString outputs without stripping or normalizing any field.",
+    "traversed_paths_including_relationship_targets": 1226,
+    "relationship_target_paths_without_standalone_specs": 144,
+    "authored_specs": 1082,
+    "authored_fields_compared": 4022,
+    "authored_field_differences": 0,
+    "export_to_string_identical": true,
+    "canonical_usda_sha256": "51e87379b0e3f1b87c8230ac5753ebe0747eeb71194b3fcf3e09519e1dd98058"
+  },
+  "result": "Both exact binary exports decode to identical authored USD content in the checked OpenUSD implementation. Arbitrary same-name files remain rejected.",
+  "scope": "Static complete-layer comparison; not a policy-score reproduction or a complete fresh-machine task installation.",
+  "distribution": "Acquisition code and this record are published; the third-party USD payload remains external and subject to its upstream terms."
+}

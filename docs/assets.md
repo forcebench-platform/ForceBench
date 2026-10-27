@@ -23,7 +23,7 @@ different export or revision instead of silently substituting geometry.
 | Source group | Required material | Terms and acquisition status |
 |---|---|---|
 | NVIDIA Factory/FORGE deployment | `nut_m16.usd`, `bolt_m16.usd` | Recorded Factory/FORGE export from Isaac Lab 2.3.2 / Isaac Sim 5.1. Obtain under the applicable NVIDIA distribution terms; the binaries are not bundled. Source filenames and checksums are detailed in [nut_assets.md](nut_assets.md). |
-| Historical shared robot export | `franka_mimic.usd` | The byte-identical runtime export is pinned, but the historical record currently traces it only to the existing Franka2 installation. Its full upstream custody/permission chain is unconfirmed; do not infer a redistribution grant from its filename. |
+| NVIDIA Factory shared robot | `franka_mimic.usd` | The official download and the historical binary decode to identical complete authored USD content; both exact hashes are accepted. Follow the [robot download instructions](robot_asset.md). The binary stays external and subject to upstream terms. |
 | NVIDIA SimReady / Isaac / ArchVis assets | SimReady `flatbox_a02`, `flatbox_a07`, `container_f27`, `cup09`, conveyor, warehouse rack, shipping background parcels, EastRural table | Use the original asset distributions and preserve their referenced materials/textures. The historical shipping package was `SimReady_Containers_Shipping_01_NVD@10010.zip`. No open redistribution permission is asserted here. |
 | Lightwheel Kitchen | `Sink054`, `Stovetop012`, collected KitchenRoom and Pot057 | Recorded release commit `10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1`; retain the upstream CC BY-NC 4.0 terms and attribution in `assets/lightwheel_kitchen/LICENSE.txt`. Referenced source files remain external. |
 | Poly Haven | Ash veneer diffuse, normal and roughness textures used by the precision table | Retain the original source/terms with separately acquired texture files; exact deployed bytes are pinned. |
@@ -34,6 +34,33 @@ This is an import recipe for a separately acquired asset tree, rather than an
 automated public download service. In particular, an asset availability or
 permission gap cannot be fixed by renaming a different model to match the
 expected filename. The historical exports remain identifiable by checksum.
+
+### Download the shared robot / 下载共享机器人
+
+```bash
+python tools/download_robot_asset.py --source-dir /path/to/legally-acquired-asset-tree
+```
+
+The [robot guide](robot_asset.md) gives the fixed NVIDIA URL, upstream hash
+and complete content comparison with the historical export. Only those two
+exact robot exports are accepted; other assets retain their existing
+exact-byte requirements. This command downloads the robot only.
+
+上述命令仅下载共享机器人，保留完整校验；任务物体和场景仍需另行准备。
+
+### Download the default Weight Sort scene / 获取 Weight Sort 默认场景
+
+```bash
+python tools/download_weight_sort_assets.py --source-dir /path/to/legally-acquired-asset-tree --workers 4
+```
+
+The [Weight Sort acquisition guide](weight_sort_assets.md) pins the historical
+official SimReady ZIP and ArchVis source paths, and explains the selected
+Range downloads. It fetches all 42 external Weight Sort files; the importer
+adds the three repository-authored wrappers and checks runtime materials.
+
+此命令获取 Weight Sort 的全部 42 个外部文件；历史官方包版本、目录映射与校验方法见
+[获取指南](weight_sort_assets.md)。其他任务的外部资产需要按各自来源准备。
 
 ## Verify and import
 

@@ -55,6 +55,21 @@ Source models and textures are supplied separately.
 
 按照各资产的原有条款取得文件后，使用 `tools/prepare_assets.py` 校验并导入，再在仿真环境中运行 `python -m forcebench doctor`。[资产说明](docs/assets.md)列出了固定版本的 300 个文件、自有封装文件、渲染器要求及已核查的依赖。原始模型与纹理文件需单独取得。
 
+For the shared Franka robot, a [verified NVIDIA download](docs/robot_asset.md)
+is available through `python tools/download_robot_asset.py --source-dir /path/to/external-source`.
+The official and historical binary hashes differ, but their complete decoded
+USD content was verified identical; both exact exports are accepted.
+
+共享 Franka 机器人已提供[官方获取步骤](docs/robot_asset.md)：上面的下载命令会校验已验证的 NVIDIA 文件。
+官方与历史文件的二进制哈希不同，但完整 USD 内容已核对一致；两份确切版本均可通过校验。
+
+For Weight Sort, [download all required external scene assets](docs/weight_sort_assets.md)
+with `python tools/download_weight_sort_assets.py --source-dir /path/to/external-source --workers 4`,
+then use the importer above. The historical SimReady package version is pinned.
+
+Weight Sort 已提供[完整外部场景资产的获取步骤](docs/weight_sort_assets.md)，包括正确历史版本的箱体、容器和桌面；
+执行上述任务下载命令后，再用资产导入器完成封装和运行时材质检查。
+
 ## Eight tasks / 八个任务
 
 | Category / 类别 | Paper task / 论文任务 | Runtime ID / 运行标识 |
