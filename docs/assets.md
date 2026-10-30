@@ -1,157 +1,172 @@
-# Preparing assets for the eight default tasks
+# Assets for all eight tasks / 八任务资产准备
 
-ForceBench source includes authored USD reference wrappers and primitive
-geometry. The third-party model files, textures and renderer materials must
-be obtained separately under their original terms. The code's MIT license
-does not grant rights to those files. The preparation tool neither downloads
-assets nor grants redistribution permission.
+## One acquisition entry point / 统一获取入口
 
-`assets/asset_manifest.json` pins **300 existing files, 2,300,568,689 bytes**
-for the eight task defaults, including the shared `franka_mimic.usd` robot,
-task objects and selected room/table profiles. Each file has a relative path,
-SHA256, size and dependency list. The 17 authored USDA wrappers total 109,516
-bytes and are included with source. Source USD meshes and textures are absent
-from the Git distribution.
+From the repository root, in a Python 3.12.13 tools environment (the validated
+asset-build interpreter; basic inspection also supports Python 3.11+):
 
-## Obtain the external files
+```bash
+python -m pip install -e ".[assets]"
+python tools/download_assets.py \
+  --source-dir /path/to/asset-source \
+  --cache-dir /path/to/download-cache --workers 4
+```
 
-Acquire the following materials from their applicable upstream distribution,
-retaining the directory layout recorded in the manifest. Asset names alone
-are insufficient: the importer requires the recorded bytes and reports a
-different export or revision instead of silently substituting geometry.
+Omit `--task` for all eight tasks. Repeat it for a subset, for example
+`--task faucet_turn --task nut_thread`. The checked-in
+[source registry](../assets/asset_sources.json) covers all **283 external or
+derived payloads** selected by the default scenes. The importer adds the
+17 authored wrappers shipped in Git, making **300 runtime payload files**.
+Existing verified files are reused. Unknown, truncated or changed files fail
+verification and are preserved; interrupted downloads can be resumed by
+rerunning the command.
 
-| Source group | Required material | Terms and acquisition status |
+在仓库根目录安装 `.[assets]` 后运行上述命令，即可按固定来源获取全部八个默认任务的资产。
+可用 `--task` 选择任务。下载、解压和构建结果都按长度与 SHA256 校验，不依赖内部服务器。
+建议为资产、导入副本和下载缓存预留至少 8 GB；模拟器、运行数据和模型环境另计。
+
+## Task-to-source map / 任务与来源
+
+| Runtime task | Paper task | Required source families |
 |---|---|---|
-| NVIDIA Factory/FORGE deployment | `nut_m16.usd`, `bolt_m16.usd` | Recorded Factory/FORGE export from Isaac Lab 2.3.2 / Isaac Sim 5.1. Obtain under the applicable NVIDIA distribution terms; the binaries are not bundled. Source filenames and checksums are detailed in [nut_assets.md](nut_assets.md). |
-| NVIDIA Factory shared robot | `franka_mimic.usd` | The official download and the historical binary decode to identical complete authored USD content; both exact hashes are accepted. Follow the [robot download instructions](robot_asset.md). The binary stays external and subject to upstream terms. |
-| NVIDIA SimReady / Isaac / ArchVis assets | SimReady `flatbox_a02`, `flatbox_a07`, `container_f27`, `cup09`, conveyor, warehouse rack, shipping background parcels, EastRural table | Use the original asset distributions and preserve their referenced materials/textures. The historical shipping package was `SimReady_Containers_Shipping_01_NVD@10010.zip`. No open redistribution permission is asserted here. |
-| Lightwheel Kitchen | `Sink054`, `Stovetop012`, collected KitchenRoom and Pot057 | Recorded release commit `10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1`; retain the upstream CC BY-NC 4.0 terms and attribution in `assets/lightwheel_kitchen/LICENSE.txt`. Referenced source files remain external. |
-| Poly Haven | Ash veneer diffuse, normal and roughness textures used by the precision table | Retain the original source/terms with separately acquired texture files; exact deployed bytes are pinned. |
-| ArtVIP | RADMANSO three-drawer `model.usd` and its `resource/` dependencies | The project's historical record has not established redistribution permission. Users must obtain these through an authorized source; ForceBench does not supply the model. |
-| Supported Isaac Sim runtime | `OmniPBR.mdl`, `OmniGlass.mdl` and MDL SDK modules | These stay in the installed renderer. The preparation check verifies the recorded `kit/mdl/core/Base` materials; it does not copy them into the asset bundle. |
+| `weight_sort` | Weight Sort | NVIDIA Shipping @10010, EastRural, shared robot |
+| `rattle_sort` | CoM Sort | Shipping @10010, NVIDIA conveyor/warehouse inputs, two CPU builds, shared robot |
+| `faucet_turn` | Faucet Turn | Lightwheel Kitchen, exact DOM cup09, shared robot |
+| `faucet_force_turn` | Faucet Direction | Lightwheel Kitchen, exact DOM cup09, shared robot |
+| `stove_turn_on` | Stove Turn | Lightwheel Kitchen and exact scene/UV/single-burner rebuilds, shared robot |
+| `stove_press_turn` | Stove Press | Same Kitchen inputs and rebuilds, shared robot |
+| `nut_thread` | Nut Thread | NVIDIA Factory nut/bolt, EastRural, Poly Haven, shared robot |
+| `radmanso_drawer_sort_table` | Drawer Pull | Published ArtVIP RADMANSO model, EastRural, shared robot |
 
-This is an import recipe for a separately acquired asset tree, rather than an
-automated public download service. In particular, an asset availability or
-permission gap cannot be fixed by renaming a different model to match the
-expected filename. The historical exports remain identifiable by checksum.
+The registry contains the full per-file paths, pins and archive-member maps.
+The tool downloads only the selected task closure and its build inputs.
+Each task's authored wrappers and physical settings remain unchanged.
 
-### Download the shared robot / 下载共享机器人
+## Fixed publishers and versions / 固定来源与版本
+
+- **Shared robot:** [NVIDIA Factory robot](robot_asset.md). The historical and
+  official binary exports have identical complete authored USD content; both
+  exact hashes are accepted.
+- **Nut/Bolt:** [NVIDIA Isaac 5.1 Factory sources](nut_assets.md). Only the two
+  explicitly audited official export variants and historical exports are
+  accepted. SDF collision, vertex counts and task frames remain checked.
+- **SimReady:** NVIDIA's [Shipping 01 NVD @10010 archive](https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip),
+  listed on its [official asset-pack page](https://docs.omniverse.nvidia.com/usd/latest/usd_content_samples/downloadable_packs.html).
+  The archive is 21,907,097,879 bytes, ETag
+  `822c58760f11488f10f4c2f0c2bb6bce-2612`. The downloader uses bounded HTTP
+  Range requests and ZIP CRC checks for selected members. It never downloads
+  the full 21 GB archive. Current same-name S3 object revisions are not substitutes.
+- **Lightwheel Kitchen:** [official repository](https://github.com/LightwheelAI/Lightwheel_Kitchen),
+  commit `10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1`. The fixed Git LFS ZIP is
+  699,682,909 bytes, SHA256
+  `721fb9e47d09b2c43a7db396c1d63c659e987d5925db0a5e78cf4fd40cd0b0b0`.
+  This verified GitHub download is used rather than the upstream README's
+  currently unavailable GCS URL. Preserve the supplied **CC BY-NC 4.0** terms
+  and attribution in `assets/lightwheel_kitchen/LICENSE.txt`.
+- **EastRural:** NVIDIA [ArchVis table](https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/EastRural_Table.usd)
+  and its six original textures. Exact URLs and hashes are in the registry.
+- **Ash veneer:** [Poly Haven](https://polyhaven.com/a/ash_veneer), the pinned
+  4K JPG diffuse, OpenGL normal and roughness maps, under its CC0 terms.
+- **Drawer:** the [official ArtVIP dataset](https://huggingface.co/datasets/X-Humanoid/ArtVIP),
+  commit `d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e`, whose dataset card
+  declares Apache-2.0. All six selected payloads match the historical files;
+  the published long model filename is copied to local `model.usd`.
+- **Cup09:** the exact `objects/cup/cup09.usd` from the explicitly labelled
+  [third-party DynamicVLA DOM mirror](https://huggingface.co/datasets/mickeykang/dom-eval-files),
+  commit `77dda64f9942cb81d97ed00d4d61b8721d749210`. The mirror ZIP is
+  192,600,903 bytes, SHA256
+  `02aaa3f87d7efd2e06e16d767cdea81e53299d2531505bea22db861c82c9cd63`.
+  The selected cup matches the historical size and SHA256 exactly. This is
+  **not an NVIDIA asset or an original-author download**. The original
+  [DynamicVLA project](https://github.com/hzxie/DynamicVLA) points to its
+  [official object-package request page](https://gateway.infinitescript.com/?f=DOM-3D-Objects),
+  which requires email and human verification. No access check is bypassed.
+  Use the original publisher's applicable terms; the mirror is not relicensed
+  by ForceBench's MIT code license.
+
+全部链接与版本均固定在 registry 中。Cup09 的第三方镜像身份已单独标明，不能把它归为
+NVIDIA SimReady，也不能由本仓库的代码许可证推断外部资产许可。
+本仓库发布下载与构建工具、校验记录和自有封装，不发布这些第三方二进制素材。
+
+## Five exact CPU builds / 五项精确 CPU 构建
+
+Install **`usd-core==25.11`** through the `.[assets]` extra. The downloader
+checks the writer version, source hashes, repository builder hashes and
+resulting file hashes. It performs these builds in isolated directories:
+
+| Output | Exact reconstruction |
+|---|---|
+| `FullKitchen/Collected_KitchenRoom/KitchenRoom.usd` | Copy official layer, remove its two historical UnitsAdjust sublayers, then incremental `Sdf.Layer.Save()` |
+| `Stovetop012/Stovetop012.usd` | Copy official layer, restore the recorded UV entry and four index ranges, then incremental save |
+| `Stovetop012_single_center.usd` | Run the shipped single-burner selection builder on the restored input |
+| `simready/conveyor_a04/conveyor_a04.usd` | Build from the pinned official Isaac 6.0 conveyor source |
+| `simready/small_warehouse_digital_twin/rack.usd` | Extract the recorded rack branch from the pinned official warehouse source |
+
+These reproduce the historical output SHA256 values. They do not replace
+geometry with approximate objects or alter benchmark success rules. Exporting
+or flattening the Kitchen/Stove layers instead of incremental saving changes
+the binary serialization and does not satisfy the historical pins. The
+complete build dependency order is registered in `asset_sources.json`.
+
+五项构建均已从公共输入重建并命中历史输出哈希；下载器自动处理顺序。
+Kitchen 和 Stove 的源层修复必须增量保存，不能自行 Flatten 或重新导出替代。
+
+The [2026-10-27 verification record](../validation/asset_acquisition_20261027.json)
+includes all five exact rebuilds, import/composition checks, an offline rerun
+with zero network/build calls, and eight real GPU task checks. The tools
+environment was fresh; the simulator environment inherited heavy NVIDIA
+dependencies. The record lists the actual network route fallbacks and native
+library requirements; it is not a fresh-OS or learned-policy result receipt.
+
+## Network restrictions and offline archive cache / 网络与离线包
+
+Configure `HTTPS_PROXY` in the tools environment when a publisher is not
+reachable. A failure preserves verified files and removes incomplete temporary
+outputs. For the two small fully cached ZIPs, you can download the exact
+registry URL with another authorized browser or machine, then import it:
 
 ```bash
-python tools/download_robot_asset.py --source-dir /path/to/legally-acquired-asset-tree
+python tools/download_assets.py \
+  --source-dir /path/to/asset-source --cache-dir /path/to/download-cache \
+  --archive-file lightwheel_v1=/path/to/Lightwheel_Kitchen.zip \
+  --archive-file dom_objects_mirror=/path/to/DOM-3D-Objects.zip
 ```
 
-The [robot guide](robot_asset.md) gives the fixed NVIDIA URL, upstream hash
-and complete content comparison with the historical export. Only those two
-exact robot exports are accepted; other assets retain their existing
-exact-byte requirements. This command downloads the robot only.
+The tool verifies each supplied archive's complete length and SHA256 before
+using it. It does not accept the Shipping archive through this full-cache
+option; Shipping remains a bounded Range source. The cache's contents are
+reusable but do not replace per-file checks.
 
-上述命令仅下载共享机器人，保留完整校验；任务物体和场景仍需另行准备。
+若服务器无法访问 GitHub 或 Hugging Face，可从 registry 给定的同一地址下载原包，
+再通过 `--archive-file` 导入。不要修改 ZIP 内容或用别的版本改名替代；完整长度和哈希都会检查。
 
-### Download the default Weight Sort scene / 获取 Weight Sort 默认场景
+## Import and start / 导入并启动
 
-```bash
-python tools/download_weight_sort_assets.py --source-dir /path/to/legally-acquired-asset-tree --workers 4
-```
-
-The [Weight Sort acquisition guide](weight_sort_assets.md) pins the historical
-official SimReady ZIP and ArchVis source paths, and explains the selected
-Range downloads. It fetches all 42 external Weight Sort files; the importer
-adds the three repository-authored wrappers and checks runtime materials.
-
-此命令获取 Weight Sort 的全部 42 个外部文件；历史官方包版本、目录映射与校验方法见
-[获取指南](weight_sort_assets.md)。其他任务的外部资产需要按各自来源准备。
-
-## Verify and import
-
-Run with the supported Isaac Sim Python environment so the renderer material
-directory can be found automatically. Use a new explicit asset directory:
+Switch to the supported simulator environment from the
+[installation guide](getting_started_main.md), including its first-run EULA
+and interactive warm-up step before running the non-interactive GPU checker:
 
 ```bash
 python tools/prepare_assets.py \
-  --source-dir /path/to/legally-acquired-asset-tree \
-  --asset-dir /path/to/forcebench-assets \
-  --check-only
-
+  --source-dir /path/to/asset-source --asset-dir /path/to/forcebench-assets --check-only
 python tools/prepare_assets.py \
-  --source-dir /path/to/legally-acquired-asset-tree \
-  --asset-dir /path/to/forcebench-assets
-
+  --source-dir /path/to/asset-source --asset-dir /path/to/forcebench-assets
 export FORCEBENCH_ASSET_DIR=/path/to/forcebench-assets
+python -m forcebench doctor --asset-dir "$FORCEBENCH_ASSET_DIR"
+python tools/verify_nut_asset_composition.py --asset-dir "$FORCEBENCH_ASSET_DIR"
+
+CUDA_VISIBLE_DEVICES=0 python tools/validate_simulation.py \
+  --python "$(command -v python)" --assets "$FORCEBENCH_ASSET_DIR" \
+  --output /path/to/fresh-validation-output --steps 10 --timeout 1200
 ```
 
-If Python cannot discover the installed Isaac Sim package, add
-`--runtime-material-dir /path/to/isaacsim/kit/mdl/core/Base`. To prepare a
-subset, repeat `--task` with the task IDs from `python -m forcebench list-tasks`.
+The importer checks the installed renderer's `OmniPBR.mdl` and `OmniGlass.mdl`;
+these stay in Isaac Sim and are not downloaded as dataset payloads. Only use
+`--runtime-material-dir` when discovery of the supported runtime fails.
 
-All selected source hashes, dependency reviews and existing destination files
-are checked before copying. Different existing files are preserved and make
-the check fail. Successful files are copied without changing their bytes,
-and the written copies are checked again. The authored wrappers can be read
-from this checkout; missing third-party sources cannot. The sole historical
-filename alias is `model_coribench.usda` to `model_forcebench.usda` for the
-identical authored Drawer overlay.
-
-## Dependency coverage
-
-The manifest records 449 authored references and retains 97 raw dependency
-gaps. `assets/asset_dependency_review.json` classifies each gap with source
-SHA256 constraints for these exact default scenes:
-
-- Unqualified `OmniPBR.mdl` / `OmniGlass.mdl` and MDL imports are supplied by
-  the supported renderer, rather than being local payload files.
-- NVIDIA thumbnail payloads are under `/Tagging`, outside the `/RootNode`
-  default prim imported by the tasks.
-- NVIDIA physics-material references belong to the unselected
-  `PhysicsVariant=RigidBody`; the deployed visual defaults select `None` and
-  task collision materials are authored separately.
-- The old Lightwheel PaintTool cube is under a branch deactivated by the
-  authored environment overlay. Task knob visuals reference the handle
-  geometry; the kitchen background excludes its duplicate sink.
-
-These observations were checked against the deployed assets on 2026-10-21.
-The complete upstream authoring packages are **not** claimed to have closed
-dependencies. Changing a variant, scene profile or input hash invalidates
-this review and requires a new dependency audit. The importer reports both
-the retained raw gaps and the checked default-task scope.
-
-Asset checks establish file identity and scoped dependency coverage. Complete
-GPU initialization, physical interaction and paper-score reproduction require
-their own validation.
-
-## Derived geometry recipes
-
-`assets/derived_asset_recipes.json` records the original input hashes,
-author-written builder hashes and expected output hashes for the compact
-Stovetop, conveyor and warehouse-rack exports. The corresponding Python files
-are preserved in `tools/asset_builders/`. They read separately acquired inputs
-and require `pxr`; they do not fetch source models or grant rights to the
-generated geometry.
-
-The Stovetop builder was run independently on 2026-10-21 and reproduced the
-deployed output byte for byte. Run it only in a fresh staging directory
-containing the pinned `Stovetop012.usd` input and its source dependencies:
-
-```bash
-python tools/asset_builders/build_single_stovetop.py /path/to/fresh/Stovetop012
-```
-
-The conveyor and warehouse builders accept explicit paths:
-
-```bash
-python tools/asset_builders/build_conveyor_a04.py \
-  --source /path/to/ConveyorBelt_A04.usd \
-  --output /path/to/fresh/conveyor_a04.usd \
-  --metadata /path/to/fresh/conveyor_a04.json
-
-python tools/asset_builders/build_small_warehouse_rack.py \
-  --source /path/to/small_warehouse_digital_twin.usd \
-  --output /path/to/fresh/rack.usd \
-  --metadata /path/to/fresh/rack.json
-```
-
-Those two original download caches were absent at this audit, so their
-recipes are preserved with `rebuild_verified: false`. A fresh build must be
-checked against the expected SHA256 before importing. Different bytes require
-an explicit geometry/material audit; renaming the output does not make it the
-pinned deployment asset.
+The manifest retains reviewed raw dependency gaps in inactive branches and
+unselected variants. The supported scope is the **eight default task scenes**;
+changing source hashes, variants or scene profiles requires a new audit.
+File checks, environment startup and paper-scale policy results are separate
+validation scopes. No training data or model success rate is certified by an
+asset download alone.

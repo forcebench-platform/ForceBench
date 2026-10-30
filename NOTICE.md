@@ -31,14 +31,15 @@ dependency record for separately acquired files.
 | NVIDIA Factory/FORGE, SimReady, Isaac and residential-scene materials | Obtain and use under the applicable upstream terms. Referenced binaries are not bundled. |
 | Lightwheel Kitchen sources | Retain the upstream CC BY-NC 4.0 terms and attribution. The upstream text is preserved at `assets/lightwheel_kitchen/LICENSE.txt`; source meshes and textures remain external. |
 | Poly Haven textures | Obtain separately and retain their applicable source terms and attribution information. |
-| ArtVIP RADMANSO model | The historical record has not established redistribution permission. No model payload is supplied or licensed by this repository. |
+| ArtVIP RADMANSO model | The pinned official X-Humanoid/ArtVIP publication declares Apache-2.0. The six required payloads match historical hashes; acquire them from the recorded official URLs. The binaries are not bundled. |
 | Shared `franka_mimic.usd` robot | A pinned NVIDIA official download and a content-identical historical export are accepted; see `docs/robot_asset.md`. The repository supplies acquisition code and verification records, not the third-party USD payload or a redistribution grant. |
+| DynamicVLA DOM cup09 | Exact historical file acquired from the clearly identified third-party mickeykang/dom-eval-files mirror. Original publisher/request links and mirror revision are recorded in docs/assets.md. No NVIDIA or ForceBench MIT license is asserted for this payload. |
 | Isaac Sim renderer materials and MDL SDK modules | Supplied by the independently installed runtime. They are checked as runtime requirements and are not copied into the asset bundle. |
 
 Authored wrappers and derivation scripts do not license the external geometry
 they reference or process. `tools/prepare_assets.py` imports a user-provided
 asset tree after checksum checks; it does not download materials, accept new
-asset terms or authorize redistribution. See [the asset guide](docs/assets.md).
+asset terms or authorize redistribution. See [the asset guide](docs/assets.md). The unified downloader resolves pinned publisher or explicitly attributed mirror sources and runs audited CPU build recipes; downloaded payloads retain their upstream terms.
 
 ## Scope of published evidence
 

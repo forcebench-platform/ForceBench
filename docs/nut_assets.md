@@ -6,15 +6,30 @@ meshes in the external NVIDIA source USD files; they contain no source meshes
 or textures. The authored wrappers use the repository's MIT license. Obtain
 the source geometry separately under its applicable upstream terms.
 
-The pinned sources are self-contained Factory/FORGE exports from the recorded
-Isaac Lab 2.3.2 / Isaac Sim 5.1 deployment. Files from another asset release
-must not be substituted based only on their names. The source filenames and
-SHA256 values are:
+Use the unified downloader to obtain the official Factory sources and the
+other Nut Thread scene dependencies:
 
-| Local name | Upstream export name | SHA256 |
+```bash
+python tools/download_assets.py --source-dir /path/to/asset-source --task nut_thread
+```
+
+The official raw exports and the historical deployed exports have identical
+complete authored USD content. The byte hashes differ. The runtime and both
+installers accept only these explicitly audited choices:
+
+| Local name | Historical deployed SHA256 | Official Isaac 5.1 raw SHA256 |
 |---|---|---|
-| `nut_m16.usd` | `factory_nut_m16.usd` | `8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4` |
-| `bolt_m16.usd` | `factory_bolt_m16.usd` | `e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654` |
+| `nut_m16.usd` | `8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4` | `f212a7f5664843abab3ec7d556ebf68ca99d4ad0880121978a45e445ad59431a` |
+| `bolt_m16.usd` | `e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654` | `29bf74da441b636e02982721c2a8103f0035561b0beb45072fed5cdfc5c81cf0` |
+
+Official filenames are `factory_nut_m16.usd` and `factory_bolt_m16.usd` under
+NVIDIA's Isaac 5.1 `Isaac/IsaacLab/Factory/` root. The registry records their
+exact URLs and expected sizes. No local flattening is needed. Complete typed
+comparisons found zero differences across 57/60 authored paths and 201/207
+fields. See [the verification record](../assets/nut_asset_equivalence_20261027.json).
+
+官方原文件与历史导出文件的完整 USD 内容一致，安装器和运行时均保留精确白名单。
+无需用近似螺纹、改变 SDF 碰撞或关闭哈希检查。
 
 After obtaining those source exports, install them into your external asset
 directory with the wrappers:
@@ -31,7 +46,7 @@ geometry and rigid-body structure:
 python tools/verify_nut_asset_composition.py --asset-dir /path/to/forcebench-assets
 ```
 
-The installer accepts either local or upstream export filenames, verifies both
+The installer accepts either local or upstream export filenames, verifies the approved
 source checksums before copying, and refuses to overwrite different existing
 files. It performs no download, flattening or geometry conversion. Its output
 is a JSON preflight report. Set `FORCEBENCH_ASSET_DIR` to the resulting asset

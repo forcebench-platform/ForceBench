@@ -5,6 +5,10 @@ of tested source hashes, environment versions, asset pins, commands, coverage
 and limitations. This document defines what those checks establish. Simulator
 coverage and model diagnostics are separate entries in that report.
 
+The [2026-10-27 asset acquisition supplement](../validation/asset_acquisition_20261027.json)
+records the later public-source download/build/import and eight-task GPU
+checks. Dated 2026-10-21 source/model records below retain their original scope.
+
 ## Completed source and CPU corrections
 
 The source corrections include:
@@ -44,11 +48,25 @@ outside the imported default prim, unselected physics variants and a disabled
 PaintTool branch. This is scoped coverage for the eight pinned default scenes,
 rather than a claim that every upstream authoring variant is complete.
 
-The single-center Stovetop builder independently reproduced the deployed
-binary SHA256. Conveyor and warehouse-rack recipes preserve their recorded
-input/output hashes but have not yet received a fresh rebuild check because
-the original input caches were absent. Source/asset checks establish file
-identity and transformation evidence, not redistribution rights.
+On 2026-10-27, all 283 external or derived payloads were acquired from fixed
+public sources. All five CPU builds matched the historical output hashes:
+Kitchen layer restoration, Stove UV restoration, single-center Stovetop,
+conveyor and warehouse rack. With 17 repository-authored wrappers, all 300
+runtime files (2,300,572,117 bytes with the approved official export variants)
+passed import; Nut/Bolt SDF geometry and the two renderer MDLs also passed.
+The original import count/byte total above describes the earlier historical
+export snapshot. The later approved exports change serialization, not authored
+robot/Nut/Bolt content.
+
+An offline rerun attempted zero network requests and zero build subprocesses;
+all 283 inputs were reused. Public network access required route fallbacks for
+the fixed DOM mirror archive, six ArtVIP files and two Poly Haven files. No
+older controlled asset payloads filled the source directory. The fresh tools
+environment used Python 3.12.13 and USD 25.11. The new simulator environment
+installed the official Lab wheel but reused existing heavy NVIDIA dependencies
+and compatible native libraries; this is not a fresh-OS installation receipt.
+Source/asset checks establish identity and transformation evidence, not
+redistribution rights.
 
 ## Simulator execution matrix
 
@@ -76,6 +94,12 @@ were nonuniform, and simulator logs contained no error lines. The background
 room is visual-only; its inherited physics schemas, joints and collision groups
 are removed before clone replication while task bodies remain outside that
 subtree. The exact case and source hashes are in the public report.
+
+The 2026-10-27 acquisition supplement additionally passed all eight tasks on
+the newly acquired/prepared assets: two environments per task, ten hold steps
+each, 160 control steps and 64 valid initial/final RGB images. Sixteen initial
+main/wrist screenshots were visually reviewed. No policy training or success
+rate estimation was performed in this later check.
 
 ## Model execution matrix
 

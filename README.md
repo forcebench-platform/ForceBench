@@ -34,11 +34,15 @@ The registry and inspection tools need Python 3.11+ and no simulator.
 ```bash
 git clone https://github.com/forcebench-platform/ForceBench.git
 cd ForceBench
-python3.11 -m venv .venv-tools
+python3.12 -m venv .venv-tools
 source .venv-tools/bin/activate
-python -m pip install -e .
+python -m pip install -e ".[assets]"
 python -m forcebench list-tasks
 ```
+
+The asset acquisition/build path was checked with Python 3.12.13 and
+`usd-core==25.11`; use that combination for the pinned binary rebuilds.
+资产下载与构建已用 Python 3.12.13、`usd-core==25.11` 核验。
 
 Follow the [installation guide](docs/getting_started_main.md) to create a
 separate Python 3.12 simulator environment and Python 3.11 model environments.
@@ -47,28 +51,100 @@ or acquire third-party assets.
 
 按照[安装指南](docs/getting_started_main.md)，分别配置 Python 3.12 仿真环境和 Python 3.11 模型环境。克隆仓库后，Isaac Sim、模型权重及第三方资产仍需单独准备。
 
-After acquiring assets under their original terms, verify and import them with
-`tools/prepare_assets.py`, then run `python -m forcebench doctor` in the simulator
-environment. The [asset guide](docs/assets.md) documents the pinned 300-file
-tree, authored wrappers, renderer requirements and reviewed dependencies.
-Source models and textures are supplied separately.
+## Acquire and run all eight tasks / 获取并运行八个任务
 
-按照各资产的原有条款取得文件后，使用 `tools/prepare_assets.py` 校验并导入，再在仿真环境中运行 `python -m forcebench doctor`。[资产说明](docs/assets.md)列出了固定版本的 300 个文件、自有封装文件、渲染器要求及已核查的依赖。原始模型与纹理文件需单独取得。
+The source registry now covers **283 external or derived payloads** for all
+8 default tasks. The importer adds 17 repository-authored wrappers, for
+**300 checked runtime files**. Use Linux with the PhysX/RTX simulator described
+in the [installation guide](docs/getting_started_main.md).
 
-For the shared Franka robot, a [verified NVIDIA download](docs/robot_asset.md)
-is available through `python tools/download_robot_asset.py --source-dir /path/to/external-source`.
-The official and historical binary hashes differ, but their complete decoded
-USD content was verified identical; both exact exports are accepted.
+八个默认任务共需 283 项外部或衍生资产，再加仓库提供的 17 个封装文件。
+统一工具负责固定版本下载、校验和五项 CPU 构建；不需要从我们的机器复制资产。
+资产及下载缓存建议预留至少 8 GB；模拟器、运行数据和模型环境另计。
 
-共享 Franka 机器人已提供[官方获取步骤](docs/robot_asset.md)：上面的下载命令会校验已验证的 NVIDIA 文件。
-官方与历史文件的二进制哈希不同，但完整 USD 内容已核对一致；两份确切版本均可通过校验。
+**1. Download in the lightweight tools environment / 在轻量工具环境下载：**
 
-For Weight Sort, [download all required external scene assets](docs/weight_sort_assets.md)
-with `python tools/download_weight_sort_assets.py --source-dir /path/to/external-source --workers 4`,
-then use the importer above. The historical SimReady package version is pinned.
+```bash
+export FORCEBENCH_WORK_ROOT="$HOME/forcebench-work"
+export FORCEBENCH_DATA_ROOT="$FORCEBENCH_WORK_ROOT/data"
+export FORCEBENCH_SCRATCH_ROOT="$FORCEBENCH_WORK_ROOT/scratch"
+export FORCEBENCH_ARCHIVE_ROOT="$FORCEBENCH_WORK_ROOT/archive"
+mkdir -p "$FORCEBENCH_DATA_ROOT" "$FORCEBENCH_SCRATCH_ROOT" "$FORCEBENCH_ARCHIVE_ROOT"
 
-Weight Sort 已提供[完整外部场景资产的获取步骤](docs/weight_sort_assets.md)，包括正确历史版本的箱体、容器和桌面；
-执行上述任务下载命令后，再用资产导入器完成封装和运行时材质检查。
+python tools/download_assets.py \
+  --source-dir "$FORCEBENCH_WORK_ROOT/asset-source" \
+  --cache-dir "$FORCEBENCH_WORK_ROOT/download-cache" --workers 4
+```
+
+Omit `--task` for all eight; repeat it to select tasks, for example
+`--task faucet_turn --task nut_thread`. Valid files and archives are reused on
+rerun. Changed, truncated or unknown existing files fail verification and are
+preserved. The 21 GB historical Shipping archive is read by bounded HTTP Range
+requests, not downloaded in full. `usd-core==25.11` is installed by the
+`.[assets]` extra and fixes the serialization version for exact rebuilds.
+
+省略 `--task` 即准备全部八个任务；可重复指定任务以减少下载量。中断后重跑会复用已校验文件。
+Lightwheel 和 DOM 对象包会缓存完整 ZIP；大型 Shipping 包只读取所需成员。
+[资产指南](docs/assets.md)列出了每个任务的确切来源、版本、目录映射和许可。
+Cup09 来自有固定版本和哈希的第三方 DynamicVLA DOM 镜像，已明确标注来源。
+
+The [2026-10-27 acquisition report](validation/asset_acquisition_20261027.json)
+records 283 acquired/built inputs, 300 imported files and eight passing GPU
+checks. Network route fallbacks were needed; the simulator check reused
+installed NVIDIA dependencies and native libraries.
+
+[本次验证记录](validation/asset_acquisition_20261027.json)包含全部资产与八任务 GPU 检查；
+资产来自公共来源，网络受限时使用同一 URL 的备用下载路线，模拟器复用了现有 NVIDIA 依赖。
+
+**2. Install the supported simulator / 安装模拟器：**
+
+Follow [the pinned environment instructions](docs/getting_started_main.md#2-prepare-the-simulator-environment).
+The Lab prerelease is supplied by NVIDIA's package index; the guide includes
+a direct wheel URL and SHA256. Keep model runtime environments separate.
+
+按上述安装指南配置并激活 `forcebench-sim` 环境。不要把不同模型的 `openpi` 运行包混装进模拟器环境。
+
+**3. Verify and import / 校验并导入：**
+
+```bash
+conda activate forcebench-sim
+python tools/prepare_assets.py \
+  --source-dir "$FORCEBENCH_WORK_ROOT/asset-source" \
+  --asset-dir "$FORCEBENCH_WORK_ROOT/assets" --check-only
+python tools/prepare_assets.py \
+  --source-dir "$FORCEBENCH_WORK_ROOT/asset-source" \
+  --asset-dir "$FORCEBENCH_WORK_ROOT/assets"
+export FORCEBENCH_ASSET_DIR="$FORCEBENCH_WORK_ROOT/assets"
+python -m forcebench doctor --asset-dir "$FORCEBENCH_ASSET_DIR"
+python tools/verify_nut_asset_composition.py --asset-dir "$FORCEBENCH_ASSET_DIR"
+```
+
+The importer also checks the installed renderer's materials. It accepts the
+historical robot/Nut/Bolt exports and only their explicitly audited official
+alternatives. Geometry, collision, force frames and task success rules remain
+unchanged. Third-party asset licenses remain applicable.
+
+**4. Start the eight environments / 启动八个环境：**
+
+Complete the guide's [first-run EULA and warm-up step](docs/getting_started_main.md#4-run-a-bounded-simulator-check)
+before launching this non-interactive checker. The initial extension download
+can take over ten minutes; `--timeout` is per task.
+
+先按安装指南完成首次协议接受与交互预热，再启动会重定向日志的检查器。
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python tools/validate_simulation.py \
+  --python "$(command -v python)" --assets "$FORCEBENCH_ASSET_DIR" \
+  --output "$FORCEBENCH_SCRATCH_ROOT/validation/first-eight-tasks" --steps 10 --timeout 1200
+```
+
+Use a fresh output directory. This check resets and steps each task with hold
+actions and validates camera images and finite observations. It needs no
+trained policy checkpoint. Training and policy evaluation have their own
+[data, normalization and checkpoint requirements](docs/getting_started_main.md#5-install-a-model-runtime-separately).
+
+该检查会启动每个任务并执行少量保持动作，检查相机和观测是否有效，不需要训练好的策略。
+训练和论文成功率复现还需对应数据、归一化参数、模型权重及完整评测配置。
 
 ## Eight tasks / 八个任务
 

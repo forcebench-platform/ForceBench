@@ -57,8 +57,7 @@ same-name files remain rejected. See the [comparison record](../assets/robot_ass
 
 This command downloads the shared robot only. Weight Sort users can instead
 use the [complete task asset downloader](weight_sort_assets.md), which also
-obtains its object, scene and texture files. Other tasks need the files from
-[the asset guide](assets.md). After those
+obtains its object, scene and texture files. All eight tasks can use the [unified asset downloader](assets.md). After those
 files are in the source tree, verify and import the selected task:
 
 ```bash

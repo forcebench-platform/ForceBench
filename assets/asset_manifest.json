@@ -104,7 +104,15 @@
       "dependencies": [
         "OmniPBR.mdl"
       ],
-      "source_group": "third_party_nvidia_or_existing_export_retains_upstream_terms"
+      "source_group": "third_party_nvidia_or_existing_export_retains_upstream_terms",
+      "verified_equivalent_exports": [
+        {
+          "bytes": 1242196,
+          "sha256": "29bf74da441b636e02982721c2a8103f0035561b0beb45072fed5cdfc5c81cf0",
+          "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_bolt_m16.usd",
+          "verification_report": "nut_asset_equivalence_20261027.json"
+        }
+      ]
     },
     {
       "path": "external/artvip_drawers/radmanso_3_drawers/model.usd",
@@ -1944,7 +1952,15 @@
       "dependencies": [
         "OmniPBR.mdl"
       ],
-      "source_group": "third_party_nvidia_or_existing_export_retains_upstream_terms"
+      "source_group": "third_party_nvidia_or_existing_export_retains_upstream_terms",
+      "verified_equivalent_exports": [
+        {
+          "bytes": 724155,
+          "sha256": "f212a7f5664843abab3ec7d556ebf68ca99d4ad0880121978a45e445ad59431a",
+          "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_nut_m16.usd",
+          "verification_report": "nut_asset_equivalence_20261027.json"
+        }
+      ]
     },
     {
       "path": "residential/east_rural/EastRural_Table.usd",
@@ -2284,7 +2300,7 @@
       "bytes": 196501,
       "sha256": "02555e22c30f4317d6a26a56527a5adf57efb0a6950203c907e34e0429aee92d",
       "dependencies": [],
-      "source_group": "third_party_nvidia_or_existing_export_retains_upstream_terms"
+      "source_group": "third_party_dynamicvla_dom_public_mirror_retains_upstream_terms"
     },
     {
       "path": "simready/flatbox_a02/flatbox_a02.usd",

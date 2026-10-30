@@ -12,6 +12,7 @@ license = {file = "LICENSE"}
 dependencies = []
 
 [project.optional-dependencies]
+assets = ["usd-core==25.11"]
 dev = ["pytest>=8", "numpy>=1.26", "h5py>=3.10", "msgpack>=1", "websockets>=12", "opencv-python>=4.9", "torch>=2.7"]
 
 [project.scripts]

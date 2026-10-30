@@ -1555,7 +1555,8 @@
     "third_party_payloads_distributed": false,
     "source_wrapper_mesh_composition_verified": true,
     "stove_single_center_rebuilt_sha256_matched": true,
-    "conveyor_and_rack_fresh_rebuild_verified": false
+    "conveyor_and_rack_fresh_rebuild_verified": false,
+    "verification_date": "2026-10-21"
   },
   "expert_collection": {
     "recovered_entry_points": [
@@ -1583,7 +1584,7 @@
     "This is not reproduction of the 80 simulation task-method scores, convergence or statistical repeatability.",
     "Original paper checkpoint-to-data-to-normalizer bindings remain incomplete; frozen table values are not overwritten by new runs.",
     "The historical Isaac Lab Git commit remains unknown. The official 3.0.0b2.post1 wheel is source-compared and GPU-executed as a public installation target; its remaining dependencies were inherited, so a complete fresh simulator installation is unverified.",
-    "Exact external meshes, textures, datasets and weights must be obtained separately under their applicable terms; current asset import pins identity rather than granting rights or providing public downloads.",
+    "Exact external meshes, textures, datasets and weights retain their applicable terms. The later 2026-10-27 asset acquisition supplement provides pinned public-source downloads/builds; it does not grant third-party asset rights or supply datasets/model weights.",
     "The recovered expert collectors were initialized/rendered, not run to complete the 1600 demonstrations.",
     "Real-world reference values do not constitute a validated real-robot deployment."
   ],
@@ -1595,5 +1596,15 @@
     "source_head": "c365a465a80e7fcf863dbce3d45147a96d9295f2",
     "run_url": "https://github.com/forcebench-platform/ForceBench/actions/runs/39484491866",
     "scope": "Clean CPU install before the final launcher-only additions; the current commit is checked again by CI."
+  },
+  "asset_acquisition_20261027": {
+    "report": "validation/asset_acquisition_20261027.json",
+    "report_sha256": "49512bd25bdc4edfc2c2a9b92a80c695c5d3478bbbeb017cc91f0d06688f1d0e",
+    "passed": true,
+    "external_or_derived_files": 283,
+    "runtime_files_imported": 300,
+    "all_five_derived_rebuilds_match_historical_sha256": true,
+    "eight_task_gpu_execution_passed": true,
+    "scope": "Supplement to the dated 2026-10-21 asset/model checks above; source inputs freshly acquired with documented network route fallbacks, heavy simulator dependencies inherited."
   }
 }

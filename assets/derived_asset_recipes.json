@@ -23,7 +23,9 @@
       "output_relative_path": "simready/conveyor_a04/conveyor_a04.usd",
       "output_sha256": "f8ad2b845b1197955d1bc41d022431e5abe0e9391d7d36c76c4135627007902f",
       "operation": "Flatten source conveyor branch and replace external materials/physics with local visual material definitions.",
-      "rebuild_verified": false
+      "rebuild_verified": true,
+      "verified_date": "2026-10-27",
+      "required_build_runtime": "usd-core==25.11"
     },
     {
       "id": "warehouse_rack",
@@ -31,10 +33,13 @@
       "builder_sha256": "df414f960b4563832ad7f1fc4f97d613c299d7beee4fdb1bd84ddd20755a7743",
       "input_name": "small_warehouse_digital_twin.usd",
       "input_sha256": "ee6f5ef4c5f71541f7302ebaf6a83c8a54b6aec92594fa882877849b5524bd74",
+      "source_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Environments/Digital_Twin_Warehouse/small_warehouse_digital_twin.usd",
       "output_relative_path": "simready/small_warehouse_digital_twin/rack.usd",
       "output_sha256": "2f26e32bee8b4dd437192b8563f34ee6b679474f42675a3af64f8337837ab6e0",
       "operation": "Extract /Lab/Assets/rack, preserve source unit conversion, replace external materials and remove physics.",
-      "rebuild_verified": false
+      "rebuild_verified": true,
+      "verified_date": "2026-10-27",
+      "required_build_runtime": "usd-core==25.11"
     }
   ]
 }

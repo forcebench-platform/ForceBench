@@ -192,8 +192,8 @@ def test_unknown_robot_destination_is_preserved_and_blocks_other_copying(tmp_pat
 
 def test_equivalent_exports_cannot_relax_unrelated_asset_pins(tmp_path):
     manifest = _robot_manifest()
-    manifest["files"][0]["path"] = "nut_m16.usd"
-    manifest["tasks"]["example"]["files"] = ["nut_m16.usd"]
+    manifest["files"][0]["path"] = "gear_medium.usd"
+    manifest["tasks"]["example"]["files"] = ["gear_medium.usd"]
     with pytest.raises(ValueError, match="only supported for the audited robot"):
         _tool().prepare(tmp_path / "source", tmp_path / "destination", manifest, {})
 

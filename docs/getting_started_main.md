@@ -10,12 +10,15 @@ variants into one environment would mix incompatible `openpi` packages.
 From the repository root:
 
 ```bash
-python3.11 -m venv .venv-tools
+python3.12 -m venv .venv-tools
 source .venv-tools/bin/activate
-python -m pip install -e .
+python -m pip install -e ".[assets]"
 python -m forcebench list-tasks --json
 python tools/verify_paper_reference.py
 ```
+
+Use Python 3.12.13 for asset builds: that is the interpreter verified with
+`usd-core==25.11`. Basic repository inspection still supports Python 3.11+.
 
 On Windows, activate with `.venv-tools\Scripts\Activate.ps1`. For development
 checks, install `python -m pip install -e ".[dev]"` and run
@@ -72,13 +75,28 @@ conda activate forcebench-sim
 python -m pip install --upgrade pip
 python -m pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
 python -m pip install 'isaaclab[isaacsim]==3.0.0b2.post1' \
-  torch==2.11.0 numpy==2.3.1 --extra-index-url https://pypi.nvidia.com
+  torch==2.11.0 numpy==2.3.1 usd-core==25.11 \
+  --index-url https://pypi.org/simple --extra-index-url https://pypi.nvidia.com
 python -m pip install opencv-python-headless==4.13.0.90 h5py==3.16.0 \
   msgpack==1.2.1 websockets==12.0
 cd /path/to/ForceBench
 python -m pip install -e .
 export FORCEBENCH_SIM_PYTHON="$(command -v python)"
 ```
+
+This prerelease is hosted by NVIDIA; it may not appear on the default PyPI
+index alone. The verified direct wheel is
+[isaaclab-3.0.0b2.post1](https://pypi.nvidia.cn/isaaclab/isaaclab-3.0.0b2.post1-py3-none-any.whl).
+If an index mirror cannot resolve it, use the explicit, hash-pinned URL:
+
+```bash
+python -m pip install \
+  'isaaclab[isaacsim] @ https://pypi.nvidia.cn/isaaclab/isaaclab-3.0.0b2.post1-py3-none-any.whl#sha256=dd32886588479ffd70f7348019aeac1582eb9ad16c40244f41d9f458f96f73c3' \
+  --index-url https://pypi.org/simple --extra-index-url https://pypi.nvidia.com
+```
+
+此预发行版本来自 NVIDIA 软件源，不能只用默认 PyPI 的版本列表判断是否存在。
+上述固定直链及 SHA256 已实际下载核验。
 
 This uses the published wheel and does not require an unidentified source
 checkout. Keep the simulator environment separate from each model environment.
@@ -93,15 +111,38 @@ Check the installed metadata against the report before continuing. Do not
 install the model runtimes into this simulator environment. A kit-less/Newton
 installation does not supply the PhysX/RTX execution path used here.
 
-On minimal Linux images, Isaac Sim also needs the platform's X11 native
-libraries, including `libXt`, `libSM` and `libICE`, even for headless rendering.
-A `CXXABI_1.3.15` error indicates an incompatible `libstdc++` selected by the
-process. The observed startup was repaired by using the environment's matching
-`libstdc++` and supplying the missing native libraries; use the platform's
-supported libraries and record any process overrides in validation output.
+On minimal Linux images, Isaac Sim also needs X11 native libraries even for
+headless rendering. For Ubuntu 22.04, install them with:
+
+```bash
+sudo apt-get update
+sudo apt-get install libxt6 libsm6 libice6
+```
+
+On Ubuntu 24.04, use `libxt6t64` instead of `libxt6`. These are platform packages,
+not Python packages; ask the machine administrator to install them if needed.
+See [Ubuntu's package index](https://packages.ubuntu.com/search?keywords=libxt6).
+
+A `CXXABI_1.3.15` error means the process selected an older `libstdc++` than
+the native extensions require. This symbol belongs to the GCC 14 ABI family
+([GCC ABI reference](https://gcc.gnu.org/onlinedocs/libstdc++/manual/abi.html)).
+In the activated simulator Conda environment, obtain a compatible library and
+check the actual file before selecting it for this simulator shell:
+
+```bash
+conda install -c conda-forge 'libstdcxx-ng>=14'
+python -c 'import os; from pathlib import Path; p=Path(os.environ["CONDA_PREFIX"])/"lib/libstdc++.so.6"; assert b"CXXABI_1.3.15" in p.read_bytes(), str(p); print(p)'
+export LD_PRELOAD="$CONDA_PREFIX/lib/libstdc++.so.6${LD_PRELOAD:+:$LD_PRELOAD}"
+```
+
+Use this override only when resolving the ABI error, not as a system-wide
+setting. The [latest execution receipt](../validation/asset_acquisition_20261027.json)
+records reuse of compatible native libraries, `LD_PRELOAD` and an extracted
+`libXt6` directory; a new OS and complete fresh NVIDIA dependency installation
+have not been validated.
 Review NVIDIA's terms when installing and running its software.
 
-## 3. Set storage and import separately acquired assets
+## 3. Set storage, acquire and import assets
 
 Keep run data outside the checkout:
 
@@ -111,17 +152,31 @@ export FORCEBENCH_SCRATCH_ROOT=/path/to/forcebench-scratch
 export FORCEBENCH_ARCHIVE_ROOT=/path/to/forcebench-archive
 ```
 
-These storage roots must be distinct. Acquire the models/textures described in
-[the asset guide](assets.md) under their upstream terms, preserving the expected
-relative paths. Then, in the simulator environment:
+These storage roots must be distinct. Prepare all default task assets in the
+lightweight tools environment (`pip install -e ".[assets]"`):
 
 ```bash
+python tools/download_assets.py \
+  --source-dir /path/to/asset-source \
+  --cache-dir /path/to/download-cache --workers 4
+```
+
+Repeat `--task TASK_ID` to select a subset, or omit it for all eight. The
+[asset guide](assets.md) documents the exact archives, direct URLs, five build
+recipes, directory mappings and upstream terms. It covers all 283 external
+or derived payloads. Builds require the public `usd-core==25.11` wheel; another
+USD writer may produce different binary hashes and is rejected.
+
+Then switch to the simulator environment and import the downloaded assets
+plus the 17 authored wrappers shipped with this checkout:
+
+```bash
+conda activate forcebench-sim
 python tools/prepare_assets.py \
-  --source-dir /path/to/legally-acquired-assets \
-  --asset-dir /path/to/forcebench-assets \
-  --check-only
+  --source-dir /path/to/asset-source \
+  --asset-dir /path/to/forcebench-assets --check-only
 python tools/prepare_assets.py \
-  --source-dir /path/to/legally-acquired-assets \
+  --source-dir /path/to/asset-source \
   --asset-dir /path/to/forcebench-assets
 export FORCEBENCH_ASSET_DIR=/path/to/forcebench-assets
 
@@ -130,24 +185,51 @@ python tools/prepare_nut_assets.py --asset-dir "$FORCEBENCH_ASSET_DIR" --check-o
 python tools/verify_nut_asset_composition.py --asset-dir "$FORCEBENCH_ASSET_DIR"
 ```
 
-The importer checks 300 pinned files for all default tasks, uses bundled
-authored wrappers where appropriate, and refuses different existing files.
-Its renderer checks use the installed `kit/mdl/core/Base` directory; pass
-`--runtime-material-dir` explicitly if automatic discovery is unavailable.
-`doctor` checks prerequisites; the Nut composition check additionally verifies
-source SDF geometry and rigid-body structure. Neither replaces a GPU rollout.
+The importer verifies 300 files and the installed renderer materials. It
+preserves verified existing files and refuses unknown alternatives. The
+robot, Nut and Bolt have explicitly audited official export variants; this
+is not a general relaxation of checksum checks. Supply
+`--runtime-material-dir /path/to/isaacsim/kit/mdl/core/Base` only if discovery
+of the supported installed runtime fails.
+
+Download failures leave previously verified assets reusable. For network
+restrictions, configure the environment's `HTTPS_PROXY` or use the verified
+archive cache described in the asset guide. Do not rename a different asset
+to satisfy a missing filename.
+
+统一入口按任务下载并校验固定版本；重跑可续用已验证文件。随后在模拟器环境中完成
+300 个文件与运行时材质的检查、导入和 Nut 几何检查，再进行 GPU 启动验收。
 
 ## 4. Run a bounded simulator check
 
 Run the checker with a fresh output directory. It initializes real simulator
 environments, steps hold actions, and checks finite observations and RGB images:
 
+First read NVIDIA's [license terms and first-run instructions](https://isaac-sim.github.io/IsaacLab/v3.0.0-beta/source/setup/installation/isaaclab_pip_installation.html).
+Only if you accept those terms, set the corresponding variables in your
+simulator shell. Then perform one interactive warm-up so that any first-run
+messages stay visible:
+
+```bash
+export ACCEPT_EULA=Y
+export OMNI_KIT_ACCEPT_EULA=YES
+export ISAACSIM_ACCEPT_EULA=Y
+CUDA_VISIBLE_DEVICES=0 python scripts/evaluation/inference_forcebench_vectorized.py \
+  --task weight_sort --seed_start 300 --num_envs 1 --max_steps 1 \
+  --smoke_hold --output_dir "$FORCEBENCH_SCRATCH_ROOT/validation/interactive-warmup" \
+  --headless --enable_cameras --device cuda:0
+```
+
+The first startup downloads NVIDIA extensions and may take over ten minutes.
+Wait for it to exit successfully before launching the checker, which redirects
+each task's output to a log. Use a new warm-up/output directory on rerun.
+
 ```bash
 CUDA_VISIBLE_DEVICES=0 python tools/validate_simulation.py \
   --python "$(command -v python)" \
   --assets "$FORCEBENCH_ASSET_DIR" \
   --output "$FORCEBENCH_SCRATCH_ROOT/validation/simulator-first-check" \
-  --tasks weight_sort --steps 10
+  --tasks weight_sort --steps 10 --timeout 1200
 ```
 
 Omit `--tasks` to request all eight default tasks. This requires sufficient GPU

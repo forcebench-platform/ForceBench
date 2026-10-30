@@ -56,11 +56,11 @@ def _gap_key(row: dict) -> tuple[str, str, str]:
 
 
 def _pinned_exports(row: dict) -> list[dict]:
-    """Keep historical pins; only the robot has audited equivalent exports."""
+    """Keep historical pins; only named, audited sources allow equivalent exports."""
     exports = [{"bytes": row.get("bytes"), "sha256": row.get("sha256", ""), "export": "primary"}]
     equivalents = row.get("verified_equivalent_exports", [])
-    if equivalents and row["path"] != "franka_mimic.usd":
-        raise ValueError(f"Equivalent exports are only supported for the audited robot: {row['path']}")
+    if equivalents and row["path"] not in ("franka_mimic.usd", "nut_m16.usd", "bolt_m16.usd"):
+        raise ValueError(f"Equivalent exports are only supported for the audited robot and M16 sources: {row['path']}")
     for variant in equivalents:
         if not variant.get("verification_report"):
             raise ValueError(f"Equivalent robot export lacks a verification report: {row['path']}")

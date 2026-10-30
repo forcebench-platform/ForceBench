@@ -15,6 +15,21 @@ SOURCE_SHA256 = {
     "nut_m16.usd": "8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4",
     "bolt_m16.usd": "e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654",
 }
+# Keep the historical pins above. The two additional NVIDIA 5.1 exports have
+# exactly the same typed USD fields, including all SDF mesh and physics data.
+# See assets/nut_asset_equivalence_20261027.json for the source comparison.
+SOURCE_ALLOWED_EXPORTS = {
+    "nut_m16.usd": (
+        {"bytes": 722644, "sha256": SOURCE_SHA256["nut_m16.usd"], "export": "historical"},
+        {"bytes": 724155, "sha256": "f212a7f5664843abab3ec7d556ebf68ca99d4ad0880121978a45e445ad59431a",
+         "export": "official_isaac_5_1"},
+    ),
+    "bolt_m16.usd": (
+        {"bytes": 1241463, "sha256": SOURCE_SHA256["bolt_m16.usd"], "export": "historical"},
+        {"bytes": 1242196, "sha256": "29bf74da441b636e02982721c2a8103f0035561b0beb45072fed5cdfc5c81cf0",
+         "export": "official_isaac_5_1"},
+    ),
+}
 WRAPPER_SOURCES = {"nut.usda": "nut_m16.usd", "bolt.usda": "bolt_m16.usd"}
 WRAPPER_SHA256 = {
     "nut.usda": "17934b50528c06f9a58bbb438d0fd239d752f269bb8fb3683961cbadbc264600",
@@ -30,6 +45,12 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def matching_source_export(name: str, size: int, sha256: str) -> dict | None:
+    """Recognize only the two explicitly audited exports for this M16 source."""
+    return next((variant for variant in SOURCE_ALLOWED_EXPORTS[name]
+                 if variant["bytes"] == size and variant["sha256"] == sha256), None)
+
+
 def inspect_nut_assets(asset_dir: Path) -> dict:
     """Check exact source bytes and transparent wrappers without importing USD.
 
@@ -43,10 +64,14 @@ def inspect_nut_assets(asset_dir: Path) -> dict:
     for name, expected in SOURCE_SHA256.items():
         source = root / name
         actual = sha256_file(source) if source.is_file() else None
-        sources[name] = {"expected_sha256": expected, "actual_sha256": actual}
+        size = source.stat().st_size if actual is not None else None
+        variant = matching_source_export(name, size, actual) if actual is not None else None
+        sources[name] = {"expected_sha256": expected, "actual_sha256": actual,
+                         "actual_bytes": size, "export": variant["export"] if variant else None,
+                         "allowed_exports": [dict(item) for item in SOURCE_ALLOWED_EXPORTS[name]]}
         if actual is None:
             issues.append(f"missing external source: {name}")
-        elif actual != expected:
+        elif variant is None:
             issues.append(f"source SHA256 mismatch: {name}")
     for name, source_name in WRAPPER_SOURCES.items():
         relative = f"normalized/nut_thread/{name}"

@@ -53,13 +53,16 @@ class _DirectoryCache:
 
 
 class HTTPRangeReader(io.RawIOBase):
-    """A bounded seekable reader for the one pinned historical ZIP."""
+    """A bounded seekable reader for a pinned historical ZIP."""
 
-    def __init__(self, *, timeout=60.0, cache=None):
+    def __init__(self, *, timeout=60.0, cache=None, url=None, archive_bytes=None, etag=None):
         super().__init__()
         self.position = 0
         self.timeout = timeout
         self.cache = cache or _DirectoryCache()
+        self.url = ARCHIVE_URL if url is None else url
+        self.archive_bytes = ARCHIVE_BYTES if archive_bytes is None else archive_bytes
+        self.etag = ARCHIVE_ETAG if etag is None else etag
 
     def readable(self):
         return True
@@ -78,7 +81,7 @@ class HTTPRangeReader(io.RawIOBase):
         elif whence == io.SEEK_CUR:
             position = self.position + offset
         elif whence == io.SEEK_END:
-            position = ARCHIVE_BYTES + offset
+            position = self.archive_bytes + offset
         else:
             raise ValueError("Invalid seek mode")
         if position < 0:
@@ -88,17 +91,17 @@ class HTTPRangeReader(io.RawIOBase):
 
     def _fetch(self, start, length):
         end = start + length - 1
-        request = urllib.request.Request(ARCHIVE_URL, headers={
-            "Range": f"bytes={start}-{end}", "If-Match": f'"{ARCHIVE_ETAG}"',
+        request = urllib.request.Request(self.url, headers={
+            "Range": f"bytes={start}-{end}", "If-Match": f'"{self.etag}"',
             "Accept-Encoding": "identity",
         })
         with urllib.request.urlopen(request, timeout=self.timeout) as response:
             if response.status != 206:
                 raise ValueError(f"Server ignored the bounded Range request (HTTP {response.status})")
-            expected_range = f"bytes {start}-{end}/{ARCHIVE_BYTES}"
+            expected_range = f"bytes {start}-{end}/{self.archive_bytes}"
             if response.headers.get("Content-Range") != expected_range:
                 raise ValueError(f"Unexpected Content-Range; expected {expected_range}")
-            if response.headers.get("ETag", "").strip('"') != ARCHIVE_ETAG:
+            if response.headers.get("ETag", "").strip('"') != self.etag:
                 raise ValueError("Historical ZIP ETag changed or was not supplied")
             declared = response.headers.get("Content-Length")
             if declared is not None and int(declared) != length:
@@ -116,15 +119,15 @@ class HTTPRangeReader(io.RawIOBase):
 
     def read(self, size=-1):
         self._checkClosed()
-        remaining = max(0, ARCHIVE_BYTES - self.position)
+        remaining = max(0, self.archive_bytes - self.position)
         length = remaining if size is None or size < 0 else min(size, remaining)
         if length > MAX_RANGE_BYTES:
             raise ValueError(f"Archive read exceeds the {MAX_RANGE_BYTES}-byte Range limit")
         if length == 0:
             return b""
         start = self.position
-        key = (start, length)
-        if start >= ARCHIVE_BYTES - MAX_RANGE_BYTES:
+        key = (self.url, self.archive_bytes, self.etag, start, length)
+        if start >= self.archive_bytes - MAX_RANGE_BYTES:
             with self.cache.lock:
                 data = self.cache.blocks.get(key)
                 if data is None:

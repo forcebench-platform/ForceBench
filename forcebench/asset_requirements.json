@@ -30,7 +30,6 @@
       "residential/east_rural/EastRural_Table_weight_sort.usda"
     ],
     "rattle_sort": [
-      "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Props/Conveyors/ConveyorBelt_A04.usd",
       "normalized/rattle_sort/box_shell.usda",
       "simready/container_f27/container_f27.usd",
       "simready/conveyor_a04/conveyor_a04.usd",

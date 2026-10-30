@@ -1,0 +1,1525 @@
+{
+  "schema_version": 1,
+  "verified_date": "2026-10-27",
+  "scope": "Eight default tasks; exact external-file acquisition and audited CPU rebuilds. Payloads remain at their publishers. Use upstream terms.",
+  "required_build_runtime": "usd-core==25.11",
+  "archives": {
+    "shipping01": {
+      "url": "https://d4i3qtqj3r0z5.cloudfront.net/SimReady_Containers_Shipping_01_NVD%4010010.zip",
+      "bytes": 21907097879,
+      "etag": "822c58760f11488f10f4c2f0c2bb6bce-2612",
+      "access": "range",
+      "attribution": "NVIDIA SimReady Shipping 01 NVD @10010"
+    },
+    "lightwheel_v1": {
+      "url": "https://media.githubusercontent.com/media/LightwheelAI/Lightwheel_Kitchen/10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1/Lightwheel_Kitchen.zip",
+      "bytes": 699682909,
+      "sha256": "721fb9e47d09b2c43a7db396c1d63c659e987d5925db0a5e78cf4fd40cd0b0b0",
+      "access": "cached",
+      "attribution": "Lightwheel Kitchen commit 10b0f7a86135a27e8c2fba9c690f6bf5c4f06bb1; CC BY-NC 4.0"
+    },
+    "dom_objects_mirror": {
+      "url": "https://huggingface.co/datasets/mickeykang/dom-eval-files/resolve/77dda64f9942cb81d97ed00d4d61b8721d749210/DOM-3D-Objects.zip",
+      "bytes": 192600903,
+      "sha256": "02aaa3f87d7efd2e06e16d767cdea81e53299d2531505bea22db861c82c9cd63",
+      "access": "cached",
+      "attribution": "Third-party mirror of DynamicVLA DOM-3D Objects; not an NVIDIA or original-author download",
+      "original_publisher": "https://github.com/hzxie/DynamicVLA",
+      "official_request_page": "https://gateway.infinitescript.com/?f=DOM-3D-Objects"
+    }
+  },
+  "builds": {
+    "conveyor_a04": {
+      "builder": "tools/asset_builders/build_conveyor_a04.py",
+      "builder_sha256": "36ce9617dea643c054c5abdc28c2d98a9532dcc58801859dcdccf90177c76699",
+      "inputs": [
+        {
+          "name": "ConveyorBelt_A04.usd",
+          "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Props/Conveyors/ConveyorBelt_A04.usd",
+          "bytes": 24730509,
+          "sha256": "2733b23b396b013743d99fb23d806d39d78770e9bca5924aef92f962c26f1ecf"
+        }
+      ],
+      "args": [
+        "--source",
+        "{input}",
+        "--output",
+        "{output}",
+        "--metadata",
+        "{metadata}"
+      ]
+    },
+    "warehouse_rack": {
+      "builder": "tools/asset_builders/build_small_warehouse_rack.py",
+      "builder_sha256": "df414f960b4563832ad7f1fc4f97d613c299d7beee4fdb1bd84ddd20755a7743",
+      "inputs": [
+        {
+          "name": "small_warehouse_digital_twin.usd",
+          "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/6.0/Isaac/Environments/Digital_Twin_Warehouse/small_warehouse_digital_twin.usd",
+          "bytes": 44272588,
+          "sha256": "ee6f5ef4c5f71541f7302ebaf6a83c8a54b6aec92594fa882877849b5524bd74"
+        }
+      ],
+      "args": [
+        "--source",
+        "{input}",
+        "--output",
+        "{output}",
+        "--metadata",
+        "{metadata}"
+      ]
+    },
+    "restore_kitchen": {
+      "builder": "tools/asset_builders/restore_lightwheel_layers.py",
+      "builder_sha256": "63309eebcef691325b1a99a5de034b033c518eab32932ad9a835ab31acabe6a8",
+      "inputs": [
+        {
+          "name": "KitchenRoom.usd",
+          "archive": "lightwheel_v1",
+          "member": "Collected_KitchenRoom/KitchenRoom.usd",
+          "bytes": 177380414,
+          "sha256": "a38b267437a516e0c7be1306cb66dd1bc0b644d60d6a07fae94e90062a0cad1f"
+        }
+      ],
+      "args": [
+        "--asset",
+        "kitchen",
+        "--source",
+        "{input}",
+        "--output",
+        "{output}"
+      ]
+    },
+    "restore_stove": {
+      "builder": "tools/asset_builders/restore_lightwheel_layers.py",
+      "builder_sha256": "63309eebcef691325b1a99a5de034b033c518eab32932ad9a835ab31acabe6a8",
+      "inputs": [
+        {
+          "name": "Stovetop012.usd",
+          "asset": "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Stovetop012/Stovetop012.usd"
+        }
+      ],
+      "args": [
+        "--asset",
+        "stove",
+        "--source",
+        "{input}",
+        "--output",
+        "{output}"
+      ]
+    },
+    "single_stovetop": {
+      "builder": "tools/asset_builders/build_single_stovetop.py",
+      "builder_sha256": "6df32c96a62f69ee10cd77dfe37e4f86e667d7dd97d2e960b6e9d1b7ae05335b",
+      "inputs": [
+        {
+          "name": "Stovetop012.usd",
+          "asset": "lightwheel_kitchen/Stovetop012/Stovetop012.usd"
+        }
+      ],
+      "args": [
+        "{input_dir}"
+      ],
+      "output_name": "Stovetop012_single_center.usd"
+    }
+  },
+  "files": {
+    "bolt_m16.usd": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_bolt_m16.usd",
+      "bytes": 1242196,
+      "sha256": "29bf74da441b636e02982721c2a8103f0035561b0beb45072fed5cdfc5c81cf0"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/model.usd": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/model_RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm.usd"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/resource/img/d7b24e7396f57f6dfe1c5eadbd05618e.png": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/resource/img/d7b24e7396f57f6dfe1c5eadbd05618e.png"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/resource/img/ebef264c1404b6cb6cd4c78f7689c6c4.png": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/resource/img/ebef264c1404b6cb6cd4c78f7689c6c4.png"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/resource/img/effdfaad612583405524cadfa6cd919c.png": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/resource/img/effdfaad612583405524cadfa6cd919c.png"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/resource/material.usd": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/resource/material.usd"
+    },
+    "external/artvip_drawers/radmanso_3_drawers/resource/v_69323/link_0.usd": {
+      "kind": "url",
+      "url": "https://huggingface.co/datasets/X-Humanoid/ArtVIP/resolve/d22f2095bc9db29fdd4b60f4a3c4f8177e1f5e9e/Articulated_objects/Ikea_furniture/RADMANSO_chest_of_3_drawers_brown_walnut_effect_90x48x81cm/resource/v_69323/link_0.usd"
+    },
+    "franka_mimic.usd": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/franka_mimic.usd",
+      "bytes": 7075031,
+      "sha256": "86d0017a093669b222a8c640bf581cc3e3715035aa7c596600f478da011f6c8e"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/CoffeeMachine006/CoffeeMachine006.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/CoffeeMachine006/CoffeeMachine006.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Dishwasher054/Dishwasher054.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Dishwasher054/Dishwasher054.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Dishwasher054/textures/T_Dishwasher054_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Dishwasher054/textures/T_Dishwasher054_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Door012/Door012.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Door012/Door012.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/3d66Model-7443619-files-8.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-8.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-24.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-24.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-42.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-42.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-43.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-43.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-7.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-7.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-8.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/Materials/Textures/7443619-files-8.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/SM_P_Choppingboard_01.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/Props/SM_P_Choppingboard_01.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/SM_P_Choppingboard_01.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Choppingboard_01/Collected_SM_P_Choppingboard_01/SM_P_Choppingboard_01.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_02.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_02.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03_Cover.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_03_Cover.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_04.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Flavour_04.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Jar_01.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Jar_01.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Tray_01.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/Props/SM_P_Tray_01.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/SM_P_Flavour_02.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/InteractiveAsset/SM_P_Flavour_02/Collected_SM_P_Flavour_02/SM_P_Flavour_02.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/KitchenRoom.usd": {
+      "kind": "build",
+      "recipe": "restore_kitchen"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Cabinet001/Kitchen_Cabinet001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Cabinet001/Kitchen_Cabinet001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Cabinet001/texture/Kitchen_Cabinet001_BC001.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Cabinet001/texture/Kitchen_Cabinet001_BC001.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Cabinet001/texture/Kitchen_Cabinet001_R001.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Cabinet001/texture/Kitchen_Cabinet001_R001.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Cabinet002/Kitchen_Cabinet002.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Cabinet002/Kitchen_Cabinet002.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/Kitchen_InsularShelf.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/Kitchen_InsularShelf.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/Kitchen_InsularShelf_BC001.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/Kitchen_InsularShelf_BC001.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/Kitchen_InsularShelf_R001.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/Kitchen_InsularShelf_R001.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Albedo.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Albedo.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Normal.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Normal.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Roughness.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfhofbfc_4K_Roughness.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Albedo.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Albedo.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Albedo_lv.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Albedo_lv.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Normal.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Normal.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Roughness.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_InsularShelf/texture/tfjbderc_4K_Roughness.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Basket.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Basket.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle005.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle005.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle006.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle006.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle007.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Bottle007.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Box.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Box.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Box02.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Box02.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Box07.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Box07.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Disk001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Disk001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Disk002.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Disk002.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Flowers001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Flowers001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Flowers002.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Flowers002.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Hookrack001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Hookrack001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_KnifeHolders001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_KnifeHolders001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Orange001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Orange001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Orange002.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Orange002.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Paper.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Paper.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_Shelf001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_Shelf001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle002.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle002.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle003.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle003.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle004.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/Kitchen_bottle004.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/1.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/1.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-013.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-013.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-014.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-014.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-015.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-015.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-016.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-016.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-017.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-017.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-018.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-018.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-019.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-019.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-020.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/20412140-files-020.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-125.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-125.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-138.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-138.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-139.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-139.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-140.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-140.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-151.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-151.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-152.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-152.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-22.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-22.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-25.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-25.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-26.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-26.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-27.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-27.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-69.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-69.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-70.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-70.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-71.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-71.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-72.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-72.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-73.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-73.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-91.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-91.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-92.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-92.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-93.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/8670919-files-93.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/texture/T_knifeHolders001_BC.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/texture/T_knifeHolders001_BC.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-022.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-022.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-023.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-023.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-024.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-024.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-025.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-025.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-046.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-046.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-047.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-047.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-050.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-050.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-051.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-051.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-052.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-052.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-053.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-053.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-054.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-054.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-055.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-055.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-056.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-056.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-057.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-057.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-058.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-058.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-059.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-059.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-060.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-060.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-061.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-061.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-062.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-062.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-063.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-063.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-065.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-065.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-125.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-125.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-128.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-128.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-131.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-131.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-155.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-155.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-156.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-156.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-157.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-157.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-168.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-168.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-169.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-169.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-170.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-170.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-183.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-183.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_Other/textures/3d66Model-19913701-files-024.JPG": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_Other/textures/19913701-files-024.JPG"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Kitchen_TopCabinet/Kitchen_TopCabinet.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Kitchen_TopCabinet/Kitchen_TopCabinet.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Microwave017/Microwave017.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Microwave017/Microwave017.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Microwave017/Tex/T_Microwave170001.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Microwave017/Tex/T_Microwave170001.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Microwave017/Tex/T_Microwave170002.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Microwave017/Tex/T_Microwave170002.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/Pot057.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Pot057/Pot057.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Pot057/textures/T_Pot057_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Pot057/textures/T_Pot057_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/RangeHood015/RangeHood015.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/RangeHood015/RangeHood015.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/RangeHood015/textures/T_RangeHood015_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/RangeHood015/textures/T_RangeHood015_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/Refrigerator001.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/Refrigerator001.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0000.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0000.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0002.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0002.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0003.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0003.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0004.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0004.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0006.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0006.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0008.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0008.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0009.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0009.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0011.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0011.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0013.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0013.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0014.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0014.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0016.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0016.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0019.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0019.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0020.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0020.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0022.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0022.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0024.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0024.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0025.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0025.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0027.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0027.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0029.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0029.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0030.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0030.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0032.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0032.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0034.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Refrigerator001/texture/T_Refrigerator1_0034.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Sink054/Sink054.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Sink054/Sink054.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Sink054/texutre/T_Sink054_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Sink054/texutre/T_Sink054_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Stovetop012/Stovetop012.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Stovetop012/Stovetop012.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Stovetop012/texture/T_Stovetop012_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Stovetop012/texture/T_Stovetop012_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Toaster003/Toaster003.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Toaster003/Toaster003.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/Toaster003/textures/T_Toaster003_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Toaster003/textures/T_Toaster003_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/WallStackOven004/WallStackOven004.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/WallStackOven004/WallStackOven004.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/WallStackOven004/texture/T_WallStackOven004_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/WallStackOven004/texture/T_WallStackOven004_BC001.png"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/omniverse-content-production.s3.us-west-2.amazonaws.com/Assets/Extensions/Samples/Paint/cube.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/omniverse-content-production.s3.us-west-2.amazonaws.com/Assets/Extensions/Samples/Paint/cube.usd"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Ground_BC.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Ground_BC.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Ground_N.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Ground_N.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Ground_R.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Ground_R.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Wall_BC002.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Wall_BC002.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Wall_N002.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Wall_N002.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/Kitchen_Wall_R002.jpg": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/Kitchen_Wall_R002.jpg"
+    },
+    "lightwheel_kitchen/FullKitchen/Collected_KitchenRoom/texture/chive 7000x3500.hdr": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/texture/chive 7000x3500.hdr"
+    },
+    "lightwheel_kitchen/Sink054/Sink054.usd": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Sink054/Sink054.usd"
+    },
+    "lightwheel_kitchen/Sink054/texutre/T_Sink054_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Sink054/texutre/T_Sink054_BC001.png"
+    },
+    "lightwheel_kitchen/Stovetop012/Stovetop012.usd": {
+      "kind": "build",
+      "recipe": "restore_stove"
+    },
+    "lightwheel_kitchen/Stovetop012/Stovetop012_single_center.usd": {
+      "kind": "build",
+      "recipe": "single_stovetop"
+    },
+    "lightwheel_kitchen/Stovetop012/texture/T_Stovetop012_BC001.png": {
+      "kind": "zip",
+      "archive": "lightwheel_v1",
+      "member": "Collected_KitchenRoom/Stovetop012/texture/T_Stovetop012_BC001.png"
+    },
+    "nut_m16.usd": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_nut_m16.usd",
+      "bytes": 724155,
+      "sha256": "f212a7f5664843abab3ec7d556ebf68ca99d4ad0880121978a45e445ad59431a"
+    },
+    "residential/east_rural/EastRural_Table.usd": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/EastRural_Table.usd"
+    },
+    "residential/east_rural/Textures/ER_TableTop_BaseColor.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_BaseColor.png"
+    },
+    "residential/east_rural/Textures/ER_TableTop_Normal.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_Normal.png"
+    },
+    "residential/east_rural/Textures/ER_TableTop_Roughness.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_TableTop_Roughness.png"
+    },
+    "residential/east_rural/Textures/ER_Table_WhiteWood_BaseColor.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_BaseColor.png"
+    },
+    "residential/east_rural/Textures/ER_Table_WhiteWood_Normal.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_Normal.png"
+    },
+    "residential/east_rural/Textures/ER_Table_WhiteWood_Roughness.png": {
+      "kind": "url",
+      "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/ArchVis/Residential/Furniture/DiningSets/EastRural/Textures/ER_Table_WhiteWood_Roughness.png"
+    },
+    "residential/east_rural/Textures/PolyHaven_AshVeneer_Diffuse_4K.jpg": {
+      "kind": "url",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/ash_veneer/ash_veneer_diff_4k.jpg"
+    },
+    "residential/east_rural/Textures/PolyHaven_AshVeneer_NormalGL_4K.jpg": {
+      "kind": "url",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/ash_veneer/ash_veneer_nor_gl_4k.jpg"
+    },
+    "residential/east_rural/Textures/PolyHaven_AshVeneer_Roughness_4K.jpg": {
+      "kind": "url",
+      "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/ash_veneer/ash_veneer_rough_4k.jpg"
+    },
+    "simready/container_f27/container_f27.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/container_f27.usd"
+    },
+    "simready/container_f27/container_f27_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/container_f27_base.usd"
+    },
+    "simready/container_f27/container_f27_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/container_f27_inst.usd"
+    },
+    "simready/container_f27/container_f27_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/container_f27_inst_base.usd"
+    },
+    "simready/container_f27/materials/Chrome_A.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/materials/Chrome_A.mdl"
+    },
+    "simready/container_f27/materials/Metal_Rough_A.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/materials/Metal_Rough_A.mdl"
+    },
+    "simready/container_f27/materials/Plastic_B.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/materials/Plastic_B.mdl"
+    },
+    "simready/container_f27/materials/Plastic_Black_A.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/materials/Plastic_Black_A.mdl"
+    },
+    "simready/container_f27/textures/T_Metal_Chrome_A_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_Albedo.png"
+    },
+    "simready/container_f27/textures/T_Metal_Chrome_A_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_Normal.png"
+    },
+    "simready/container_f27/textures/T_Metal_Chrome_A_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Chrome_A_ORM.png"
+    },
+    "simready/container_f27/textures/T_Metal_Rough_A_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_Albedo.png"
+    },
+    "simready/container_f27/textures/T_Metal_Rough_A_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_Normal.png"
+    },
+    "simready/container_f27/textures/T_Metal_Rough_A_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Metal_Rough_A_ORM.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Black_A_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_Albedo.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Black_A_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_Normal.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Black_A_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Black_A_ORM.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Blue_A_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Blue_A_Albedo.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Blue_A_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Blue_A_ORM.png"
+    },
+    "simready/container_f27/textures/T_Plastic_Normal_1k.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_Normal_1k.png"
+    },
+    "simready/container_f27/textures/T_Plastic_ORM_1k.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/container_f27/textures/T_Plastic_ORM_1k.png"
+    },
+    "simready/conveyor_a04/conveyor_a04.usd": {
+      "kind": "build",
+      "recipe": "conveyor_a04"
+    },
+    "simready/cup09/cup09.usd": {
+      "kind": "zip",
+      "archive": "dom_objects_mirror",
+      "member": "objects/cup/cup09.usd"
+    },
+    "simready/flatbox_a02/flatbox_a02.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02.usd"
+    },
+    "simready/flatbox_a02/flatbox_a02_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_base.usd"
+    },
+    "simready/flatbox_a02/flatbox_a02_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_inst.usd"
+    },
+    "simready/flatbox_a02/flatbox_a02_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/flatbox_a02_inst_base.usd"
+    },
+    "simready/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/M_FlatBox_Cardboard_01.mdl"
+    },
+    "simready/flatbox_a02/materials/M_FlatBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/M_FlatBox_Decal_01.mdl"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Albedo.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_Normal.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Tile_ORM.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Albedo.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Normal.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_ORM.png"
+    },
+    "simready/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a02/materials/textures/T_FlatBox_A01_Trim_Opacity.png"
+    },
+    "simready/flatbox_a07/flatbox_a07.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/flatbox_a07.usd"
+    },
+    "simready/flatbox_a07/flatbox_a07_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/flatbox_a07_base.usd"
+    },
+    "simready/flatbox_a07/flatbox_a07_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/flatbox_a07_inst.usd"
+    },
+    "simready/flatbox_a07/flatbox_a07_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/flatbox_a07_inst_base.usd"
+    },
+    "simready/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/M_FlatBox_Cardboard_01.mdl"
+    },
+    "simready/flatbox_a07/materials/M_FlatBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/M_FlatBox_Decal_01.mdl"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_Albedo.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_Normal.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Tile_ORM.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Albedo.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Normal.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_ORM.png"
+    },
+    "simready/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a07/materials/textures/T_FlatBox_A01_Trim_Opacity.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/cubebox_a03_inst_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Cardboard_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/M_CubeBox_Decal_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Tile_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/cubebox_a03/materials/textures/T_CubeBox_A01_Trim_Opacity.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/flatbox_a12_inst_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Cardboard_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/M_FlatBox_Decal_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Tile_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/flatbox_a12/materials/textures/T_FlatBox_A01_Trim_Opacity.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/longbox_a04_inst_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Cardboard_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/M_LongBox_Decal_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Tile_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/longbox_a04/materials/textures/T_LongBox_A01_Trim_Opacity.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Cardboard_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/M_MultiDepthBox_Decal_01.mdl"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Tile_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Albedo.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Albedo.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Normal.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Normal.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_ORM.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_ORM.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Opacity.png": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/materials/textures/T_MultiDepthBox_A01_Trim_Opacity.png"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_base.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst.usd"
+    },
+    "simready/shipping_background/Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst_base.usd": {
+      "kind": "zip",
+      "archive": "shipping01",
+      "member": "Assets/simready_content/common_assets/props/multidepthbox_a04/multidepthbox_a04_inst_base.usd"
+    },
+    "simready/small_warehouse_digital_twin/rack.usd": {
+      "kind": "build",
+      "recipe": "warehouse_rack"
+    }
+  }
+}

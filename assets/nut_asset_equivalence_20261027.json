@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "verified_date": "2026-10-27",
+  "openusd_version": [
+    0,
+    25,
+    11
+  ],
+  "method": "Typed comparison of every authored Sdf path and field in the official raw USD and historical deployed layer. No ignored fields, collision approximation change or geometry normalization.",
+  "files": [
+    {
+      "file": "nut_m16.usd",
+      "historical_bytes": 722644,
+      "historical_sha256": "8ff4fa10680ab09b780e9ba1f468eadc06ab3b3a8557c196bc2fa02f799677d4",
+      "official_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_nut_m16.usd",
+      "official_bytes": 724155,
+      "official_sha256": "f212a7f5664843abab3ec7d556ebf68ca99d4ad0880121978a45e445ad59431a",
+      "comparison": {
+        "new_spec_paths": 57,
+        "historical_spec_paths": 57,
+        "new_fields": 201,
+        "historical_fields": 201,
+        "difference_count": 0,
+        "differences": []
+      }
+    },
+    {
+      "file": "bolt_m16.usd",
+      "historical_bytes": 1241463,
+      "historical_sha256": "e822eb329d3ab2aad9bae57a405c60539ecea12bfa4d1af5d3e3609f1fe1f654",
+      "official_url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/IsaacLab/Factory/factory_bolt_m16.usd",
+      "official_bytes": 1242196,
+      "official_sha256": "29bf74da441b636e02982721c2a8103f0035561b0beb45072fed5cdfc5c81cf0",
+      "comparison": {
+        "new_spec_paths": 60,
+        "historical_spec_paths": 60,
+        "new_fields": 207,
+        "historical_fields": 207,
+        "difference_count": 0,
+        "differences": []
+      }
+    }
+  ],
+  "scope": "Asset content comparison; no new policy evaluation."
+}
